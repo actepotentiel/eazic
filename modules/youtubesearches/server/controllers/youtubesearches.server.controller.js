@@ -7,24 +7,29 @@ var _ = require('lodash'),
 	path = require('path'),
 	mongoose = require('mongoose'),
 	Youtubesearch = mongoose.model('Youtubesearch'),
-	youtubeApi = require('youtube-node'),
+	youtubeApi = require('youtube-api'),
 	errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller'));
+
+youtubeApi.authenticate({
+	type: "key",
+	key: 'AIzaSyBVsIBrr7VmuhNN-NvRVWw-gZA4vjj1YeA'
+});
 
 
 /*
 * Perform a research on youtube datas
 * */
 exports.search = function(req, res) {
-	var youtubeQuery = new Youtubesearch(req.body);
-	var youTubeApi = new youtubeApi();
+	console.log(req.body);
 
-	youTubeApi.setKey('AIzaSyBVsIBrr7VmuhNN-NvRVWw-gZA4vjj1YeA');
-
-	youTubeApi.search(req.query, 20, function(error, results) {
+	youtubeApi.search.list({
+		q: req.body.q,
+		part: "snippet"
+	}, function(error, results) {
 		var formattedResults = [];
-		var formattedMetas = {};
-		formattedMetas = results.pageInfo;
+		var formattedMetas = results.pageInfo;
 		formattedMetas.nextPage = results.nextPageToken;
+		formattedMetas.query = req.body;
 		for (var video in results.items) {
 			var item = {};
 			item.title = results.items[video].snippet.title;
@@ -40,7 +45,7 @@ exports.search = function(req, res) {
 				items : formattedResults
 			}
 		};
-		res.jsonp(formattedResponse);
+		res.jsonp(formattedResponse || error);
 	});
 };
 
