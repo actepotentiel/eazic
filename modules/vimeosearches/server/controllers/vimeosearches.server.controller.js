@@ -46,7 +46,7 @@ exports.search = function(req, res) {
 		};
 		res.jsonp(formattedResponse || err);
 	});
-}
+};
 
 /**
  * Create a Vimeosearch
