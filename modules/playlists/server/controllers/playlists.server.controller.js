@@ -13,8 +13,9 @@ var _ = require('lodash'),
  * Create a Playlist
  */
 exports.create = function(req, res) {
+	console.log(req.body);
 	var playlist = new Playlist(req.body);
-	playlist.user = req.user;
+	playlist.owner = req.user;
 
 	playlist.save(function(err) {
 		if (err) {
@@ -87,7 +88,8 @@ exports.list = function(req, res) { Playlist.find().sort('-created').populate('u
 /**
  * Playlist middleware
  */
-exports.playlistByID = function(req, res, next, id) { Playlist.findById(id).populate('user', 'displayName').exec(function(err, playlist) {
+exports.playlistByID = function(req, res, next, id) {
+	Playlist.findById(id).populate('owner', 'displayName').exec(function(err, playlist) {
 		if (err) return next(err);
 		if (! playlist) return next(new Error('Failed to load Playlist ' + id));
 		req.playlist = playlist ;

@@ -34,7 +34,7 @@ exports.invokeRolesPolicies = function() {
 		roles: ['guest'],
 		allows: [{
 			resources: '/api/playlists',
-			permissions: ['get']
+			permissions: ['get', 'post']
 		}, {
 			resources: '/api/playlists/:playlistId',
 			permissions: ['get']
@@ -49,7 +49,7 @@ exports.isAllowed = function(req, res, next) {
 	var roles = (req.user) ? req.user.roles : ['guest'];
 
 	// If an playlist is being processed and the current user created it then allow any manipulation
-	if (req.playlist && req.user && req.playlist.user.id === req.user.id) {
+	if (req.playlist && req.user && req.playlist.owner.id === req.user.id) {
 		return next();
 	}
 
