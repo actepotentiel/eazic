@@ -1,0 +1,19 @@
+<section data-ng-controller="SoundcloudsearchesController" data-ng-init="find()">
+    <div class="page-header">
+        <h1>Soundcloudsearches</h1>
+    </div>
+    <div class="list-group">
+        <a data-ng-repeat="soundcloudsearch in soundcloudsearches" data-ng-href="/#!/soundcloudsearches/{{soundcloudsearch._id}}" class="list-group-item">
+			<small class="list-group-item-text">
+				Posted on
+				<span data-ng-bind="soundcloudsearch.created | date:'medium'"></span>
+				by
+				<span data-ng-bind="soundcloudsearch.user.displayName"></span>
+			</small>
+			<h4 class="list-group-item-heading" data-ng-bind="soundcloudsearch.name"></h4>
+        </a>
+    </div>
+    <div class="alert alert-warning text-center" data-ng-hide="!soundcloudsearches.$resolved || soundcloudsearches.length">
+    	No Soundcloudsearches yet, why don't you <a href="/#!/soundcloudsearches/create">create one</a>?
+    </div>
+</section>
