@@ -1,0 +1,19 @@
+<section data-ng-controller="SpotifysearchesController" data-ng-init="find()">
+    <div class="page-header">
+        <h1>Spotifysearches</h1>
+    </div>
+    <div class="list-group">
+        <a data-ng-repeat="spotifysearch in spotifysearches" data-ng-href="/#!/spotifysearches/{{spotifysearch._id}}" class="list-group-item">
+			<small class="list-group-item-text">
+				Posted on
+				<span data-ng-bind="spotifysearch.created | date:'medium'"></span>
+				by
+				<span data-ng-bind="spotifysearch.user.displayName"></span>
+			</small>
+			<h4 class="list-group-item-heading" data-ng-bind="spotifysearch.name"></h4>
+        </a>
+    </div>
+    <div class="alert alert-warning text-center" data-ng-hide="!spotifysearches.$resolved || spotifysearches.length">
+    	No Spotifysearches yet, why don't you <a href="/#!/spotifysearches/create">create one</a>?
+    </div>
+</section>

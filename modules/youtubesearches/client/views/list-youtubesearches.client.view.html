@@ -1,0 +1,19 @@
+<section data-ng-controller="YoutubesearchesController" data-ng-init="find()">
+    <div class="page-header">
+        <h1>Youtubesearches</h1>
+    </div>
+    <div class="list-group">
+        <a data-ng-repeat="youtubesearch in youtubesearches" data-ng-href="/#!/youtubesearches/{{youtubesearch._id}}" class="list-group-item">
+			<small class="list-group-item-text">
+				Posted on
+				<span data-ng-bind="youtubesearch.created | date:'medium'"></span>
+				by
+				<span data-ng-bind="youtubesearch.user.displayName"></span>
+			</small>
+			<h4 class="list-group-item-heading" data-ng-bind="youtubesearch.name"></h4>
+        </a>
+    </div>
+    <div class="alert alert-warning text-center" data-ng-hide="!youtubesearches.$resolved || youtubesearches.length">
+    	No Youtubesearches yet, why don't you <a href="/#!/youtubesearches/create">create one</a>?
+    </div>
+</section>

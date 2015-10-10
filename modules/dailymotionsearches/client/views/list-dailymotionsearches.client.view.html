@@ -1,0 +1,19 @@
+<section data-ng-controller="DailymotionsearchesController" data-ng-init="find()">
+    <div class="page-header">
+        <h1>Dailymotionsearches</h1>
+    </div>
+    <div class="list-group">
+        <a data-ng-repeat="dailymotionsearch in dailymotionsearches" data-ng-href="/#!/dailymotionsearches/{{dailymotionsearch._id}}" class="list-group-item">
+			<small class="list-group-item-text">
+				Posted on
+				<span data-ng-bind="dailymotionsearch.created | date:'medium'"></span>
+				by
+				<span data-ng-bind="dailymotionsearch.user.displayName"></span>
+			</small>
+			<h4 class="list-group-item-heading" data-ng-bind="dailymotionsearch.name"></h4>
+        </a>
+    </div>
+    <div class="alert alert-warning text-center" data-ng-hide="!dailymotionsearches.$resolved || dailymotionsearches.length">
+    	No Dailymotionsearches yet, why don't you <a href="/#!/dailymotionsearches/create">create one</a>?
+    </div>
+</section>
