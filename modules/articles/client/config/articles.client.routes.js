@@ -1,6 +1,6 @@
-'use strict';
-
-// Setting up route
+//'use strict';
+//
+// //Setting up route
 //angular.module('articles').config(['$stateProvider',
 //  function ($stateProvider) {
 //    // Articles state routing
@@ -8,11 +8,11 @@
 //      .state('articles', {
 //        abstract: true,
 //        url: '/articles',
-//        template: '<ui-view/>'
+//        //template: '<ui-view/>'
 //      })
 //      .state('articles.list', {
 //        url: '',
-//        templateUrl: 'modules/articles/client/views/list-articles.client.view.html'
+//        //templateUrl: 'modules/articles/client/views/list-articles.client.view.html'
 //      })
 //      .state('articles.create', {
 //        url: '/create',

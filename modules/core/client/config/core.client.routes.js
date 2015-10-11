@@ -16,17 +16,16 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider',
 
      //Home state routing
     $stateProvider
-        .state('home', {
-          url: '/',
-          templateUrl: 'modules/core/client/views/home.client.view.html'
-        })
+        //.state('home', {
+        //  url: '/',
+        //  templateUrl: 'modules/core/client/views/home.client.view.html'
+        //})
         .state('salons', {
           url: '/salons/:name',
           controller: 'SalonsRoutingController',
           data: {
                 ignoreState: false
               }
-          //templateUrl: 'modules/core/client/views/home.client.view.html'
         });
     //.state('not-found', {
     //  url: '/not-found',
