@@ -26,10 +26,10 @@ exports.search = function(req,res) {
 		for (var video in results.list) {
 			var item = {};
 			item.title = results.list[video].title;
-			item.type = 'dailymotion';
-			item.url = results.list[video].id;
+			item.sourceName = 'dailymotion';
+			item.sourceId = results.list[video].id;
 			item.image = results.list[video].thumbnail_240_url || '/images/sound_default.png';
-			item.embed = results.list[video].embed_html;
+			//item.embed = results.list[video].embed_html;
 			formattedResults.push(item);
 		}
 		var formattedResponse = {

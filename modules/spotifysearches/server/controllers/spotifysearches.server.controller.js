@@ -24,12 +24,12 @@ exports.search = function(req, res) {
 		for (var video in results.tracks.items) {
 			var item = {};
 			item.title = results.tracks.items[video].name;
-			item.type = 'deezer';
-			item.url = results.tracks.items[video].href;
+			item.sourceName = 'deezer';
+			item.sourceId = results.tracks.items[video].href;
 			item.image = results.tracks.items[video].album.images[1].url || '/images/sound_default.png';
 			item.kind = results.tracks.items[video].type;
 			item.duration = results.tracks.items[video].duration_ms;
-			item.uri = results.tracks.items[video].uri;
+			//item.uri = results.tracks.items[video].uri;
 			formattedResults.push(item);
 		}
 		var formattedResponse = {

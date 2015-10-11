@@ -3,37 +3,41 @@
  */
 'use strict';
 
-angular.module('core').controller('ExploreController', ['$scope', 'Authentication', 'PlaylistService',
-    function($scope, Authentication, PlaylistService) {
+angular.module('core').controller('ExploreController', ['$scope', 'Authentication', 'PlaylistService', 'DailymotionSearch', 'DeezerSearch', 'SoundcloudSearch', 'SpotifySearch', 'VimeoSearch', 'YoutubeSearch',
+    function($scope, Authentication, PlaylistService, DailymotionSearch, DeezerSearch, SoundcloudSearch, SpotifySearch, VimeoSearch, YoutubeSearch) {
         // This provides Authentication context.
         $scope.authentication = Authentication;
 
-        //$scope.getSearch = function(){
-        //    Search.query({q : $scope.query, sources : ['youtube']}, function(result){
-        //        console.log(result);
-        //        $scope.youtubeResult = result[0].youtube.items;
-        //    });
-        //    Search.query({q : $scope.query, sources : ['vimeo']}, function(result){
-        //        console.log(result);
-        //        $scope.vimeoResult = result[0].vimeo.items;
-        //    });
-        //    Search.query({q : $scope.query, sources : ['soundcloud']}, function(result){
-        //        console.log(result);
-        //        $scope.soundcloudResult = result[0].soundcloud.items;
-        //    });
-        //    Search.query({q : $scope.query, sources : ['deezer']}, function(result){
-        //        console.log(result);
-        //        $scope.deezerResult = result[0].deezer.items;
-        //    });
-        //    Search.query({q : $scope.query, sources : ['spotify']}, function(result){
-        //        console.log(result);
-        //        $scope.spotifyResult = result[0].spotify.items;
-        //    });
-        //};
-        //
-        //$scope.addToList = function(soundToAdd){
-        //    console.log(soundToAdd);
-        //    PlaylistService.sendCommand('addSound', soundToAdd);
-        //};
+        $scope.getSearch = function(){
+            DailymotionSearch.search({q : $scope.query}, function(result){
+                console.log(result);
+                $scope.dailymotionResult = result.dailymotion.items;
+            });
+            DeezerSearch.search({q : $scope.query}, function(result){
+                console.log(result);
+                $scope.deezerResult = result.deezer.items;
+            });
+            SoundcloudSearch.search({q : $scope.query}, function(result){
+                console.log(result);
+                $scope.soundcloudResult = result.soundcloud.items;
+            });
+            SpotifySearch.search({q : $scope.query}, function(result){
+                console.log(result);
+                $scope.spotifyResult = result.spotify.items;
+            });
+            VimeoSearch.search({q : $scope.query}, function(result){
+                console.log(result);
+                $scope.vimeoResult = result.vimeo.items;
+            });
+            YoutubeSearch.search({q : $scope.query}, function(result){
+                console.log(result);
+                $scope.youtubeResult = result.youtube.items;
+            });
+        };
+
+        $scope.addToList = function(soundToAdd){
+            console.log(soundToAdd);
+            PlaylistService.sendCommand('addSound', soundToAdd);
+        };
     }
 ]);

@@ -11,3 +11,13 @@ angular.module('vimeosearches').factory('Vimeosearches', ['$resource',
 		});
 	}
 ]);
+
+angular.module('vimeosearches').factory('VimeoSearch', ['$resource',
+	function($resource) {
+		return $resource('api/search/vimeo', {}, {
+			search : {
+				method : 'POST'
+			}
+		});
+	}
+]);

@@ -3,8 +3,8 @@
  */
 'use strict';
 
-angular.module('core').factory('PlaylistService', ['Authentication','$timeout','Socket', 'Playlists',
-    function(Authentication, $timeout, Socket, Playlists) {
+angular.module('core').factory('PlaylistService', ['Authentication','$timeout','Socket', 'Playlists','MyPlaylists',
+    function(Authentication, $timeout, Socket, Playlists, MyPlaylists) {
         var _this = this;
         var authentication = Authentication;
         _this._data = {
@@ -12,13 +12,9 @@ angular.module('core').factory('PlaylistService', ['Authentication','$timeout','
             playlists: window.playlists,
             updatePlaylists: function(){
                 var __this = this;
-                Playlists.query(function(result){
+                MyPlaylists.get({userId : authentication.user._id}, function(result){
                     __this.playlists = result;
-                    console.log(result);
                 });
-                //Playlists.get({playlistId : authentication.user._id}, function(result){
-                //    _this.playlists = result;
-                //});
             },
             sendCommand: function(nomCommand, sound, playlist, isDouble){
                 console.log("sendCommand");

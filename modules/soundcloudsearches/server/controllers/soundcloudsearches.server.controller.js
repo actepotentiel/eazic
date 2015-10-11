@@ -27,8 +27,8 @@ exports.search = function(req, res) {
 		for (var video in results) {
 			var item = {};
 			item.title = results[video].title;
-			item.type = 'soundcloud';
-			item.url = results[video].stream_url;
+			item.sourceName = 'soundcloud';
+			item.sourceId = results[video].stream_url;
 			item.image = results[video].artwork_url || '/images/sound_default.png';
 			item.kind = results[video].kind;
 			item.duration = results[video].duration;

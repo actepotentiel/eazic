@@ -11,3 +11,13 @@ angular.module('soundcloudsearches').factory('Soundcloudsearches', ['$resource',
 		});
 	}
 ]);
+
+angular.module('soundcloudsearches').factory('SoundcloudSearch', ['$resource',
+	function($resource) {
+		return $resource('api/search/soundcloud', {}, {
+			search : {
+				method : 'POST'
+			}
+		});
+	}
+]);

@@ -27,9 +27,9 @@ function showOverlay(event) {
     var b = $(event.target).height() - event.layerY;
     var contentOverlay = $(event.target).find('.home-feature-overlay').first();
     var cssToApply = {};
-    console.log(g, h, d, b);
+    //console.log(g, h, d, b);
     if (g < 15) {
-        console.log("show gauche");
+        //console.log("show gauche");
         cssToApply.left = '-100%';
         cssToApply.top = 0;
         cssToApply.transform = 'translateX(100%)';
@@ -37,7 +37,7 @@ function showOverlay(event) {
         contentOverlay.data('y',0);
     }
     if (d < 15) {
-        console.log("show droite");
+        //console.log("show droite");
         cssToApply.left = '100%';
         cssToApply.top = 0;
         cssToApply.transform = 'translateX(-100%)';
@@ -45,7 +45,7 @@ function showOverlay(event) {
         contentOverlay.data('y',0);
     }
     if (h < 15) {
-        console.log("show haut");
+        //console.log("show haut");
         cssToApply.left = 0;
         cssToApply.top = '-100%';
         cssToApply.transform = 'translateY(100%)';
@@ -53,7 +53,7 @@ function showOverlay(event) {
         contentOverlay.data('x',0);
     }
     if (b < 15) {
-        console.log("show bas");
+        //console.log("show bas");
         cssToApply.left = 0;
         cssToApply.top = '100%';
         cssToApply.transform = 'translateY(-100%)';
@@ -66,7 +66,7 @@ function showOverlay(event) {
 }
 
 function hideOverlay(event) {
-    console.log(event);
+    //console.log(event);
     var g = event.layerX;
     var d = $(event.target).width() - event.layerX;
     var h = event.layerY;
@@ -74,19 +74,19 @@ function hideOverlay(event) {
     var contentOverlay = $(event.target).find('.home-feature-overlay').first();
     var cssToApply = {};
     if (g<15) {
-        console.log("hide gauche");
+        //console.log("hide gauche");
         cssToApply.transform = 'translate3d('+(contentOverlay.data('x')-100)+'%, '+contentOverlay.data('y')+'%,0)';
     }
     if (d<15) {
-        console.log("hide droite");
+        //console.log("hide droite");
         cssToApply.transform = 'translate3d('+(contentOverlay.data('x')+100)+'%,'+contentOverlay.data('y')+'%,0)';
     }
     if (h<15) {
-        console.log("hide haut");
+        //console.log("hide haut");
         cssToApply.transform = 'translateY('+(contentOverlay.data('x'))+'%,'+(contentOverlay.data('y')-100)+'%,0)';
     }
     if (b<15) {
-        console.log("hide bas");
+        //console.log("hide bas");
         cssToApply.transform = 'translateY('+(contentOverlay.data('x'))+'%,'+(contentOverlay.data('y')+100)+'%,0)';
     }
     contentOverlay.css(cssToApply);
@@ -126,9 +126,9 @@ function hideViewMinified(event){
 }
 function toggleView(event){
     event.stopPropagation();
-    console.log(event);
-    console.log(event.target.dataset.viewName);
-    console.log($('#' + event.target.dataset.viewName + 'View').hasClass('minifiedView'));
+    //console.log(event);
+    //console.log(event.target.dataset.viewName);
+    //console.log($('#' + event.target.dataset.viewName + 'View').hasClass('minifiedView'));
     if (typeof(event)!='undefined') {
         blurHomePage();
         if($('#' + event.target.dataset.viewName + 'View').hasClass('minifiedView')){
@@ -145,7 +145,7 @@ function showView(event){
     $('#' + event.target.dataset.viewName + 'View').removeClass('hiddenView');
     $('#' + event.target.dataset.viewName + 'View').removeClass('minifiedView');
     $(event.target).parent().addClass('borderBottomGrey');
-    console.log($(event.target).parent()[0].onmouseleave);
+    //console.log($(event.target).parent()[0].onmouseleave);
     $(event.target).parent()[0].onmouseleave = function(){return false;}
     $(event.target).parent()[0].onmouseenter = function(){return false;}
 }

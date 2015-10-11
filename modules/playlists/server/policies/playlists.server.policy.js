@@ -3,7 +3,9 @@
 /**
  * Module dependencies.
  */
-var acl = require('acl');
+var acl = require('acl'),
+	mongoose = require('mongoose'),
+	Playlist = mongoose.model('Playlist');
 
 // Using the memory backend
 acl = new acl(new acl.memoryBackend());
@@ -34,7 +36,7 @@ exports.invokeRolesPolicies = function() {
 		roles: ['guest'],
 		allows: [{
 			resources: '/api/playlists',
-			permissions: ['get', 'post']
+			permissions: ['get']
 		}, {
 			resources: '/api/playlists/:playlistId',
 			permissions: ['get']
@@ -69,4 +71,26 @@ exports.isAllowed = function(req, res, next) {
 			}
 		}
 	});
+};
+
+
+/**
+ * Sound authorization middleware
+ */
+exports.hasPlaylistOwnerAuthorization = function(req, res, next) {
+	console.log(req.playlist);
+	// console.log(req);
+	var playlist = null;
+	playlist = (req.playlist) ? new Playlist(req.playlist) : new Playlist(req.body);
+	Playlist.findById(playlist.playlist, function(err, playlist){
+		console.log(req.user._id);
+		if (playlist.owner.equals(req.user._id)) next();
+		for (var i=0; i<playlist.users.length;i++) {
+			if (playlist.users[i].equals(req.user._id)) next();
+		}
+		return res.status(403).send({message: 'User is not authorized'});
+
+	});
+
+
 };

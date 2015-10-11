@@ -23,8 +23,8 @@ exports.search = function(req, res) {
 		for (var video in results.data) {
 			var item = {};
 			item.title = results.data[video].title;
-			item.type = 'deezer';
-			item.url = results.data[video].id;
+			item.sourceName = 'deezer';
+			item.sourceId = results.data[video].id;
 			item.image = results.data[video].artist.picture_medium || '/images/sound_default.png';
 			item.kind = results.data[video].type;
 			item.duration = results.data[video].duration;
