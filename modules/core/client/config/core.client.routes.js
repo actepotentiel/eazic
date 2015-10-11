@@ -2,51 +2,52 @@
 
 // Setting up route
 angular.module('core').config(['$stateProvider', '$urlRouterProvider',
-  function ($stateProvider, $urlRouterProvider) {
+    function ($stateProvider, $urlRouterProvider) {
 
-    // Redirect to 404 when route not found
-    //$urlRouterProvider.otherwise(function ($injector, $location) {
-    //  $injector.get('$state').transitionTo('not-found', null, {
-    //    location: false
-    //  });
-    //});
-    $urlRouterProvider.otherwise('/');
-
-
-
-     //Home state routing
-    $stateProvider
-        //.state('home', {
-        //  url: '/',
-        //  templateUrl: 'modules/core/client/views/home.client.view.html'
-        //})
-        .state('salons', {
-          url: '/salons/:name',
-          controller: 'SalonsRoutingController',
-          data: {
-                ignoreState: false
-              }
+        // Redirect to 404 when route not found
+        $urlRouterProvider.otherwise(function ($injector, $location) {
+            $injector.get('$state').transitionTo('not-found', null, {
+                location: false
+            });
         });
-    //.state('not-found', {
-    //  url: '/not-found',
-    //  templateUrl: 'modules/core/client/views/404.client.view.html',
-    //  data: {
-    //    ignoreState: true
-    //  }
-    //})
-    //.state('bad-request', {
-    //  url: '/bad-request',
-    //  templateUrl: 'modules/core/client/views/400.client.view.html',
-    //  data: {
-    //    ignoreState: true
-    //  }
-    //})
-    //.state('forbidden', {
-    //  url: '/forbidden',
-    //  templateUrl: 'modules/core/client/views/403.client.view.html',
-    //  data: {
-    //    ignoreState: true
-    //  }
-    //});
-  }
+
+
+        // Home state routing
+        $stateProvider
+            .state('home', {
+                url: '/',
+                templateUrl: 'modules/core/client/views/home.client.view.html'
+            })
+            .state('salons', {
+                url: "/salons/:name",
+                onEnter: function($state) {
+                    console.log('doing something');
+                    console.log($state.href('current'));
+                },
+                controller: function($state) {
+                    //$state.go('home');
+                }
+            })
+            .state('not-found', {
+                url: '/not-found',
+                templateUrl: 'modules/core/client/views/404.client.view.html',
+                data: {
+                    ignoreState: true
+                }
+            })
+            .state('bad-request', {
+                url: '/bad-request',
+                templateUrl: 'modules/core/client/views/400.client.view.html',
+                data: {
+                    ignoreState: true
+                }
+            })
+            .state('forbidden', {
+                url: '/forbidden',
+                templateUrl: 'modules/core/client/views/403.client.view.html',
+                data: {
+                    ignoreState: true
+                }
+            });
+    }
 ]);
