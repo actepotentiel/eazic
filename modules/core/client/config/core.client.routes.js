@@ -11,7 +11,6 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider',
             });
         });
 
-
         // Home state routing
         $stateProvider
             .state('home', {
@@ -19,14 +18,8 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider',
                 templateUrl: 'modules/core/client/views/home.client.view.html'
             })
             .state('salons', {
-                url: "/salons/:name",
-                onEnter: function($state) {
-                    console.log('doing something');
-                    console.log($state.href('current'));
-                },
-                controller: function($state) {
-                    //$state.go('home');
-                }
+                url: '/salons/:name',
+                //templateUrl: 'modules/core/client/views/home.client.view.html'
             })
             .state('not-found', {
                 url: '/not-found',
