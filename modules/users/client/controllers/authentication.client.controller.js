@@ -2,6 +2,9 @@
 
 angular.module('users').controller('AuthenticationController', ['$scope', '$state', '$http', '$location', '$window', 'Authentication', 'PasswordValidator',
   function ($scope, $state, $http, $location, $window, Authentication, PasswordValidator) {
+
+    console.log('AuthenticationController');
+
     $scope.authentication = Authentication;
     $scope.popoverMsg = PasswordValidator.getPopoverMsg();
 
@@ -9,16 +12,15 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
     $scope.error = $location.search().err;
 
     // If user is signed in then redirect back home
-    if ($scope.authentication.user) {
-      $location.path('/');
-    }
+    //if ($scope.authentication.user) {
+    //  $location.path('/');
+    //}
 
     $scope.signup = function (isValid) {
       $scope.error = null;
 
       if (!isValid) {
         $scope.$broadcast('show-errors-check-validity', 'userForm');
-
         return false;
       }
 

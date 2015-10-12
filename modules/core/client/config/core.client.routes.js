@@ -1,46 +1,21 @@
 'use strict';
 
 // Setting up route
-angular.module('core').config(['$stateProvider', '$urlRouterProvider',
-    function ($stateProvider, $urlRouterProvider) {
+angular.module('core').config(['$stateProvider', '$urlRouterProvider','$routeProvider',
+    function ($stateProvider, $urlRouterProvider, $routeProvider) {
 
-        // Redirect to 404 when route not found
-        $urlRouterProvider.otherwise(function ($injector, $location) {
-            $injector.get('$state').transitionTo('not-found', null, {
-                location: false
-            });
+        $urlRouterProvider.otherwise('/');
+
+        $stateProvider.state('site', {
+            url: '/:params',
+            views: {
+                'content@': {
+                    controller: function($scope, $stateParams){
+                        $scope.params = $stateParams;
+                        console.log('ici');
+                    }
+                }
+            }
         });
-
-        // Home state routing
-        $stateProvider
-            .state('home', {
-                url: '/',
-                templateUrl: 'modules/core/client/views/home.client.view.html'
-            })
-            .state('salons', {
-                url: '/salons/:name',
-                //templateUrl: 'modules/core/client/views/home.client.view.html'
-            })
-            .state('not-found', {
-                url: '/not-found',
-                templateUrl: 'modules/core/client/views/404.client.view.html',
-                data: {
-                    ignoreState: true
-                }
-            })
-            .state('bad-request', {
-                url: '/bad-request',
-                templateUrl: 'modules/core/client/views/400.client.view.html',
-                data: {
-                    ignoreState: true
-                }
-            })
-            .state('forbidden', {
-                url: '/forbidden',
-                templateUrl: 'modules/core/client/views/403.client.view.html',
-                data: {
-                    ignoreState: true
-                }
-            });
     }
 ]);

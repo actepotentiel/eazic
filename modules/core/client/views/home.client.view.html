@@ -1,3 +1,4 @@
+<!--<section>toto</section>-->
 <section id="homeSection" class="fillContainer animated-rapier" data-ng-controller="HomeController">
   <div id="itemHomeLeft" class="item-home">
     <div id="welcomeHomeDiv">
@@ -76,8 +77,8 @@
           <md-button class="md-primary md-raised" ng-click="authentication.showSigninForm = true; authentication.showSignupForm = false" layout-fill>Se logguer</md-button>
         </md-content>
       </md-content>
-      <div ng-hide="authentication.showSignupForm" data-ng-include="'modules/users/client/views/authentication/signin.client.view.html'"></div>
-      <div ng-show="authentication.showSignupForm" data-ng-include="'modules/users/client/views/authentication/signup.client.view.html'"></div>
+      <div data-ng-hide="authentication.showSignupForm" ng-include="'modules/users/client/views/authentication/signin.client.view.html'"></div><!---->
+      <div data-ng-show="authentication.showSignupForm" ng-include="'modules/users/client/views/authentication/signup.client.view.html'"></div><!---->
 
 
       <div id="socialNetworkContainer">

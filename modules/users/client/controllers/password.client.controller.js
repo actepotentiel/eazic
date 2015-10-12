@@ -5,6 +5,8 @@ angular.module('users').controller('PasswordController', ['$scope', '$stateParam
     $scope.authentication = Authentication;
     $scope.popoverMsg = PasswordValidator.getPopoverMsg();
 
+    console.log('PasswordController');
+
     //If user is signed in then redirect back home
     if ($scope.authentication.user) {
       $location.path('/');
