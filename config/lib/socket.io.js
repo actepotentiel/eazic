@@ -15,6 +15,8 @@ var config = require('../config'),
 // Define the Socket.io configuration method
 module.exports = function (app, db) {
   var server;
+  console.log("config.secure :");
+  console.log(config.secure);
   if (config.secure && config.secure.ssl === true) {
     // Load SSL key and certificate
     var privateKey = fs.readFileSync(path.resolve(config.secure.privateKey), 'utf8');
@@ -57,6 +59,8 @@ module.exports = function (app, db) {
     // Create a new HTTP server
     server = http.createServer(app);
   }
+
+
   // Create a new Socket.io server
   var io = socketio.listen(server);
 
@@ -66,9 +70,10 @@ module.exports = function (app, db) {
     collection: config.sessionCollection
   });
 
-  // Intercept Socket.io's handshake request
+   //Intercept Socket.io's handshake request
   io.use(function (socket, next) {
     // Use the 'cookie-parser' module to parse the request cookies
+    console.log("cookie-parser");
     cookieParser(config.sessionSecret)(socket.request, {}, function (err) {
       // Get the session id from the request cookies
       var sessionId = socket.request.signedCookies ? socket.request.signedCookies[config.sessionKey] : undefined;
@@ -99,6 +104,7 @@ module.exports = function (app, db) {
 
   // Add an event listener to the 'connection' event
   io.on('connection', function (socket) {
+    console.log("connection");
     config.files.server.sockets.forEach(function (socketConfiguration) {
       require(path.resolve(socketConfiguration))(io, socket);
     });

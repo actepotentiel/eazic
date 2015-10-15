@@ -27,6 +27,7 @@ module.exports.init = function init(callback) {
   mongoose.connect(function (db) {
     // Initialize express
     var app = express.init(db);
+    global.chatRooms = {};
     if (callback) callback(app, db, config);
 
   });

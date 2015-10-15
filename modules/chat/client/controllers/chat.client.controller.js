@@ -3,13 +3,15 @@
 // Create the 'chat' controller
 angular.module('chat').controller('ChatController', ['$scope', '$location', 'Authentication', 'Socket',
   function ($scope, $location, Authentication, Socket) {
+
+    console.log("ChatController");
     // Create a messages array
     $scope.messages = [];
 
     // If user is not signed in then redirect back home
-    if (!Authentication.user) {
-      $location.path('/');
-    }
+    //if (!Authentication.user) {
+    //  $location.path('/');
+    //}
 
     // Make sure the Socket is connected
     if (!Socket.socket) {
@@ -17,7 +19,7 @@ angular.module('chat').controller('ChatController', ['$scope', '$location', 'Aut
     }
 
     // Add an event listener to the 'chatMessage' event
-    Socket.on('chatMessage', function (message) {
+    Socket.on('chat.message', function (message) {
       $scope.messages.unshift(message);
     });
 
@@ -29,7 +31,7 @@ angular.module('chat').controller('ChatController', ['$scope', '$location', 'Aut
       };
 
       // Emit a 'chatMessage' message event
-      Socket.emit('chatMessage', message);
+      Socket.emit('chat.message', message);
 
       // Clear the message text
       this.messageText = '';

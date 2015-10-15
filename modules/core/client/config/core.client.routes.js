@@ -10,9 +10,22 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider','$routePro
             url: '/:params',
             views: {
                 'content@': {
-                    controller: function($scope, $stateParams){
-                        $scope.params = $stateParams;
-                        console.log('ici');
+                    controller: function($scope, $stateParams, Socket){
+                        $scope.params = $stateParams.params;
+                        console.log($scope.params);
+
+                        // Create a new message object
+                        //var message = {
+                        //    text: $scope.params
+                        //};
+                        //if($scope.params){
+                        //    Socket.join($scope.params);
+                        //}
+
+                        // Emit a 'chatMessage' message event
+                        Socket.emit('room.join', $scope.params);
+
+
                     }
                 }
             }
