@@ -71,6 +71,7 @@ module.exports = function (app, db) {
   });
 
    //Intercept Socket.io's handshake request
+  // Seulement si on veut bloquer l'accés au socket des utilisateurs non loggué
   io.use(function (socket, next) {
     // Use the 'cookie-parser' module to parse the request cookies
     console.log("cookie-parser");
@@ -99,7 +100,8 @@ module.exports = function (app, db) {
             if (socket.request.user) {
               next(null, true);
             } else {
-              next(new Error('User is not authenticated'), false);
+              next(null, true);
+              //next(new Error('User is not authenticated'), false);
             }
           });
         });
