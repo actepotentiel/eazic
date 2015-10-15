@@ -12,9 +12,11 @@ angular.module('core').factory('PlaylistService', ['Authentication','$timeout','
             playlists: window.playlists,
             updatePlaylists: function(){
                 var __this = this;
-                MyPlaylists.get({userId : authentication.user._id}, function(result){
-                    __this.playlists = result;
-                });
+                if(authentication.user){
+                    MyPlaylists.get({userId : authentication.user._id}, function(result){
+                        __this.playlists = result;
+                    });
+                }
             },
             sendCommand: function(nomCommand, sound, playlist, isDouble){
                 console.log("sendCommand");
