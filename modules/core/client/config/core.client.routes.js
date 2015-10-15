@@ -1,8 +1,8 @@
 'use strict';
 
 // Setting up route
-angular.module('core').config(['$stateProvider', '$urlRouterProvider','$routeProvider',
-    function ($stateProvider, $urlRouterProvider, $routeProvider) {
+angular.module('core').config(['$stateProvider', '$urlRouterProvider',
+    function ($stateProvider, $urlRouterProvider) {
 
         $urlRouterProvider.otherwise('/');
 
@@ -14,15 +14,10 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider','$routePro
                         $scope.params = $stateParams.params;
                         console.log($scope.params);
 
-                        // Create a new message object
-                        //var message = {
-                        //    text: $scope.params
-                        //};
-                        //if($scope.params){
-                        //    Socket.join($scope.params);
-                        //}
-
-                        // Emit a 'chatMessage' message event
+                        if (!Socket.socket) {
+                            Socket.connect();
+                        }
+                        console.log(Socket);
                         Socket.emit('room.join', $scope.params);
 
 
