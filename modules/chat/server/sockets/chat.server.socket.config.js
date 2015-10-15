@@ -112,12 +112,19 @@ module.exports = function (io, socket) {
         delete global.chatRooms[roomindex];
     }
 
+    var name = "";
+    if(typeof socket.request.user === "undefined"){
+      name = "inconnu";
+    }else{
+      name = socket.request.user.username;
+    }
+
     io.emit('chatMessage', {
       type: 'status',
       text: 'disconnected',
       created: Date.now(),
       rooms: global.chatRooms,
-      username: socket.request.user.username
+      username: name
     });
   });
 

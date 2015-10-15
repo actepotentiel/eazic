@@ -75,6 +75,8 @@ module.exports = function (app, db) {
     // Use the 'cookie-parser' module to parse the request cookies
     console.log("cookie-parser");
     cookieParser(config.sessionSecret)(socket.request, {}, function (err) {
+
+      console.log("cookie-parser-in");
       // Get the session id from the request cookies
       var sessionId = socket.request.signedCookies ? socket.request.signedCookies[config.sessionKey] : undefined;
 
@@ -82,6 +84,9 @@ module.exports = function (app, db) {
 
       // Use the mongoStorage instance to get the Express session information
       mongoStore.get(sessionId, function (err, session) {
+
+        console.log("mongo-store.get");
+
         if (err) return next(err, false);
         if (!session) return next(new Error('session was not found for ' + sessionId), false);
 
