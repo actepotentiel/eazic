@@ -3,7 +3,9 @@
 /**
  * Module dependencies.
  */
-var acl = require('acl');
+var acl = require('acl'),
+	mongoose = require('mongoose'),
+	Room = mongoose.model('Room');
 
 // Using the memory backend
 acl = new acl(new acl.memoryBackend());
@@ -20,7 +22,11 @@ exports.invokeRolesPolicies = function() {
 		}, {
 			resources: '/api/rooms/:roomId',
 			permissions: '*'
-		}]
+		},
+			{
+				resources: '/api/rooms/user/:roomUserId',
+				permissions: '*'
+			}]
 	}, {
 		roles: ['user'],
 		allows: [{
@@ -29,15 +35,19 @@ exports.invokeRolesPolicies = function() {
 		}, {
 			resources: '/api/rooms/:roomId',
 			permissions: ['get']
-		}]
+		},
+			{
+				resources: '/api/rooms/user/:roomUserId',
+				permissions: '*'
+			}]
 	}, {
 		roles: ['guest'],
 		allows: [{
 			resources: '/api/rooms',
-			permissions: ['get']
+			permissions: []
 		}, {
 			resources: '/api/rooms/:roomId',
-			permissions: ['get']
+			permissions: []
 		}]
 	}]);
 };
@@ -49,7 +59,7 @@ exports.isAllowed = function(req, res, next) {
 	var roles = (req.user) ? req.user.roles : ['guest'];
 
 	// If an room is being processed and the current user created it then allow any manipulation
-	if (req.room && req.user && req.room.user.id === req.user.id) {
+	if (req.room && req.user && req.room.user && req.room.user.id === req.user.id) {
 		return next();
 	}
 
@@ -64,9 +74,24 @@ exports.isAllowed = function(req, res, next) {
 				return next();
 			} else {
 				return res.status(403).json({
-					message: 'User is not authorized'
+					message: 'User is not authorized !!!!'
 				});
 			}
 		}
 	});
+};
+
+/**
+ * Room authorization middleware
+ */
+exports.hasRoomOwnerAuthorization = function(req, res, next) {
+	if(req.room.length >= 1) {
+
+		if (req.room[0].user.equals(req.user._id)){
+			return next();
+		}
+		return res.status(403).send({message: 'User is not authorized !!'});
+	}
+	return res.status(404).send({message: 'Not found, please delete your profile and create another'});
+
 };

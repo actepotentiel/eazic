@@ -15,16 +15,12 @@ module.exports = function(app) {
 		.delete(playlists.delete);
 
 	app.param('playlistId', playlists.playlistByID);
-    //
-	//// Finish by binding the Playlist middleware
-	//app.param('playlistId', playlists.playlistByID);
 
-	app.route('/api/playlists/user/:userId').all(playlistsPolicy.isAllowed)
-		.get(playlists.playlistByUserID).all(playlistsPolicy.hasPlaylistOwnerAuthorization);
-	//app.param('userId', playlists.playlistByUserID);
-		//.put(playlists.updatePlaylist)
-		//.delete(playlists.deletePlaylist);
+
+	app.route('/api/playlists/user/:playlistUserId').all(playlistsPolicy.isAllowed, playlistsPolicy.hasPlaylistOwnerAuthorization)
+		.get(playlists.read);
+
 
 	// Finish by binding the Playlist middleware
-	app.param('userId', playlists.playlistByUserID);
+	app.param('playlistUserId', playlists.playlistByUserID);
 };

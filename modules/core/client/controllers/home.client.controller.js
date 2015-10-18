@@ -8,7 +8,6 @@ angular.module('core').controller('HomeController', ['$scope', 'Authentication',
     $scope.changeLanguage = function (langKey) {
       console.log("changeLanguage");
       $translate.use(langKey);
-      $location.path("/salons/monSalon");
     };
   }
 ]);

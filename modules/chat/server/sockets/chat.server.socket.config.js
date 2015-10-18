@@ -1,16 +1,5 @@
 'use strict';
 
-
-function guid() {
-  function s4() {
-    return Math.floor((1 + Math.random()) * 0x10000)
-        .toString(16)
-        .substring(1);
-  }
-  return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
-      s4() + '-' + s4() + s4() + s4();
-}
-
 // Create the chat configuration
 module.exports = function (io, socket) {
   // Emit the status event when a new socket client is connected
@@ -43,91 +32,33 @@ module.exports = function (io, socket) {
   //  });
   //});
 
-  socket.on('room.join', function(data, callback) {
-    var roomName = data;
-    if(roomName === ""){
-      roomName = guid();
-    }
-    console.log("#############");
-    console.log("room.join:");
-    console.log(roomName);
-    console.log("user:");
-    console.log(socket.request.user);
-    console.log("#############");
-    socket.join(roomName);
-    if (global.chatRooms.hasOwnProperty(roomName) && global.chatRooms[roomName].indexOf(roomName)===-1)
-      global.chatRooms[roomName].push(roomName);
-    else {
-      //global.chatRooms[socket.request.user.username] = [socket.request.user.username];
-      //io.emit('chat.message', {
-      //  type: 'status',
-      //  text: 'Is now connected to ' + socket.request.user.username + '\'s room',
-      //  room: socket.request.user.username,
-      //  rooms: global.chatRooms,
-      //  created: Date.now(),
-      //  profileImageURL: socket.request.user.profileImageURL,
-      //  username: socket.request.user.username
-      //});
-    }
-
-  });
-
   // Send a chat messages to all connected sockets when a message is received
   socket.on('chat.message', function(message) {
+    console.log("#########################");
+    console.log("chat.message");
+    console.log(message);
+    console.log("#########################");
+    console.log("io.sockets.adapter.rooms:");
+    console.log(io.sockets.adapter.rooms);
+    console.log("##########################");
+    console.log("socket.id:");
+    console.log(socket.id);
+    console.log("##########################");
+    console.log("socket.roomName:");
+    console.log(socket.room.conf.name);
+    console.log("##########################");
+
+
     message.created = Date.now();
     message.profileImageURL = socket.request.user.profileImageURL;
     message.username = socket.request.user.username;
     message.rooms = global.chatRooms;
-    //if (message.type === 'join') {
-    //  socket.leave(message.room);
-    //  if (global.chatRooms[message.room].length === 1) {
-    //    delete global.chatRooms[message.room];
-    //  } else {
-    //    global.chatRooms[message.room].splice(global.chatRooms[message.room].indexOf(socket.request.user.username), 1);
-    //  }
-    //  socket.join(message.join);
-    //  if (global.chatRooms.hasOwnProperty(message.join))
-    //    global.chatRooms[message.join].push(socket.request.user.username);
-    //  else
-    //    global.chatRooms[message.join] = [socket.request.user.username];
-    //  message.rooms = global.chatRooms;
-    //  message.text = 'Is now connected to ' + message.join + '\'s room';
-    //  message.type = 'status';
-    //  message.room = message.join;
-    //  io.emit('chatMessage', message);
-    //
-    //} else {
-      message.type = 'message';
+    message.type = 'message';
+
       // Emit the 'chatMessage' event
-      io.to(message.room).emit('chat.message', message);
+      io.to(socket.room.conf.name).emit('chat.message', message);
     //}
   });
-
-  // Emit the status event when a socket client is disconnected
-  socket.on('disconnect', function() {
-    for (var roomindex in global.chatRooms) {
-      if (global.chatRooms[roomindex].indexOf(socket.request.user.username)!==-1)
-        global.chatRooms[roomindex].splice(global.chatRooms[roomindex].indexOf(socket.request.user.username), 1);
-      if (!global.chatRooms[roomindex].length)
-        delete global.chatRooms[roomindex];
-    }
-
-    var name = "";
-    if(typeof socket.request.user === "undefined"){
-      name = "inconnu";
-    }else{
-      name = socket.request.user.username;
-    }
-
-    io.emit('chatMessage', {
-      type: 'status',
-      text: 'disconnected',
-      created: Date.now(),
-      rooms: global.chatRooms,
-      username: name
-    });
-  });
-
 
 
 

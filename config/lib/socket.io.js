@@ -15,8 +15,6 @@ var config = require('../config'),
 // Define the Socket.io configuration method
 module.exports = function (app, db) {
   var server;
-  console.log("config.secure :");
-  console.log(config.secure);
   if (config.secure && config.secure.ssl === true) {
     // Load SSL key and certificate
     var privateKey = fs.readFileSync(path.resolve(config.secure.privateKey), 'utf8');
@@ -74,10 +72,8 @@ module.exports = function (app, db) {
   // Seulement si on veut bloquer l'accés au socket des utilisateurs non loggué
   io.use(function (socket, next) {
     // Use the 'cookie-parser' module to parse the request cookies
-    console.log("cookie-parser");
     cookieParser(config.sessionSecret)(socket.request, {}, function (err) {
 
-      console.log("cookie-parser-in");
       // Get the session id from the request cookies
       var sessionId = socket.request.signedCookies ? socket.request.signedCookies[config.sessionKey] : undefined;
 
@@ -86,7 +82,6 @@ module.exports = function (app, db) {
       // Use the mongoStorage instance to get the Express session information
       mongoStore.get(sessionId, function (err, session) {
 
-        console.log("mongo-store.get");
 
         if (err) return next(err, false);
         if (!session) return next(new Error('session was not found for ' + sessionId), false);
@@ -100,8 +95,8 @@ module.exports = function (app, db) {
             if (socket.request.user) {
               next(null, true);
             } else {
-              next(null, true);
-              //next(new Error('User is not authenticated'), false);
+              //next(null, true);
+              next(new Error('User is not authenticated'), false);
             }
           });
         });
@@ -109,12 +104,15 @@ module.exports = function (app, db) {
     });
   });
 
+
+
   // Add an event listener to the 'connection' event
   io.on('connection', function (socket) {
-    console.log("connection");
+    console.log("CONNECTION");
     config.files.server.sockets.forEach(function (socketConfiguration) {
-      require(path.resolve(socketConfiguration))(io, socket);
+      require(path.resolve(socketConfiguration))(io, socket, io.sockets);
     });
+
   });
 
   return server;

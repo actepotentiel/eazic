@@ -11,3 +11,17 @@ angular.module('rooms').factory('Rooms', ['$resource',
 		});
 	}
 ]);
+
+angular.module('rooms').factory('MyRooms', ['$resource',
+	function($resource) {
+		return $resource('api/rooms/user/:userId', { roomId: '@_id'
+		}, {
+			update: {
+				method: 'PUT'
+			},
+			get: {
+				method : 'GET', isArray : true
+			}
+		});
+	}
+]);

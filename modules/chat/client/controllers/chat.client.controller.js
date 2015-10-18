@@ -21,6 +21,7 @@ angular.module('chat').controller('ChatController', ['$scope', '$location', 'Aut
     // Add an event listener to the 'chatMessage' event
     Socket.on('chat.message', function (message) {
       $scope.messages.unshift(message);
+      console.log(message);
     });
 
     // Create a controller method for sending messages

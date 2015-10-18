@@ -94,3 +94,19 @@ exports.roomByID = function(req, res, next, id) { Room.findById(id).populate('us
 		next();
 	});
 };
+
+exports.roomByUserID = function(req, res, next, id) {
+	console.log("Rooms by user id");
+	console.log(id);
+	Room.find({user: id}).exec(function(err, room) {
+		if (err) {
+			return res.status(400).send({
+				message: errorHandler.getErrorMessage(err)
+			});
+		} else {
+			//res.jsonp(room);
+			req.room = room;
+			return next();
+		}
+	});
+};

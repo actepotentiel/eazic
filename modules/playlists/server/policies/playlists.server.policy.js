@@ -22,6 +22,9 @@ exports.invokeRolesPolicies = function() {
 		}, {
 			resources: '/api/playlists/:playlistId',
 			permissions: '*'
+		},  {
+			resources: '/api/playlists/user/:playlistUserId',
+			permissions: '*'
 		}]
 	}, {
 		roles: ['user'],
@@ -31,6 +34,9 @@ exports.invokeRolesPolicies = function() {
 		}, {
 			resources: '/api/playlists/:playlistId',
 			permissions: ['get']
+		},  {
+			resources: '/api/playlists/user/:playlistUserId',
+			permissions: '*'
 		}]
 	}, {
 		roles: ['guest'],
@@ -48,7 +54,10 @@ exports.invokeRolesPolicies = function() {
  * Check If Articles Policy Allows
  */
 exports.isAllowed = function(req, res, next) {
+	console.log("Playlist is allowed");
 	var roles = (req.user) ? req.user.roles : ['guest'];
+
+	console.log(req.playlists);
 
 	// If an playlist is being processed and the current user created it then allow any manipulation
 	if (req.playlist && req.user && req.playlist.owner.id === req.user.id) {
@@ -62,11 +71,12 @@ exports.isAllowed = function(req, res, next) {
 			return res.status(500).send('Unexpected authorization error');
 		} else {
 			if (isAllowed) {
+				console.log("isAllowed!!");
 				// Access granted! Invoke next middleware
 				return next();
 			} else {
 				return res.status(403).json({
-					message: 'User is not authorized'
+					message: 'User is not authorized !!'
 				});
 			}
 		}
@@ -78,19 +88,33 @@ exports.isAllowed = function(req, res, next) {
  * Sound authorization middleware
  */
 exports.hasPlaylistOwnerAuthorization = function(req, res, next) {
-	console.log(req.playlist);
-	// console.log(req);
-	var playlist = null;
-	playlist = (req.playlist) ? new Playlist(req.playlist) : new Playlist(req.body);
-	Playlist.findById(playlist.playlist, function(err, playlist){
-		console.log(req.user._id);
-		if (playlist.owner.equals(req.user._id)) next();
-		for (var i=0; i<playlist.users.length;i++) {
-			if (playlist.users[i].equals(req.user._id)) next();
-		}
-		return res.status(403).send({message: 'User is not authorized'});
+	console.log('hasPlaylistOwnerAuthorization');
 
-	});
+	if(req.playlists.length >= 1){
+		if (req.askedPlaylistUserId == req.user._id){
+			return next();
+		}else{
+			var playlistsAllowed = [];
+			for (var i in req.playlists) {
+				for (var j in req.playlists[i].users) {
+					if (req.playlists[i].users[j] == req.user._id){
+						playlistsAllowed.push(req.playlist[i]);
+					}
+				}
+			}
+			if(playlistsAllowed.length > 0){
+				req.playlists = playlistsAllowed;
+				return next();
+			}else{
+				return res.status(403).send({message: 'User is not authorized'});
+			}
+		}
+
+
+
+
+	}
+
 
 
 };

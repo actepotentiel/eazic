@@ -16,4 +16,11 @@ module.exports = function(app) {
 
 	// Finish by binding the Room middleware
 	app.param('roomId', rooms.roomByID);
+
+	app.route('/api/rooms/user/:roomUserId').all(roomsPolicy.isAllowed, roomsPolicy.hasRoomOwnerAuthorization)
+		.get(rooms.read);
+
+
+	// Finish by binding the Room middleware
+	app.param('roomUserId', rooms.roomByUserID);
 };

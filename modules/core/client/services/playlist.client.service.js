@@ -3,13 +3,23 @@
  */
 'use strict';
 
-angular.module('core').factory('PlaylistService', ['Authentication','$timeout','Socket', 'Playlists','MyPlaylists',
-    function(Authentication, $timeout, Socket, Playlists, MyPlaylists) {
+angular.module('core').factory('PlaylistService', ['Authentication','$timeout','Socket', 'MyRooms','MyPlaylists',
+    function(Authentication, $timeout, Socket, MyRooms, MyPlaylists) {
         var _this = this;
         var authentication = Authentication;
         _this._data = {
             sounds: window.sounds,
             playlists: window.playlists,
+            updateRoom: function(){
+                var __this = this;
+                if(authentication.user){
+                    MyRooms.get({userId : authentication.user._id}, function(result){
+                        console.log("UPDATE ROOM");
+                        console.log(result);
+                        //__this.playlists = result;
+                    });
+                }
+            },
             updatePlaylists: function(){
                 var __this = this;
                 if(authentication.user){

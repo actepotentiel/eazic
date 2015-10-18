@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('core').controller('SalonsRoutingController', ['$scope', '$stateParams', '$location', 'Authentication','PlaylistService',
-    function($scope, $stateParams, $location, Authentication, PlaylistService) {
+angular.module('core').controller('SalonsRoutingController', ['$scope', '$stateParams', '$location', 'Authentication','PlaylistService', 'Socket',
+    function($scope, $stateParams, $location, Authentication, PlaylistService, Socket) {
         // Controller Logic
         // ...
 
@@ -9,8 +9,10 @@ angular.module('core').controller('SalonsRoutingController', ['$scope', '$stateP
         $scope.playlistService = PlaylistService;
         //$scope.lecteurLeftService = LecteurLeftService;
 
-        console.log("salonRoutingController");
-        console.log($location.path());
+        //console.log("salonRoutingController");
+        //console.log($location.path());
+
+
 
         //this.initData = function(){
         //    var _this = this;

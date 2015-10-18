@@ -71,7 +71,7 @@ module.exports.initMiddleware = function (app) {
   // Environment dependent middleware
   if (process.env.NODE_ENV === 'development') {
     // Enable logger (morgan)
-    app.use(morgan('dev'));
+    //app.use(morgan('dev'));
 
     // Disable views cache
     app.set('view cache', false);
@@ -214,7 +214,6 @@ module.exports.initErrorRoutes = function (app) {
  */
 module.exports.configureSocketIO = function (app, db) {
   // Load the Socket.io configuration
-  console.log("configureSocketIO");
   var server = require('./socket.io')(app, db);
 
   // Return server object

@@ -138,14 +138,15 @@ exports.playlistByID = function(req, res, next, id) {
 };
 
 exports.playlistByUserID = function(req, res, next, id) {
-	console.log(id);
 	Playlist.find({owner: id}).exec(function(err, playlists) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
 			});
 		} else {
-			res.jsonp(playlists);
+			req.askedPlaylistUserId = id;
+			req.playlists = playlists;
+			return next();
 		}
 	});
 };
