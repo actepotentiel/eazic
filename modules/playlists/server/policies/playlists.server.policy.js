@@ -71,7 +71,6 @@ exports.isAllowed = function(req, res, next) {
 			return res.status(500).send('Unexpected authorization error');
 		} else {
 			if (isAllowed) {
-				console.log("isAllowed!!");
 				// Access granted! Invoke next middleware
 				return next();
 			} else {
@@ -88,16 +87,14 @@ exports.isAllowed = function(req, res, next) {
  * Sound authorization middleware
  */
 exports.hasPlaylistOwnerAuthorization = function(req, res, next) {
-	console.log('hasPlaylistOwnerAuthorization');
-
 	if(req.playlists.length >= 1){
-		if (req.askedPlaylistUserId == req.user._id){
+		if (req.askedPlaylistUserId === req.user._id + ""){
 			return next();
 		}else{
 			var playlistsAllowed = [];
 			for (var i in req.playlists) {
 				for (var j in req.playlists[i].users) {
-					if (req.playlists[i].users[j] == req.user._id){
+					if (req.playlists[i].users[j] === req.user._id + ""){
 						playlistsAllowed.push(req.playlist[i]);
 					}
 				}
@@ -109,12 +106,5 @@ exports.hasPlaylistOwnerAuthorization = function(req, res, next) {
 				return res.status(403).send({message: 'User is not authorized'});
 			}
 		}
-
-
-
-
 	}
-
-
-
 };
