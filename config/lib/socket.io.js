@@ -57,6 +57,8 @@ module.exports = function (app, db) {
     // Create a new HTTP server
     server = http.createServer(app);
   }
+
+
   // Create a new Socket.io server
   var io = socketio.listen(server);
 
@@ -66,10 +68,12 @@ module.exports = function (app, db) {
     collection: config.sessionCollection
   });
 
-  // Intercept Socket.io's handshake request
+   //Intercept Socket.io's handshake request
+  // Seulement si on veut bloquer l'accés au socket des utilisateurs non loggué
   io.use(function (socket, next) {
     // Use the 'cookie-parser' module to parse the request cookies
     cookieParser(config.sessionSecret)(socket.request, {}, function (err) {
+
       // Get the session id from the request cookies
       var sessionId = socket.request.signedCookies ? socket.request.signedCookies[config.sessionKey] : undefined;
 
@@ -77,6 +81,8 @@ module.exports = function (app, db) {
 
       // Use the mongoStorage instance to get the Express session information
       mongoStore.get(sessionId, function (err, session) {
+
+
         if (err) return next(err, false);
         if (!session) return next(new Error('session was not found for ' + sessionId), false);
 
@@ -89,6 +95,7 @@ module.exports = function (app, db) {
             if (socket.request.user) {
               next(null, true);
             } else {
+              //next(null, true);
               next(new Error('User is not authenticated'), false);
             }
           });
@@ -97,11 +104,15 @@ module.exports = function (app, db) {
     });
   });
 
+
+
   // Add an event listener to the 'connection' event
   io.on('connection', function (socket) {
+    console.log("CONNECTION");
     config.files.server.sockets.forEach(function (socketConfiguration) {
-      require(path.resolve(socketConfiguration))(io, socket);
+      require(path.resolve(socketConfiguration))(io, socket, io.sockets);
     });
+
   });
 
   return server;

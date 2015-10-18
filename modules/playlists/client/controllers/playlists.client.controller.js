@@ -9,7 +9,20 @@ angular.module('playlists').controller('PlaylistsController', ['$scope', '$state
 		$scope.create = function() {
 			// Create new Playlist object
 			var playlist = new Playlists ({
-				name: this.name
+				title: this.title,
+				description : 'gniegniefgn',
+				sounds : [
+					{
+						title : 'supersound',
+						order : 0,
+						sourceName : 'moncul',
+						sourceId : '5168496416',
+						duration : 321,
+						image : '',
+						rate : 1,
+						available : true
+					}
+				]
 			});
 
 			// Redirect after save
@@ -17,7 +30,7 @@ angular.module('playlists').controller('PlaylistsController', ['$scope', '$state
 				$location.path('playlists/' + response._id);
 
 				// Clear form fields
-				$scope.name = '';
+				$scope.title = '';
 			}, function(errorResponse) {
 				$scope.error = errorResponse.data.message;
 			});
@@ -59,6 +72,7 @@ angular.module('playlists').controller('PlaylistsController', ['$scope', '$state
 		$scope.findOne = function() {
 			$scope.playlist = Playlists.get({ 
 				playlistId: $stateParams.playlistId
+			}, function(result){
 			});
 		};
 	}

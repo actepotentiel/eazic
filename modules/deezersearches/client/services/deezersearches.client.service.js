@@ -11,3 +11,13 @@ angular.module('deezersearches').factory('Deezersearches', ['$resource',
 		});
 	}
 ]);
+
+angular.module('deezersearches').factory('DeezerSearch', ['$resource',
+	function($resource) {
+		return $resource('api/search/deezer', {}, {
+			search : {
+				method : 'POST'
+			}
+		});
+	}
+]);

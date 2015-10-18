@@ -11,3 +11,17 @@ angular.module('playlists').factory('Playlists', ['$resource',
 		});
 	}
 ]);
+
+angular.module('playlists').factory('MyPlaylists', ['$resource',
+	function($resource) {
+		return $resource('api/playlists/user/:userId', { playlistId: '@_id'
+		}, {
+			update: {
+				method: 'PUT'
+			},
+			get: {
+				method : 'GET', isArray : true
+			}
+		});
+	}
+]);

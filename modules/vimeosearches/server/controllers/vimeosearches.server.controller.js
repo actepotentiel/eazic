@@ -32,10 +32,10 @@ exports.search = function(req, res) {
 		for (var video in results.data) {
 			var item = {};
 			item.title = results.data[video].name;
-			item.type = 'vimeo';
-			item.url = results.data[video].uri;
+			item.sourceName = 'vimeo';
+			item.sourceId = results.data[video].uri;
 			item.image = results.data[video].pictures.sizes[3].link || '/images/sound_default.png';
-			item.embed = results.data[video].embed.html;
+			//item.embed = results.data[video].embed.html;
 			formattedResults.push(item);
 		}
 		var formattedResponse = {

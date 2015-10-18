@@ -11,3 +11,13 @@ angular.module('spotifysearches').factory('Spotifysearches', ['$resource',
 		});
 	}
 ]);
+
+angular.module('spotifysearches').factory('SpotifySearch', ['$resource',
+	function($resource) {
+		return $resource('api/search/spotify', {}, {
+			search : {
+				method : 'POST'
+			}
+		});
+	}
+]);

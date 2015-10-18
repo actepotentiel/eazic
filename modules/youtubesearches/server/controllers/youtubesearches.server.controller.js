@@ -33,8 +33,8 @@ exports.search = function(req, res) {
 		for (var video in results.items) {
 			var item = {};
 			item.title = results.items[video].snippet.title;
-			item.type = 'youtube';
-			item.url = results.items[video].id.videoId || results.items[video].id.playlistId || results.items[video].id.channelId;
+			item.sourceName = 'youtube';
+			item.sourceId = results.items[video].id.videoId || results.items[video].id.playlistId || results.items[video].id.channelId;
 			item.image = results.items[video].snippet.thumbnails.medium.url;
 			item.kind = results.items[video].id.kind.slice(8);
 			formattedResults.push(item);

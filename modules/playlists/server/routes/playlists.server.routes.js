@@ -14,6 +14,13 @@ module.exports = function(app) {
 		.put(playlists.update)
 		.delete(playlists.delete);
 
-	// Finish by binding the Playlist middleware
 	app.param('playlistId', playlists.playlistByID);
+
+
+	app.route('/api/playlists/user/:playlistUserId').all(playlistsPolicy.isAllowed, playlistsPolicy.hasPlaylistOwnerAuthorization)
+		.get(playlists.read);
+
+
+	// Finish by binding the Playlist middleware
+	app.param('playlistUserId', playlists.playlistByUserID);
 };

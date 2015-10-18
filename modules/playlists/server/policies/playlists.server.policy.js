@@ -3,7 +3,9 @@
 /**
  * Module dependencies.
  */
-var acl = require('acl');
+var acl = require('acl'),
+	mongoose = require('mongoose'),
+	Playlist = mongoose.model('Playlist');
 
 // Using the memory backend
 acl = new acl(new acl.memoryBackend());
@@ -20,6 +22,9 @@ exports.invokeRolesPolicies = function() {
 		}, {
 			resources: '/api/playlists/:playlistId',
 			permissions: '*'
+		},  {
+			resources: '/api/playlists/user/:playlistUserId',
+			permissions: '*'
 		}]
 	}, {
 		roles: ['user'],
@@ -29,6 +34,9 @@ exports.invokeRolesPolicies = function() {
 		}, {
 			resources: '/api/playlists/:playlistId',
 			permissions: ['get']
+		},  {
+			resources: '/api/playlists/user/:playlistUserId',
+			permissions: '*'
 		}]
 	}, {
 		roles: ['guest'],
@@ -46,10 +54,13 @@ exports.invokeRolesPolicies = function() {
  * Check If Articles Policy Allows
  */
 exports.isAllowed = function(req, res, next) {
+	console.log("Playlist is allowed");
 	var roles = (req.user) ? req.user.roles : ['guest'];
 
+	console.log(req.playlists);
+
 	// If an playlist is being processed and the current user created it then allow any manipulation
-	if (req.playlist && req.user && req.playlist.user.id === req.user.id) {
+	if (req.playlist && req.user && req.playlist.owner.id === req.user.id) {
 		return next();
 	}
 
@@ -64,9 +75,36 @@ exports.isAllowed = function(req, res, next) {
 				return next();
 			} else {
 				return res.status(403).json({
-					message: 'User is not authorized'
+					message: 'User is not authorized !!'
 				});
 			}
 		}
 	});
+};
+
+
+/**
+ * Sound authorization middleware
+ */
+exports.hasPlaylistOwnerAuthorization = function(req, res, next) {
+	if(req.playlists.length >= 1){
+		if (req.askedPlaylistUserId === req.user._id + ""){
+			return next();
+		}else{
+			var playlistsAllowed = [];
+			for (var i in req.playlists) {
+				for (var j in req.playlists[i].users) {
+					if (req.playlists[i].users[j] === req.user._id + ""){
+						playlistsAllowed.push(req.playlist[i]);
+					}
+				}
+			}
+			if(playlistsAllowed.length > 0){
+				req.playlists = playlistsAllowed;
+				return next();
+			}else{
+				return res.status(403).send({message: 'User is not authorized'});
+			}
+		}
+	}
 };

@@ -11,3 +11,13 @@ angular.module('youtubesearches').factory('Youtubesearches', ['$resource',
 		});
 	}
 ]);
+
+angular.module('youtubesearches').factory('YoutubeSearch', ['$resource',
+	function($resource) {
+		return $resource('api/search/youtube', {}, {
+			search : {
+				method : 'POST'
+			}
+		});
+	}
+]);

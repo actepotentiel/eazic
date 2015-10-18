@@ -11,3 +11,13 @@ angular.module('dailymotionsearches').factory('Dailymotionsearches', ['$resource
 		});
 	}
 ]);
+
+angular.module('dailymotionsearches').factory('DailymotionSearch', ['$resource',
+	function($resource) {
+		return $resource('api/search/dailymotion', {}, {
+			search : {
+				method : 'POST'
+			}
+		});
+	}
+]);

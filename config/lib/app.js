@@ -7,7 +7,8 @@ var config = require('../config'),
   mongoose = require('./mongoose'),
   express = require('./express'),
   chalk = require('chalk'),
-  seed = require('./seed');
+  seed = require('./seed'),
+  initRoomsManager = require('../../modules/core/server/models/rooms.server.class');
 
 function seedDB() {
   if (config.seedDB) {
@@ -27,6 +28,7 @@ module.exports.init = function init(callback) {
   mongoose.connect(function (db) {
     // Initialize express
     var app = express.init(db);
+    global.roomManager = new initRoomsManager.RoomsManager();
     if (callback) callback(app, db, config);
 
   });

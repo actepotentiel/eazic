@@ -7,7 +7,8 @@ var path = require('path'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
   mongoose = require('mongoose'),
   passport = require('passport'),
-  User = mongoose.model('User');
+  User = mongoose.model('User'),
+  Room = mongoose.model('Room');
 
 // URLs for which user can't be redirected on signin
 var noReturnUrls = [
@@ -30,6 +31,40 @@ exports.signup = function (req, res) {
   user.provider = 'local';
   user.displayName = user.firstName + ' ' + user.lastName;
 
+  //Init variable for user's room
+  var room = new Room();
+  room.name = user.username;
+  room.user = user;
+  room.conf.owner = user;
+  room.conf.name = user.username;
+  room.conf.isOpen = true;
+  room.policies.push({
+      name : "vip",
+      users : [
+          user
+      ],
+    allowedCommands:[
+      {
+        commandName: 'all'
+      }
+    ]
+  });
+  room.policies.push({
+    name : "guest",
+    users : [
+
+    ],
+    allowedCommands:[
+      {
+        commandName : "chat.message"
+      },
+      {
+        commandName : "playlist.addSound"
+      }
+    ]
+  });
+
+
   // Then save the user
   user.save(function (err) {
     if (err) {
@@ -41,12 +76,22 @@ exports.signup = function (req, res) {
       user.password = undefined;
       user.salt = undefined;
 
-      req.login(user, function (err) {
-        if (err) {
-          res.status(400).send(err);
-        } else {
-          res.json(user);
-        }
+      room.save(function (err){
+          if (err){
+            console.log("SAVE ROOM");
+            console.log(err);
+              return res.status(400).send({
+                message: errorHandler.getErrorMessage(err)
+              });
+          }else{
+            req.login(user, function (err) {
+              if (err) {
+                res.status(400).send(err);
+              } else {
+                res.json(user);
+              }
+            });
+          }
       });
     }
   });
@@ -56,6 +101,7 @@ exports.signup = function (req, res) {
  * Signin after passport authentication
  */
 exports.signin = function (req, res, next) {
+  console.log("SIGN INNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN");
   passport.authenticate('local', function (err, user, info) {
     if (err || !user) {
       res.status(400).send(info);
