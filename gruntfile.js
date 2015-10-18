@@ -228,7 +228,7 @@ module.exports = function (grunt) {
           'grunt build',
           'grunt forever:vps:stop',
           'NODE_ENV=production',
-          'grunt forever:vps:start'
+          'grunt forever prod'
         ].join(' && '),
         options: {
           config: 'vps'
