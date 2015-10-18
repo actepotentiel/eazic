@@ -222,7 +222,7 @@ module.exports = function (grunt) {
     sshexec: {
       deploy: {
         command: [
-          'cd /app/Easic',
+          'cd /app/eazic',
           'git pull origin master',
           'npm install',
           'grunt build',
