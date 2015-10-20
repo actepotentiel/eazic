@@ -13,6 +13,11 @@ angular.module('core').controller('HomeController', ['$scope', 'Authentication',
     Socket.on('conf.join.ack', function(data){
         console.log("conf.join.ack");
         console.log(data);
+        if(data.isOk){
+          $scope.authentication.room = data.room;
+        }else{
+          alert("Probleme lors de la connection à la room...");
+        }
     });
 
   }

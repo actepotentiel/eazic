@@ -56,7 +56,7 @@ module.exports = function (io, socket, sockets) {
                                 socket.leave(socket.id);
                             }
                             console.log("Joining room " + roomName + " and callback isOk");
-                            socket.emit('conf.join.ack', {isOk : true, room : newRoom});
+                            socket.emit('conf.join.ack', {isOk : true, isNewRoom : true, room : newRoom});
                             socket.join(roomName);
                             socket.room = newRoom;
                             console.log("Nombre de room post join : " + global.roomManager.rooms.length);
@@ -82,7 +82,7 @@ module.exports = function (io, socket, sockets) {
                                     socket.leave(socket.id);
                                 }
                                 console.log("Joining room " + roomName + " and callback isOk");
-                                socket.emit('conf.join.ack', {isOk : true, room : newRoom});
+                                socket.emit('conf.join.ack', {isOk : true, isNewRoom : true, room : newRoom});
                                 socket.join(roomName);
                                 socket.room = newRoom;
                                 console.log("Nombre de room post join : " + global.roomManager.rooms.length);
@@ -120,7 +120,8 @@ module.exports = function (io, socket, sockets) {
                         profileImageURL: socket.request.user.profileImageURL,
                         username: socket.request.user.username
                     });
-                    socket.emit('conf.join.ack', {isOk : true, room : room});
+                    socket.emit('conf.join.ack', {isOk : true, isNewRoom : false, room : room});
+                    socket.to(roomName).emit('chat.user.join', {user : socket.request.user});
                     console.log("##########################");
                 }else{
                     //ON RETOURNE A L'UTILISATEUR QUE LA ROOM NEST PAS ACCESSIBLE
@@ -162,7 +163,7 @@ module.exports = function (io, socket, sockets) {
         console.log("############# DECONNECTION #############");
         if(socket.room){
             console.log("User : " + socket.request.user.username + " has disconnected from room : " + socket.room.name);
-
+            socket.to(socket.room.conf.name).emit('chat.user.quit', {user : socket.request.user});
         }else{
             console.log("User : " + socket.request.user.username + " has disconnected");
 
