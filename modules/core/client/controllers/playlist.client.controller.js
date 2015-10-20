@@ -10,8 +10,9 @@ angular.module('core').controller('PlaylistController', ['$scope', 'PlaylistServ
 
         $scope.playlistService = PlaylistService;
 
-        $scope.playlistService.updatePlaylists();
-        //$scope.playlistService.updateRoom();
+        if($scope.authentication.user){
+            $scope.playlistService.updatePlaylists();
+        }
 
         $scope.removeSound = function(soundToDelete){
             $scope.playlistService.sendCommand('deleteSound', soundToDelete);

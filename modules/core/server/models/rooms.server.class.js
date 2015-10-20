@@ -14,34 +14,29 @@ module.exports.RoomsManager.prototype.getRoomByName = function(name) {
     }
 };
 
-module.exports.RoomsManager.prototype.isRoomNameDisponible = function(name) {
+module.exports.RoomsManager.prototype.isRoomNameRunning = function(name) {
 
     for(var i = 0 ; i < this.rooms.length ; i++){
         if(this.rooms[i].conf.name === name){
-            return false;
+            return true;
         }
     }
-    return true;
+    return false;
 };
+
 
 module.exports.RoomsManager.prototype.deleteUserFromAllRooms = function(socket) {
 
-    for(var i in this.rooms){
-        for(var j in this.rooms[i].conf.users){
-            if(this.rooms[i].conf.users[j]._id === socket.request.user._id){
-                delete this.rooms[i].conf.users[j];
-                for(var k in this.rooms[i].policies){
-                    for(var l in this.rooms[i].policies[k].users){
-                        if(this.rooms[i].policies[k].users[l]._id === socket.request.user._id){
-                            delete this.rooms[i].policies[k].users[l];
-                        }
-                    }
-                }
+    var i = this.rooms.length;
+    while(i--){
+        var j = this.rooms[i].conf.users.length;
+        while(j--){
+            if(this.rooms[i].conf.users[j]._id + "" === socket.request.user._id + ""){
+                this.rooms[i].conf.users.splice(j, 1);
             }
         }
         if(this.rooms[i].conf.users.length === 0){
-            delete this.rooms[i];
+            this.rooms.splice(i, 1);
         }
     }
-    console.log(this.rooms);
 };

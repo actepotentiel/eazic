@@ -37,7 +37,7 @@ var RoomSchema = new Schema({
 			}
 		],
 		isOpen : Boolean,
-		allowedUser : [
+		allowedUsers : [
 			{
 				type: Schema.ObjectId,
 				ref: 'User'

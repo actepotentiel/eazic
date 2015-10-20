@@ -54,10 +54,7 @@ exports.invokeRolesPolicies = function() {
  * Check If Articles Policy Allows
  */
 exports.isAllowed = function(req, res, next) {
-	console.log("Playlist is allowed");
 	var roles = (req.user) ? req.user.roles : ['guest'];
-
-	console.log(req.playlists);
 
 	// If an playlist is being processed and the current user created it then allow any manipulation
 	if (req.playlist && req.user && req.playlist.owner.id === req.user.id) {

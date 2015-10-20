@@ -2,6 +2,8 @@
 
 module.exports.Room = function(name, owner){
 
+    this.name = name;
+
     this.conf = {
         name : name,
         owner : owner,
@@ -9,49 +11,53 @@ module.exports.Room = function(name, owner){
             owner
         ],
         isOpen : true,
-        allowedUser : [],
+        allowedUsers : [],
         bannedUsers : [],
-        messageTypes : ['room.join', 'room.quit']
-    };
-    this.chat = {
-        messages : [],
-        messageTypes : ['chat.message']
     };
     this.playlist = {
         sounds : [],
-        messageTypes : ['playlist.addSound', 'playlist.newPlaylist', 'playlist.ChangeOrder', 'playlist.removeSound']
     };
     this.policies = [
         {
             name : 'vip',
             users : [owner],
             allowedCommands : [
-                'room.quit',
-                'room.ban',
-                'room.invit',
-                'playlist.addSound',
-                'playlist.newPlaylist',
-                'playlist.ChangeOrder',
-                'playlist.removeSound',
-                'chat.message',
-                'chat.message2'
+                {commandName : 'room.quit'},
+                {commandName : 'room.ban'},
+                {commandName : 'room.invit'},
+                {commandName : 'playlist.addSound'},
+                {commandName : 'playlist.newPlaylist'},
+                {commandName : 'playlist.ChangeOrder'},
+                {commandName : 'playlist.removeSound'},
+                {commandName : 'chat.message'},
+                {commandName : 'chat.message2'}
             ]
         },
         {
             name : 'guest',
             users : [],
             allowedCommands : [
-                'chat.message'
+                {commandName : 'chat.message2'}
             ]
         }
     ];
-
 };
 
+module.exports.Room.prototype.copyModele = function(room) {
+
+    this.name = room.name;
+
+    this.conf.name = room.name;
+    this.conf.isOpen = room.conf.isOpen;
+    this.conf.allowedUsers = room.conf.allowedUsers;
+    this.conf.bannedUsers = room.conf.bannedUsers;
+
+    this.playlist.sounds = room.playlist.sounds;
+    this.policies = room.policies;
+};
+
+
 module.exports.Room.prototype.allowJoin = function(user) {
-    console.log("#################################");
-    console.log("allowJoin");
-    console.log(user);
     if(this.conf.isOpen){
         for(var k = 0 ; k < this.conf.bannedUsers.length ; k++){
             if(this.conf.bannedUsers[k]._id === user._id){
@@ -67,7 +73,6 @@ module.exports.Room.prototype.allowJoin = function(user) {
         }
         return false;
     }
-    console.log("#################################");
 };
 
 module.exports.Room.prototype.allowEvent = function(eventName, user) {
@@ -92,14 +97,8 @@ module.exports.Room.prototype.allowEvent = function(eventName, user) {
 };
 
 module.exports.Room.prototype.addUser = function(user) {
-    console.log("#################################");
-    console.log("addUser");
-    console.log(user);
-    console.log("#################################");
-
     this.conf.users.push(user);
     this.policies[1].users.push(user);
-
 };
 
 

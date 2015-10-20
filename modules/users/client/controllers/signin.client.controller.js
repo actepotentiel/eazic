@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('users').controller('SignInController', ['$scope', '$state', '$http', '$location', '$window', 'Authentication', 'PasswordValidator', 'PlaylistService',
-    function ($scope, $state, $http, $location, $window, Authentication, PasswordValidator, PlaylistService) {
+angular.module('users').controller('SignInController', ['$scope', '$state', '$http', '$location', '$window', 'Authentication', 'PasswordValidator', 'PlaylistService', 'Socket',
+    function ($scope, $state, $http, $location, $window, Authentication, PasswordValidator, PlaylistService, Socket) {
 
         console.log('SignInController');
 
@@ -50,6 +50,8 @@ angular.module('users').controller('SignInController', ['$scope', '$state', '$ht
                 console.log("USER AUTHENTICATE SIGNIN");
                 PlaylistService.updatePlaylists();
                 PlaylistService.updateRoom();
+
+                Socket.connect();
                 // And redirect to the previous or home page
                 //$state.go($state.previous.state.name || 'home', $state.previous.params);
             }).error(function (response) {

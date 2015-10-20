@@ -86,7 +86,6 @@ exports.isAllowed = function(req, res, next) {
  */
 exports.hasRoomOwnerAuthorization = function(req, res, next) {
 	if(req.room.length >= 1) {
-
 		if (req.room[0].user.equals(req.user._id)){
 			return next();
 		}

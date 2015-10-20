@@ -34,30 +34,21 @@ module.exports = function (io, socket) {
 
   // Send a chat messages to all connected sockets when a message is received
   socket.on('chat.message', function(message) {
-    console.log("#########################");
-    console.log("chat.message");
-    console.log(message);
-    console.log("#########################");
-    console.log("io.sockets.adapter.rooms:");
-    console.log(io.sockets.adapter.rooms);
-    console.log("##########################");
-    console.log("socket.id:");
-    console.log(socket.id);
-    console.log("##########################");
-    console.log("socket.roomName:");
-    console.log(socket.room.conf.name);
-    console.log("##########################");
-
-
-    message.created = Date.now();
-    message.profileImageURL = socket.request.user.profileImageURL;
-    message.username = socket.request.user.username;
-    message.rooms = global.chatRooms;
-    message.type = 'message';
+    console.log("############### chat.message ###############");
+    if(socket.room){
+      message.created = Date.now();
+      message.profileImageURL = socket.request.user.profileImageURL;
+      message.username = socket.request.user.username;
+      message.rooms = global.chatRooms;
+      message.type = 'message';
 
       // Emit the 'chatMessage' event
+      console.log("Emite message to room " + socket.room.conf.name);
       io.to(socket.room.conf.name).emit('chat.message', message);
-    //}
+    }else{
+      console.log("User is not in official room, aborting...");
+    }
+    console.log("###########################################");
   });
 
 

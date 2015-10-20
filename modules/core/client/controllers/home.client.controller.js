@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('core').controller('HomeController', ['$scope', 'Authentication','$translate','$location',
-  function ($scope, Authentication, $translate, $location) {
+angular.module('core').controller('HomeController', ['$scope', 'Authentication','$translate','Socket',
+  function ($scope, Authentication, $translate, Socket) {
     // This provides Authentication context.
     $scope.authentication = Authentication;
 
@@ -9,5 +9,11 @@ angular.module('core').controller('HomeController', ['$scope', 'Authentication',
       console.log("changeLanguage");
       $translate.use(langKey);
     };
+
+    Socket.on('conf.join.ack', function(data){
+        console.log("conf.join.ack");
+        console.log(data);
+    });
+
   }
 ]);

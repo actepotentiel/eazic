@@ -3,20 +3,32 @@
  */
 'use strict';
 
-angular.module('core').factory('PlaylistService', ['Authentication','$timeout','Socket', 'MyRooms','MyPlaylists',
-    function(Authentication, $timeout, Socket, MyRooms, MyPlaylists) {
+angular.module('core').factory('PlaylistService', ['Authentication','$timeout','Socket', 'MyRooms','MyPlaylists','$location','$stateParams',
+    function(Authentication, $timeout, Socket, MyRooms, MyPlaylists, $location, $stateParams) {
         var _this = this;
         var authentication = Authentication;
         _this._data = {
             sounds: window.sounds,
             playlists: window.playlists,
+            goToMyRoom : function(){
+                if(authentication.room) {
+                    $location.path('/' + authentication.room.conf.name);
+                }
+            },
             updateRoom: function(){
                 var __this = this;
                 if(authentication.user){
                     MyRooms.get({userId : authentication.user._id}, function(result){
-                        console.log("UPDATE ROOM");
-                        console.log(result);
-                        //__this.playlists = result;
+                        if(result.length === 1){
+                            authentication.room = result[0];
+                            console.log($stateParams.params);
+                            if(!$stateParams.params){
+                                $location.path('/' + authentication.room.conf.name);
+                            }
+                        }else{
+                            //TODO afficher l'erreur
+                            alert("Problème d'intégrité de données, veuillez contacter un administrateur.");
+                        }
                     });
                 }
             },
