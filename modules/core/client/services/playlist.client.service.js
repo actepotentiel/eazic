@@ -48,17 +48,17 @@ angular.module('core').factory('PlaylistService', ['Authentication','$timeout','
                     playlist: playlist,
                     isDouble: isDouble
                 };
-                var message = {
-                    pseudo: 'server',
-                    date: Date(),
-                    corps: authentication.user.displayName+' a lancé la commande '+commande.nom
-                };
-                //if(conf.isInPublicRoom){
-                //    Socket.emit('room.event', {roomTitle: conf.room.title, message: message});
-                //    Socket.emit('playlist.event', {roomTitle: conf.room.title, commande: commande});
-                //}else{
-                this.processCommand(commande);
-                //}
+                //var message = {
+                //    pseudo: 'server',
+                //    date: Date(),
+                //    corps: authentication.user.displayName+' a lancé la commande '+commande.nom
+                //};
+                if(authentication.room){
+                    //Socket.emit('room.event', {roomTitle: conf.room.title, message: message});
+                    Socket.emit('playlist.event', {commande: commande});
+                }else{
+                    this.processCommand(commande);
+                }
 
             },
             processCommand: function(command){
