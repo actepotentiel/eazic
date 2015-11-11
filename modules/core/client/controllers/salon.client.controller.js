@@ -19,7 +19,7 @@ angular.module('core').controller('SalonController', ['$scope', 'Authentication'
         //}
 
         // Add an event listener to the 'chatMessage' event
-        Socket.on('chat.message', function (message) {
+        Socket.on('chat', function (message) {
             if(typeof $scope.chatService.messages === 'undefined'){
                 $scope.chatService.messages = [];
             }
@@ -64,14 +64,14 @@ angular.module('core').controller('SalonController', ['$scope', 'Authentication'
             };
 
             // Emit a 'chatMessage' message event
-            Socket.emit('chat.message', message);
+            Socket.emit('chat', message);
 
             // Clear the message text
             this.messageText = '';
         };
 
         $scope.$on('$destroy', function () {
-            Socket.removeListener('chat.message');
+            Socket.removeListener('chat');
             Socket.removeListener('chat.user.quit');
             Socket.removeListener('chat.user.join');
         });

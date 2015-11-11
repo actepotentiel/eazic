@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('core').controller('HomeController', ['$scope', 'Authentication','$translate','Socket', 'PlaylistService',
-  function ($scope, Authentication, $translate, Socket, PlaylistService) {
+angular.module('core').controller('HomeController', ['$scope', 'Authentication','$translate','Socket', 'PlaylistService', 'RoomService',
+  function ($scope, Authentication, $translate, Socket, PlaylistService, RoomService) {
       // This provides Authentication context.
       $scope.authentication = Authentication;
       $scope.playlistService = PlaylistService;
@@ -38,10 +38,11 @@ angular.module('core').controller('HomeController', ['$scope', 'Authentication',
         }
     });
 
-      Socket.on('conf.notification', function(data){
-          console.log("conf.notification");
-          console.log(data);
-          if(data.isAlert){
+      Socket.on('info', function(command){
+          console.log("info");
+          console.log(command);
+          RoomService.processInfo(command);
+          if(command.isAlert){
               alert(data.message);
           }
       });

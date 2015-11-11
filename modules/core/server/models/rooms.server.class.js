@@ -12,6 +12,7 @@ module.exports.RoomsManager.prototype.getRoomByName = function(name) {
             return this.rooms[i];
         }
     }
+    return null;
 };
 
 module.exports.RoomsManager.prototype.process = function(commande, socket) {
