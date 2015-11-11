@@ -25,23 +25,23 @@ module.exports = {
     title: defaultEnvConfig.app.title + ' - Development Environment'
   },
   facebook: {
-    clientID: process.env.FACEBOOK_ID || 'APP_ID',
-    clientSecret: process.env.FACEBOOK_SECRET || 'APP_SECRET',
+    clientID: process.env.FACEBOOK_ID || '887089854717600',
+    clientSecret: process.env.FACEBOOK_SECRET || '0704868e586eb7101071ba882a99520e',
     callbackURL: '/api/auth/facebook/callback'
   },
   twitter: {
-    clientID: process.env.TWITTER_KEY || 'CONSUMER_KEY',
-    clientSecret: process.env.TWITTER_SECRET || 'CONSUMER_SECRET',
+    clientID: process.env.TWITTER_KEY || '3GdhYHWifn7DI2dym636Kp9O5',
+    clientSecret: process.env.TWITTER_SECRET || 'hptITV1EiSHcHutnew2K1GJLQx1iHDkYwY9vtm09Eb1CdAKQ38',
     callbackURL: '/api/auth/twitter/callback'
   },
   google: {
-    clientID: process.env.GOOGLE_ID || 'APP_ID',
-    clientSecret: process.env.GOOGLE_SECRET || 'APP_SECRET',
+    clientID: process.env.GOOGLE_ID || '449461207196-baebvukrecjv26v5bjiiq01g2qm718nm.apps.googleusercontent.com',
+    clientSecret: process.env.GOOGLE_SECRET || '0qvB66l4tyyAsqKyFFfSjbor',
     callbackURL: '/api/auth/google/callback'
   },
   linkedin: {
-    clientID: process.env.LINKEDIN_ID || 'APP_ID',
-    clientSecret: process.env.LINKEDIN_SECRET || 'APP_SECRET',
+    clientID: process.env.LINKEDIN_ID || '771iljxjoiaar0',
+    clientSecret: process.env.LINKEDIN_SECRET || 'mPJ7VGla715iqAza',
     callbackURL: '/api/auth/linkedin/callback'
   },
   github: {
@@ -54,6 +54,11 @@ module.exports = {
     clientSecret: process.env.PAYPAL_SECRET || 'CLIENT_SECRET',
     callbackURL: '/api/auth/paypal/callback',
     sandbox: true
+  },
+  dailymotion: {
+    clientID: '9131c9633e005c22345e',
+    clientSecret: '2f7e0ebbf01e3dc96609918e26a8a90426540de7',
+    callbackURL: '/api/auth/dailymotion/callback'
   },
   mailer: {
     from: process.env.MAILER_FROM || 'MAILER_FROM',
