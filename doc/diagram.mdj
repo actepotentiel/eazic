@@ -1647,7 +1647,7 @@
 											"height": 10,
 											"autoResize": false,
 											"underline": false,
-											"text": "Emit joinRoom {roomName}",
+											"text": "Emit conf.join {roomName}",
 											"horizontalAlignment": 2,
 											"verticalAlignment": 5
 										},
@@ -2769,7 +2769,7 @@
 											"height": 10,
 											"autoResize": false,
 											"underline": false,
-											"text": "On joinRoom.ack",
+											"text": "On conf.join.ack",
 											"horizontalAlignment": 2,
 											"verticalAlignment": 5
 										},
@@ -7270,7 +7270,7 @@
 											"height": 10,
 											"autoResize": false,
 											"underline": false,
-											"text": "On joinRoom",
+											"text": "On conf.join",
 											"horizontalAlignment": 2,
 											"verticalAlignment": 5
 										},
@@ -7584,7 +7584,7 @@
 											"height": 10,
 											"autoResize": false,
 											"underline": false,
-											"text": "callback joinRoom.ack",
+											"text": "callback conf.join.ack",
 											"horizontalAlignment": 2,
 											"verticalAlignment": 5
 										},
@@ -20565,7 +20565,7 @@
 					"_parent": {
 						"$ref": "AAAAAAFQ4aX2Oai7IO0="
 					},
-					"name": "On joinRoom.ack",
+					"name": "On conf.join.ack",
 					"visibility": "public",
 					"kind": "acceptSignal",
 					"isLocallyReentrant": false,
@@ -20796,7 +20796,7 @@
 					"_parent": {
 						"$ref": "AAAAAAFQ4aX2Oai7IO0="
 					},
-					"name": "callback joinRoom.ack",
+					"name": "callback conf.join.ack",
 					"visibility": "public",
 					"kind": "sendSignal",
 					"isLocallyReentrant": false,
@@ -23246,7 +23246,7 @@
 							"_parent": {
 								"$ref": "AAAAAAFQ4auZVKj0eXU="
 							},
-							"name": "Emit joinRoom {roomName}",
+							"name": "Emit conf.join {roomName}",
 							"visibility": "public",
 							"kind": "sendSignal",
 							"isLocallyReentrant": false,
@@ -23313,7 +23313,7 @@
 							"_parent": {
 								"$ref": "AAAAAAFQ4aylBKkWGgI="
 							},
-							"name": "On joinRoom",
+							"name": "On conf.join",
 							"visibility": "public",
 							"kind": "acceptSignal",
 							"isLocallyReentrant": false,
