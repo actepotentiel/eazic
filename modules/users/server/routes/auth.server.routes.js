@@ -56,5 +56,5 @@ module.exports = function (app) {
   app.route('/api/auth/paypal/callback').get(users.oauthCallback('paypal'));
 
   app.route('/api/auth/dailymotion').get(users.oauthCall('dailymotion'));
-  app.route('/auth/dailymotion/callback').get(users.oauthCallback('dailymotion'));
+  app.route('/api/auth/dailymotion/callback').get(users.oauthCallback('dailymotion'));
 };
