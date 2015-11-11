@@ -239,7 +239,7 @@ module.exports = function (grunt) {
           'git pull origin master',
           'npm install',
           'grunt build',
-          'grunt forever:vps:start'
+          'NODE_ENV=production grunt forever:vps:start'
         ].join(' && '),
         options: {
           config: 'vps'
