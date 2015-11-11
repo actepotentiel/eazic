@@ -31,8 +31,8 @@ module.exports = {
     callbackURL: '/api/auth/facebook/callback'
   },
   twitter: {
-    clientID: process.env.TWITTER_KEY || 'CONSUMER_KEY',
-    clientSecret: process.env.TWITTER_SECRET || 'CONSUMER_SECRET',
+    clientID: process.env.TWITTER_KEY || '3GdhYHWifn7DI2dym636Kp9O5',
+    clientSecret: process.env.TWITTER_SECRET || 'hptITV1EiSHcHutnew2K1GJLQx1iHDkYwY9vtm09Eb1CdAKQ38',
     callbackURL: '/api/auth/twitter/callback'
   },
   google: {
@@ -41,13 +41,13 @@ module.exports = {
     callbackURL: '/api/auth/google/callback'
   },
   linkedin: {
-    clientID: process.env.LINKEDIN_ID || 'APP_ID',
-    clientSecret: process.env.LINKEDIN_SECRET || 'APP_SECRET',
+    clientID: process.env.LINKEDIN_ID || '771iljxjoiaar0',
+    clientSecret: process.env.LINKEDIN_SECRET || 'mPJ7VGla715iqAza',
     callbackURL: '/api/auth/linkedin/callback'
   },
   github: {
-    clientID: process.env.GITHUB_ID || 'APP_ID',
-    clientSecret: process.env.GITHUB_SECRET || 'APP_SECRET',
+    clientID: process.env.GITHUB_ID || 'af91a0d1923f67e129de',
+    clientSecret: process.env.GITHUB_SECRET || '06c28eaafda9683241ed886b0d8cf57ff28737ba',
     callbackURL: '/api/auth/github/callback'
   },
   paypal: {
