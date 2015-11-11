@@ -43,7 +43,7 @@ angular.module('core').controller('HomeController', ['$scope', 'Authentication',
           console.log(command);
           RoomService.processInfo(command);
           if(command.isAlert){
-              alert(data.message);
+              alert(command.message);
           }
       });
 
