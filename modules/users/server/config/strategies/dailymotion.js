@@ -26,11 +26,11 @@ module.exports = function (config) {
 
             // Create the user OAuth profile
             var providerUserProfile = {
-                firstName: profile.screenname,
-                lastName: profile.username,
-                displayName: profile.screenname,
+                firstName: profile.name.giveName,
+                lastName: profile.name.familyName,
+                displayName: profile.displayName,
                 email: profile.email ? profile.email : undefined,
-                username: profile.screenname || generateUsername(profile),
+                username: profile.displayName,
                 profileImageURL: undefined,
                 provider: 'dailymotion',
                 providerIdentifierField: 'id',
