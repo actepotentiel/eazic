@@ -9,7 +9,7 @@ angular.module('core').controller('SalonsRoutingController', ['$scope', '$stateP
         $scope.playlistService = PlaylistService;
         //$scope.lecteurLeftService = LecteurLeftService;
 
-        //console.log("salonRoutingController");
+        console.log("salonRoutingController");
         //console.log($location.path());
 
 

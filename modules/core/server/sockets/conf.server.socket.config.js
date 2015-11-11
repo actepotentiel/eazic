@@ -1,16 +1,5 @@
 'use strict';
 
-
-function guid() {
-    function s4() {
-        return Math.floor((1 + Math.random()) * 0x10000)
-            .toString(16)
-            .substring(1);
-    }
-    return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
-        s4() + '-' + s4() + s4() + s4();
-}
-
 // Create the chat configuration
 module.exports = function (io, socket, sockets) {
     var roomManager = require('../models/room.server.class'),
@@ -27,7 +16,7 @@ module.exports = function (io, socket, sockets) {
         var roomName = data;
         if(roomName === ""){
             console.log("Room is blank, abort");
-            socket.emit('conf.join.ack', {isOk : false, message : 'Room name must not be null'});
+            socket.emit('conf.join.ack', {isOk : false, status: "badRequest"});
             console.log("##########################");
         }else{
             var room = null;
@@ -38,7 +27,7 @@ module.exports = function (io, socket, sockets) {
                 Room.find({name : roomName}).populate('conf.owner').exec(function(err, rooms) {
                     if (err) {
                         console.log("Erreur BDD " + err);
-                        socket.emit('conf.join.ack', {isOk : false, message : 'server.error'});
+                        socket.emit('conf.join.ack', {isOk : false, status: "error.bdd",message : 'server.error'});
                         console.log("##########################");
                     }else{
                         var newRoom = null;
@@ -52,8 +41,8 @@ module.exports = function (io, socket, sockets) {
                                 console.log("Leaving from room " + socket.room.name);
                                 socket.leave(socket.room.name);
                             }else{
-                                console.log("Leaving from initial room " + socket.id);
-                                socket.leave(socket.id);
+                                //console.log("Leaving from initial room " + socket.id);
+                                //socket.leave(socket.id);
                             }
                             console.log("Joining room " + roomName + " and callback isOk");
                             socket.emit('conf.join.ack', {isOk : true, isNewRoom : true, room : newRoom});
@@ -65,7 +54,7 @@ module.exports = function (io, socket, sockets) {
                             console.log("Room exist in BDD, check for user rights");
                             if(socket.request.user._id + "" !== rooms[0].conf.owner._id + ""){
                                 console.log("User is not the owner of the room, aborting...");
-                                socket.emit('conf.join.ack', {isOk : false, message : 'acces.denied'});
+                                socket.emit('conf.join.ack', {isOk : false, status: "reservedName", message : 'acces.denied'});
                                 console.log("##########################");
                             }else{
                                 console.log("User is the owner of the room, instanciation...");
@@ -126,35 +115,11 @@ module.exports = function (io, socket, sockets) {
                 }else{
                     //ON RETOURNE A L'UTILISATEUR QUE LA ROOM NEST PAS ACCESSIBLE
                     console.log("User is NOT authorized to join the room, aborting...");
-                    socket.emit('conf.join.ack', {isOk : false, message : 'acces.denied'});
+                    socket.emit('conf.join.ack', {isOk : false, status: "accesDenied", message : 'acces.denied'});
                     console.log("##########################");
                 }
             }
         }
-
-
-
-
-        //console.log(global.roomManager.rooms);
-        //console.log("##########################");
-
-
-        //if (global.chatRooms.hasOwnProperty(roomName) && global.chatRooms[roomName].indexOf(roomName)===-1)
-        //    global.chatRooms[roomName].push(roomName);
-        //else {
-        //    global.chatRooms[roomName] = [roomName];
-        //    io.emit('chat.message', {
-        //      type: 'status',
-        //      text: 'Is now connected to ' + socket.request.user.username + '\'s room',
-        //      room: socket.request.user.username,
-        //      rooms: global.chatRooms,
-        //      created: Date.now(),
-        //      profileImageURL: socket.request.user.profileImageURL,
-        //      username: socket.request.user.username
-        //    });
-        //}
-
-
     });
 
     // Emit the status event when a socket client is disconnected
