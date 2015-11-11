@@ -55,6 +55,11 @@ module.exports = {
     callbackURL: '/api/auth/paypal/callback',
     sandbox: true
   },
+  dailymotion: {
+    clientID: '9131c9633e005c22345e',
+    clientSecret: '2f7e0ebbf01e3dc96609918e26a8a90426540de7',
+    callbackURL: '/api/auth/dailymotion/callback'
+  },
   mailer: {
     from: process.env.MAILER_FROM || 'MAILER_FROM',
     options: {
