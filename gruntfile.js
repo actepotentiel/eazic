@@ -249,7 +249,7 @@ module.exports = function (grunt) {
     forever: {
       vps: {
         options: {
-          index: 'server',
+          index: 'server.js',
           logDir: 'logs'
         }
       }
