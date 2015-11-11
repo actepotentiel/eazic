@@ -3,8 +3,8 @@
  */
 'use strict';
 
-angular.module('core').controller('PlaylistController', ['$scope', 'PlaylistService', '$stateParams', 'Authentication', 'Playlists',
-    function($scope, PlaylistService, $stateParams, Authentication, Playlists) {
+angular.module('core').controller('PlaylistController', ['$scope', 'PlaylistService', '$stateParams', 'Authentication', 'Playlists', 'Socket',
+    function($scope, PlaylistService, $stateParams, Authentication, Playlists, Socket) {
         // This provides Authentication context.
         $scope.authentication = Authentication;
 
@@ -14,12 +14,30 @@ angular.module('core').controller('PlaylistController', ['$scope', 'PlaylistServ
             $scope.playlistService.updatePlaylists();
         }
 
+        Socket.on('playlist.addSound', function(command){
+            console.log("playlist.addSound");
+            console.log(command);
+            $scope.playlistService.processCommand(command);
+        });
+
+        Socket.on('playlist.deleteSound', function(command){
+            console.log("playlist.deleteSound");
+            console.log(command);
+            $scope.playlistService.processCommand(command);
+        });
+
+        Socket.on('playlist.addSounds', function(command){
+            console.log("playlist.addSounds");
+            console.log(command);
+            $scope.playlistService.processCommand(command);
+        });
+
         $scope.removeSound = function(soundToDelete){
-            $scope.playlistService.sendCommand('deleteSound', soundToDelete);
+            $scope.playlistService.sendCommand('playlist.deleteSound', soundToDelete);
         };
 
         $scope.removeAllSound = function(soundToDelete){
-            $scope.playlistService.sendCommand('deleteAllSound');
+            $scope.playlistService.sendCommand('playlist.deleteAllSound');
         };
 
         $scope.saveList = function(){

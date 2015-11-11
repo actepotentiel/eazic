@@ -59,7 +59,7 @@ exports.signup = function (req, res) {
         commandName : "chat.message"
       },
       {
-        commandName : "playlist.addSound"
+        commandName : "playlist.addSounds"
       }
     ]
   });

@@ -3,11 +3,11 @@
  */
 'use strict';
 
-angular.module('core').controller('PlayerController', ['$scope', 'Authentication',
-    function($scope, Authentication) {
+angular.module('core').controller('PlayerController', ['$scope', 'Authentication', 'Socket', 'PlaylistService',
+    function($scope, Authentication, Socket, PlaylistService) {
         // This provides Authentication context.
         $scope.authentication = Authentication;
-
+        $scope.playlistService = PlaylistService;
 
     }
 ]);

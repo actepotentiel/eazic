@@ -22,7 +22,7 @@ module.exports.Room = function(name, owner){
             name : 'vip',
             users : [owner],
             allowedCommands : [
-                {commandName : 'room.quit'},
+                {commandName : 'all'},
                 {commandName : 'room.ban'},
                 {commandName : 'room.invit'},
                 {commandName : 'playlist.addSound'},
@@ -37,7 +37,8 @@ module.exports.Room = function(name, owner){
             name : 'guest',
             users : [],
             allowedCommands : [
-                {commandName : 'chat.message2'}
+                {commandName : 'chat.message2'},
+                {commandName : 'playlist.addSounds'}
             ]
         }
     ];
@@ -76,17 +77,21 @@ module.exports.Room.prototype.allowJoin = function(user) {
 };
 
 module.exports.Room.prototype.allowEvent = function(eventName, user) {
-    console.log("#################################");
-    console.log("allowEvent");
-    console.log(eventName);
-    console.log(user);
-    console.log("#################################");
+
+    console.log("AllowEvent : " + eventName + " " + user.username);
     //TODO optimise
+    if(this.conf.owner._id + "" === user._id + ""){
+        return true;
+    }
+
     for(var i = 0 ; i < this.policies.length ; i++){
         for(var j = 0 ; j < this.policies[i].users.length ; j++){
-            if(this.policies[i].users[j]._id === user._id){
+            if(this.policies[i].users[j] + "" === user._id + ""){
+                if(this.policies[i].name === "vip"){
+                    return true;
+                }
                 for(var k = 0 ; k < this.policies[i].allowedCommands.length ; k++){
-                    if(this.policies[i].allowedCommands[k] === eventName){
+                    if(this.policies[i].allowedCommands[k].commandName === eventName){
                         return true;
                     }
                 }

@@ -10,7 +10,7 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider',
             url: '/:params',
             views: {
                 'content@': {
-                    controller: function($scope, $stateParams, Socket, $location, Authentication, PlaylistService){
+                    controller: function($scope, $stateParams, Socket, $location, Authentication, RoomService){
                         console.log("ROUTING_CONTROLLER");
                         if(Authentication.user){
                             if($stateParams.params){
@@ -23,10 +23,10 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider',
 
                                 Socket.emit('conf.join', $stateParams.params);
                             }else{
-                                if(Authentication.room){
-                                    $location.path('/' + Authentication.room.conf.name);
+                                if(RoomService.room){
+                                    $location.path('/' + RoomService.room.conf.name);
                                 }else{
-                                    PlaylistService.updateRoom();
+                                    RoomService.updateRoom();
                                 }
                             }
 

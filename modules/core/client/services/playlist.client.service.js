@@ -20,8 +20,8 @@ angular.module('core').factory('PlaylistService', ['Authentication','$timeout','
                 if(authentication.user){
                     MyRooms.get({userId : authentication.user._id}, function(result){
                         if(result.length === 1){
-                            authentication.room = result[0];
-                            console.log($stateParams.params);
+                            //authentication.room = result[0];
+                            //console.log($stateParams.params);
                             if(!$stateParams.params){
                                 $location.path('/' + authentication.room.conf.name);
                             }
@@ -48,30 +48,55 @@ angular.module('core').factory('PlaylistService', ['Authentication','$timeout','
                     playlist: playlist,
                     isDouble: isDouble
                 };
-                //var message = {
-                //    pseudo: 'server',
-                //    date: Date(),
-                //    corps: authentication.user.displayName+' a lancé la commande '+commande.nom
-                //};
                 if(authentication.room){
-                    //Socket.emit('room.event', {roomTitle: conf.room.title, message: message});
-                    Socket.emit('playlist.event', {commande: commande});
+                    if(this.hasRoomAutorization(nomCommand)){
+                        Socket.emit(nomCommand, commande);
+                        this.processCommand(commande);
+                    }else{
+                        alert("Vous n'êtes pas autorisé à envoyer cette commande. Demandez les droits au propriétaire de la room.");
+                    }
+
                 }else{
                     this.processCommand(commande);
                 }
 
             },
+            hasRoomAutorization : function(nomCommand){
+                if(authentication.room.conf.owner._id + "" === authentication.user._id + ""){
+                    return true;
+                }else{
+                    //TODO checker si l'utilisateur a les droits
+                    for(var i = 0 ; i < authentication.room.policies.length ; i++){
+                        for(var j = 0 ; j < authentication.room.policies[i].users.length ; j++){
+                            if(authentication.room.policies[i].users[j] + "" === authentication.user._id + ""){
+                                console.log("Finded user in policies");
+                                if(authentication.room.policies[i].name + "" === "vip"){
+                                    return true;
+                                }
+                                for(var k = 0 ; k < authentication.room.policies[i].allowedCommands.length ; k++){
+                                    if(authentication.room.policies[i].allowedCommands[k].commandName + "" === nomCommand + ""){
+                                        return true;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    return false;
+                }
+            },
             processCommand: function(command){
                 console.log("processCommand");
-                if((command.nom === 'addSound')&&(command.sound.sourceId && (command.sound.sourceId !== ''))){
+                if((command.nom === 'playlist.addSound')&&(command.sound.sourceId && (command.sound.sourceId !== ''))){
                     this.processAddSound(command.sound);
-                }else if(command.nom === 'deleteSound'){
+                }else if(command.nom === 'playlist.addSounds'){
+                    this.processAddSounds(command.playlist);
+                }else if(command.nom === 'playlist.deleteSound'){
                     this.processDeleteSound(command.sound);
-                }else if(command.nom === 'newPlaylist'){
+                }else if(command.nom === 'playlist.newPlaylist'){
                     this.processNewPlaylist(command.playlist);
-                }else if(command.nom === 'changeOrder'){
+                }else if(command.nom === 'playlist.changeOrder'){
                     this.processChangeOrder(command.sound);
-                }else if(command.nom === 'deleteAllSound'){
+                }else if(command.nom === 'playlist.deleteAllSound'){
                     this.processDeleteAllSound();
                 }
                 //else if(command.nom === 'double'){
@@ -93,14 +118,25 @@ angular.module('core').factory('PlaylistService', ['Authentication','$timeout','
                 console.log("processAdSound");
                 this.sounds.push(soundToAdd);
             },
+            processAddSounds: function(soundsToAdd){
+                if(typeof this.sounds === 'undefined'){
+                    this.sounds = [];
+                }
+                console.log("processAddSounds");
+                this.sounds = this.sounds.concat(soundsToAdd);
+            },
             processDeleteSound: function(soundToDelete){
                 var _this = this;
                 if(typeof this.sounds === 'undefined'){
                     this.sounds = [];
                 }
+                var keepGoing = true;
                 this.sounds.forEach(function(sound, index){
-                    if(sound.sourceId === soundToDelete.url){
-                        _this.sounds.splice(index, 1);
+                    if(keepGoing){
+                        if(sound.sourceId === soundToDelete.sourceId){
+                            _this.sounds.splice(index, 1);
+                            keepGoing = false;
+                        }
                     }
                 });
                 //conf.showMessage('Element supprimé', 'warning');
