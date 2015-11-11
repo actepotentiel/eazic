@@ -1,5 +1,5 @@
 .content {
-    height: 100%;
+    height: calc(100% - 50px);
 }
 
 @font-face {
@@ -43,9 +43,12 @@ body{
     font-family: Oswald;
     background-image: url('/modules/core/client/img/imgfond.png');
     min-width: 1000px;
+    height: 100%;
+    position: absolute;
 }
-header{
+header.navbar{
     min-width: 1000px;
+    margin: 0;
 }
 #bodyContent{
     background-color: transparent;
