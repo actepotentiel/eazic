@@ -213,8 +213,8 @@ module.exports = function (grunt) {
     sshconfig: {
       vps: {
         host: '149.202.58.145',
-        username: 'lardtiste',
-        password: 'halflife'
+        username: 'eazic',
+        password: 'eazic'
         //agent: process.env.SSH_AUTH_SOCK,
         //agentForward: true
       }
@@ -227,6 +227,18 @@ module.exports = function (grunt) {
           'npm install',
           'grunt build',
           'grunt forever:vps:stop',
+          'grunt forever:vps:start'
+        ].join(' && '),
+        options: {
+          config: 'vps'
+        }
+      },
+      firstdeploy: {
+        command: [
+          'cd /app/eazic',
+          'git pull origin master',
+          'npm install',
+          'grunt build',
           'grunt forever:vps:start'
         ].join(' && '),
         options: {
