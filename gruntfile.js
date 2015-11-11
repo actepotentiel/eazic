@@ -338,6 +338,8 @@ module.exports = function (grunt) {
 
   grunt.registerTask('deploy', ['sshexec:deploy']);
 
+  grunt.registerTask('firstdeploy', ['sshexec:deploy']);
+
   grunt.loadNpmTasks('grunt-forever');
 
   grunt.loadNpmTasks('grunt-ssh');
