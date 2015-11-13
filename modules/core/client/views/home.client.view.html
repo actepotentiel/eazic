@@ -68,23 +68,20 @@
       <div data-ng-show="authentication.settingView == 'manageSocialAccount'" data-ng-include="'modules/users/client/views/settings/manage-social-accounts.client.view.html'"></div>
     </div>
     <md-content id="signHome" data-ng-hide="authentication.user" layout="column" layout-fill>
+      <div id="socialNetworkContainer">
+        <div class="fillContainer" data-ng-include="'modules/users/client/views/authentication/authentication.client.view.html'"></div>
+      </div>
+      <div data-ng-hide="authentication.showSignupForm" ng-include="'modules/users/client/views/authentication/signin.client.view.html'"></div><!---->
+      <div data-ng-show="authentication.showSignupForm" ng-include="'modules/users/client/views/authentication/signup.client.view.html'"></div><!---->
       <md-content layout="row">
         <md-content class="signinupItem" ng-init="authentication.showSignupForm = false" flex>
           <md-button class="md-primary md-raised md-hue-1
-					" ng-click="authentication.showSignupForm = true ; authentication.showSigninForm = false" layout-fill>S'inscrire</md-button>
+          " ng-click="authentication.showSignupForm = true ; authentication.showSigninForm = false" layout-fill>S'inscrire</md-button>
         </md-content>
         <md-content class="signinupItem" ng-init="authentication.showSigninForm = false" flex>
           <md-button class="md-primary md-raised" ng-click="authentication.showSigninForm = true; authentication.showSignupForm = false" layout-fill>Se logguer</md-button>
         </md-content>
       </md-content>
-      <div data-ng-hide="authentication.showSignupForm" ng-include="'modules/users/client/views/authentication/signin.client.view.html'"></div><!---->
-      <div data-ng-show="authentication.showSignupForm" ng-include="'modules/users/client/views/authentication/signup.client.view.html'"></div><!---->
-
-
-      <div id="socialNetworkContainer">
-        <div class="fillContainer" data-ng-include="'modules/users/client/views/authentication/authentication.client.view.html'"></div>
-      </div>
-
     </md-content>
   </md-content>
 
