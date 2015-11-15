@@ -10,7 +10,7 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider',
             url: '/:params',
             views: {
                 'content@': {
-                    controller: function($scope, $stateParams, Socket, $location, Authentication, RoomService){
+                    controller: function($scope, $stateParams, Socket, $location, Authentication, RoomService, MyRooms){
                         console.log("ROUTING_CONTROLLER");
                         if(Authentication.user){
                             if($stateParams.params){
@@ -23,13 +23,28 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider',
 
                                 Socket.emit('conf.join', $stateParams.params);
                             }else{
-                                if(RoomService.room){
-                                    $location.path('/' + RoomService.room.conf.name);
+                                if(Authentication.user.room){
+                                    $location.path('/' + Authentication.user.room.conf.name);
                                 }else{
-                                    RoomService.updateRoom();
+                                    MyRooms.get({userId : Authentication.user._id}, function(result){
+                                        if(result.length === 1){
+                                            Authentication.user.room = result[0];
+                                            $location.path('/' + Authentication.user.room.conf.name);
+                                        }else{
+                                            RoomService.processInfo({
+                                                name : "alert",
+                                                status : "user has no room"
+                                            });
+                                        }
+                                    });
                                 }
                             }
 
+                        }else {
+                            RoomService.instanciateDisposableRoom();
+                            if ($stateParams.params){
+                                $location.path('/');
+                            }
                         }
                     }
                 }

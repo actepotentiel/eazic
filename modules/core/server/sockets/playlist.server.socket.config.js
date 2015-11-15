@@ -4,78 +4,33 @@
 module.exports = function (io, socket) {
 
     // Send a chat messages to all connected sockets when a message is received
-    socket.on('playlist.newPlaylist', function(command) {
+    socket.on('playlist', function(command) {
         console.log();
-        console.log("############### playlist.newPlaylist ###############");
+        console.log("############### playlist event ###############");
         if(socket.room){
             console.log("Checking for user rights..." + command.nom + " " + socket.request.user.username);
-            if(socket.room.allowEvent(command.nom, socket.request.user)){
-                console.log("Emite newPlaylist to room " + socket.room.conf.name);
-                global.roomManager.process(command, socket);
-                socket.broadcast.to(socket.room.conf.name).emit('playlist.newPlaylist', command);
+            var room = global.roomManager.getRoomByName(socket.room.name);
+            if(room !== null){
+                if(room.allowEvent(command.nom, socket.request.user)){
+                    console.log("Emite playlist event to room " + socket.room.conf.name);
+                    room.processCommand(command, socket);
+                    socket.broadcast.to(socket.room.conf.name).emit('playlist', command);
+                }else{
+                    //TODO alert notAuth
+                    console.log("Room is not running, aborting...");
+                    socket.emit("info", {name : "alert", status: "notAuth"});
+                }
             }else{
-                console.log("User is not autorized");
-                socket.emit("conf.notification", {isAlert : true, message : "User is not autorized"});
+                //TODO alert room is not running
+                socket.emit("info", {name : "alert", status: "roomIsNotRunning"});
             }
         }else{
+            //TODO alert user has no room
             console.log("User is not in official room, aborting...");
+            socket.emit("info", {name : "alert", status: "userHasNoRoom"});
         }
         console.log("####################################################");
         console.log();
-    });
-
-    socket.on('playlist.addSound', function(command) {
-        console.log("############### playlist.addSound ###############");
-        if(socket.room){
-            console.log("Checking for user rights..." + command.nom + " " + socket.request.user.username);
-            if(socket.room.allowEvent(command.nom, socket.request.user)){
-                console.log("Emite addSound to room " + socket.room.conf.name);
-                global.roomManager.process(command, socket);
-                socket.broadcast.to(socket.room.conf.name).emit('playlist.addSound', command);
-            }else{
-                console.log("User is not autorized");
-                socket.emit("conf.notification", {isAlert : true, message : "User is not autorized"});
-            }
-        }else{
-            console.log("User is not in official room, aborting...");
-        }
-        console.log("###########################################");
-    });
-
-    socket.on('playlist.addSounds', function(command) {
-        console.log("############### playlist.addSounds ###############");
-        if(socket.room){
-            console.log("Checking for user rights..." + command.nom + " " + socket.request.user.username);
-            if(socket.room.allowEvent(command.nom, socket.request.user)){
-                console.log("Emite addSounds to room " + socket.room.conf.name);
-                global.roomManager.process(command, socket);
-                socket.broadcast.to(socket.room.conf.name).emit('playlist.addSounds', command);
-            }else{
-                console.log("User is not autorized");
-                socket.emit("conf.notification", {isAlert : true, message : "User is not autorized"});
-            }
-        }else{
-            console.log("User is not in official room, aborting...");
-        }
-        console.log("###########################################");
-    });
-
-    socket.on('playlist.deleteSound', function(command) {
-        console.log("############### playlist.deleteSound ###############");
-        if(socket.room){
-            console.log("Checking for user rights..." + command.nom + " " + socket.request.user.username);
-            if(socket.room.allowEvent(command.nom, socket.request.user)){
-                console.log("Emite deleteSound to room " + socket.room.conf.name);
-                global.roomManager.process(command, socket);
-                socket.broadcast.to(socket.room.conf.name).emit('playlist.deleteSound', command);
-            }else{
-                console.log("User is not autorized");
-                socket.emit("conf.notification", {isAlert : true, message : "User is not autorized"});
-            }
-        }else{
-            console.log("User is not in official room, aborting...");
-        }
-        console.log("###########################################");
     });
 
 

@@ -75,6 +75,10 @@ exports.read = function(req, res) {
 	res.jsonp(req.playlist);
 };
 
+exports.readMyPlaylists = function(req, res) {
+	res.jsonp(req.playlists);
+};
+
 /**
  * Update a Playlist
  */
@@ -146,7 +150,7 @@ exports.playlistByUserID = function(req, res, next, id) {
 		} else {
 			req.askedPlaylistUserId = id;
 			req.playlists = playlists;
-			return next();
+			next();
 		}
 	});
 };

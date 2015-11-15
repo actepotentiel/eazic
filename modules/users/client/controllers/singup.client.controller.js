@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('users').controller('SignUpController', ['$scope', '$state', '$http', '$location', '$window', 'Authentication', 'PasswordValidator','PlaylistService', 'Socket',
-    function ($scope, $state, $http, $location, $window, Authentication, PasswordValidator, PlaylistService, Socket) {
+angular.module('users').controller('SignUpController', ['$scope', '$state', '$http', '$location', '$window', 'Authentication', 'PasswordValidator','PlaylistService', 'Socket','RoomService',
+    function ($scope, $state, $http, $location, $window, Authentication, PasswordValidator, PlaylistService, Socket, RoomService) {
 
         console.log('SignUpController');
 
@@ -28,8 +28,8 @@ angular.module('users').controller('SignUpController', ['$scope', '$state', '$ht
                 // If successful we assign the response to the global user model
                 $scope.authentication.user = response;
                 console.log("USER AUTHENTICATE SIGNUP");
-                PlaylistService.updatePlaylists();
-                PlaylistService.updateRoom();
+                PlaylistService.getMyPlaylists();
+                RoomService.getMyRoom();
 
                 Socket.connect();
                 // And redirect to t

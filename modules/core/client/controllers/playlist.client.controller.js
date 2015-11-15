@@ -10,34 +10,30 @@ angular.module('core').controller('PlaylistController', ['$scope', 'PlaylistServ
 
         $scope.playlistService = PlaylistService;
 
+
+
         if($scope.authentication.user){
-            $scope.playlistService.updatePlaylists();
+            $scope.playlistService.getMyPlaylists();
         }
 
-        Socket.on('playlist.addSound', function(command){
-            console.log("playlist.addSound");
-            console.log(command);
-            $scope.playlistService.processCommand(command);
-        });
-
-        Socket.on('playlist.deleteSound', function(command){
-            console.log("playlist.deleteSound");
-            console.log(command);
-            $scope.playlistService.processCommand(command);
-        });
-
-        Socket.on('playlist.addSounds', function(command){
-            console.log("playlist.addSounds");
+        Socket.on('playlist', function(command){
+            console.log("playlist event");
             console.log(command);
             $scope.playlistService.processCommand(command);
         });
 
         $scope.removeSound = function(soundToDelete){
-            $scope.playlistService.sendCommand('playlist.deleteSound', soundToDelete);
+            $scope.playlistService.sendCommand({
+                name : 'deleteSound',
+                sound : soundToDelete
+            });
         };
 
-        $scope.removeAllSound = function(soundToDelete){
-            $scope.playlistService.sendCommand('playlist.deleteAllSound');
+        $scope.removeAllSound = function(){
+            $scope.playlistService.sendCommand({
+                name: "newPlaylist",
+                playlist : []
+            });
         };
 
         $scope.saveList = function(){

@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('users').controller('SignInController', ['$scope', '$state', '$http', '$location', '$window', 'Authentication', 'PasswordValidator', 'PlaylistService', 'Socket',
-    function ($scope, $state, $http, $location, $window, Authentication, PasswordValidator, PlaylistService, Socket) {
+angular.module('users').controller('SignInController', ['$scope', '$state', '$http', '$location', '$window', 'Authentication', 'PasswordValidator', 'PlaylistService', 'Socket','RoomService',
+    function ($scope, $state, $http, $location, $window, Authentication, PasswordValidator, PlaylistService, Socket, RoomService) {
 
         console.log('SignInController');
 
@@ -48,8 +48,8 @@ angular.module('users').controller('SignInController', ['$scope', '$state', '$ht
                 // If successful we assign the response to the global user model
                 $scope.authentication.user = response;
                 console.log("USER AUTHENTICATE SIGNIN");
-                PlaylistService.updatePlaylists();
-                PlaylistService.updateRoom();
+                PlaylistService.getMyPlaylists();
+                RoomService.getMyRoom();
 
                 Socket.connect();
                 // And redirect to the previous or home page

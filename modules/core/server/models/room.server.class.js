@@ -13,6 +13,7 @@ module.exports.Room = function(name, owner){
         isOpen : true,
         allowedUsers : [],
         bannedUsers : [],
+        isPersistable : false
     };
     this.playlist = {
         sounds : [],
@@ -52,6 +53,7 @@ module.exports.Room.prototype.copyModele = function(room) {
     this.conf.isOpen = room.conf.isOpen;
     this.conf.allowedUsers = room.conf.allowedUsers;
     this.conf.bannedUsers = room.conf.bannedUsers;
+    this.conf.isPersistable = true;
 
     this.playlist.sounds = room.playlist.sounds;
     this.policies = room.policies;
@@ -76,10 +78,23 @@ module.exports.Room.prototype.allowJoin = function(user) {
     }
 };
 
+module.exports.Room.prototype.isOwner = function(user) {
+    if(this.conf.owner._id + "" === user._id + "") {
+        return true;
+    }else{
+        return false;
+    }
+};
+
+module.exports.Room.prototype.update = function() {
+    //TODO
+    console.log("########## Update room ##############");
+};
+
 module.exports.Room.prototype.allowEvent = function(eventName, user) {
 
     console.log("AllowEvent : " + eventName + " " + user.username);
-    //TODO optimise
+
     if(this.conf.owner._id + "" === user._id + ""){
         return true;
     }
@@ -104,6 +119,16 @@ module.exports.Room.prototype.allowEvent = function(eventName, user) {
 module.exports.Room.prototype.addUser = function(user) {
     this.conf.users.push(user);
     this.policies[1].users.push(user);
+};
+
+module.exports.Room.prototype.processCommand = function(command, socket) {
+    //TODO
+    console.log("########## Process Commande ##############");
+};
+
+module.exports.Room.prototype.processInfo = function(command) {
+    //TODO
+    console.log("########## Process Info ##############");
 };
 
 

@@ -3,170 +3,97 @@
  */
 'use strict';
 
-angular.module('core').factory('PlaylistService', ['Authentication','$timeout','Socket', 'MyRooms','MyPlaylists','$location','$stateParams',
-    function(Authentication, $timeout, Socket, MyRooms, MyPlaylists, $location, $stateParams) {
+angular.module('core').factory('PlaylistService', ['Authentication','$timeout','Socket', 'RoomService','MyPlaylists','$location','$stateParams',
+    function(Authentication, $timeout, Socket, RoomService, MyPlaylists, $location, $stateParams) {
         var _this = this;
         var authentication = Authentication;
         _this._data = {
-            sounds: window.sounds,
-            playlists: window.playlists,
-            goToMyRoom : function(){
-                if(authentication.room) {
-                    $location.path('/' + authentication.room.conf.name);
-                }
-            },
-            updateRoom: function(){
-                var __this = this;
-                if(authentication.user){
-                    MyRooms.get({userId : authentication.user._id}, function(result){
-                        if(result.length === 1){
-                            //authentication.room = result[0];
-                            //console.log($stateParams.params);
-                            if(!$stateParams.params){
-                                $location.path('/' + authentication.room.conf.name);
-                            }
-                        }else{
-                            //TODO afficher l'erreur
-                            alert("Problème d'intégrité de données, veuillez contacter un administrateur.");
-                        }
-                    });
-                }
-            },
-            updatePlaylists: function(){
-                var __this = this;
+            getMyPlaylists : function(){
                 if(authentication.user){
                     MyPlaylists.get({userId : authentication.user._id}, function(result){
-                        __this.playlists = result;
+                        authentication.user.playlists = result;
                     });
                 }
             },
-            sendCommand: function(nomCommand, sound, playlist, isDouble){
+            sendCommand: function(command){
                 console.log("sendCommand");
-                var commande = {
-                    nom : nomCommand,
-                    sound: sound,
-                    playlist: playlist,
-                    isDouble: isDouble
-                };
-                if(authentication.room){
-                    if(this.hasRoomAutorization(nomCommand)){
-                        Socket.emit(nomCommand, commande);
-                        this.processCommand(commande);
+                console.log(command);
+                if(authentication.user){
+                    if(RoomService.hasOwnerAutorizationForCommand(command.name)){
+                        Socket.emit('playlist', command);
+                        this.processCommand(command);
                     }else{
-                        alert("Vous n'êtes pas autorisé à envoyer cette commande. Demandez les droits au propriétaire de la room.");
+                        var alert = {
+                            name : "alert",
+                            status : "notAuth"
+                        };
+                        RoomService.processInfo(alert);
                     }
-
                 }else{
-                    this.processCommand(commande);
-                }
-
-            },
-            hasRoomAutorization : function(nomCommand){
-                if(authentication.room.conf.owner._id + "" === authentication.user._id + ""){
-                    return true;
-                }else{
-                    //TODO checker si l'utilisateur a les droits
-                    for(var i = 0 ; i < authentication.room.policies.length ; i++){
-                        for(var j = 0 ; j < authentication.room.policies[i].users.length ; j++){
-                            if(authentication.room.policies[i].users[j] + "" === authentication.user._id + ""){
-                                console.log("Finded user in policies");
-                                if(authentication.room.policies[i].name + "" === "vip"){
-                                    return true;
-                                }
-                                for(var k = 0 ; k < authentication.room.policies[i].allowedCommands.length ; k++){
-                                    if(authentication.room.policies[i].allowedCommands[k].commandName + "" === nomCommand + ""){
-                                        return true;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    return false;
+                    this.processCommand(command);
                 }
             },
             processCommand: function(command){
                 console.log("processCommand");
-                if((command.nom === 'playlist.addSound')&&(command.sound.sourceId && (command.sound.sourceId !== ''))){
-                    this.processAddSound(command.sound);
-                }else if(command.nom === 'playlist.addSounds'){
-                    this.processAddSounds(command.playlist);
-                }else if(command.nom === 'playlist.deleteSound'){
-                    this.processDeleteSound(command.sound);
-                }else if(command.nom === 'playlist.newPlaylist'){
-                    this.processNewPlaylist(command.playlist);
-                }else if(command.nom === 'playlist.changeOrder'){
-                    this.processChangeOrder(command.sound);
-                }else if(command.nom === 'playlist.deleteAllSound'){
-                    this.processDeleteAllSound();
+                if(typeof RoomService.room.playlist.sounds === 'undefined'){
+                    RoomService.room.playlist.sounds = [];
                 }
-                //else if(command.nom === 'double'){
-                //    console.log(angular.element('#'))
-                //    conf.isDouble = command.isDouble;
-                //    if(conf.isDouble){
-                //        angular.element('#playerRightContent').addClass('doublePlayer').removeClass('displayNone');
-                //        angular.element('#playerLeftContent').addClass('doublePlayer').removeClass('singlePlayer');
-                //    }else{
-                //        angular.element('#playerRightContent').addClass('displayNone').removeClass('doublePlayer');
-                //        angular.element('#playerLeftContent').addClass('singlePlayer').removeClass('doublePlayer');
-                //    }
-                //}
+                switch(command.name){
+                    case "addSounds":
+                        this.processAddSounds(command);
+                        break;
+                    case "deleteSound":
+                        this.processDeleteSound(command);
+                        break;
+                    case "reorder":
+                        this.processReorder(command);
+                        break;
+                    case "newPlaylist":
+                        this.processNewPlaylist(command);
+                        break;
+                    default:
+                        alert("command has no handler : " + command.name);
+                        break;
+                }
             },
-            processAddSound: function(soundToAdd){
-                if(typeof this.sounds === 'undefined'){
-                    this.sounds = [];
-                }
-                console.log("processAdSound");
-                this.sounds.push(soundToAdd);
-            },
-            processAddSounds: function(soundsToAdd){
-                if(typeof this.sounds === 'undefined'){
-                    this.sounds = [];
-                }
+            processAddSounds: function(command){
                 console.log("processAddSounds");
-                this.sounds = this.sounds.concat(soundsToAdd);
+                RoomService.room.playlist.sounds = RoomService.room.playlist.sounds.concat(command.sounds);
             },
-            processDeleteSound: function(soundToDelete){
-                var _this = this;
-                if(typeof this.sounds === 'undefined'){
-                    this.sounds = [];
-                }
+            processDeleteSound: function(command){
+                console.log("processDeleteSound");
                 var keepGoing = true;
-                this.sounds.forEach(function(sound, index){
+                RoomService.room.playlist.sounds.forEach(function(sound, index){
                     if(keepGoing){
-                        if(sound.sourceId === soundToDelete.sourceId){
-                            _this.sounds.splice(index, 1);
+                        if(sound.sourceId === command.sound.sourceId){
+                            RoomService.room.playlist.sounds.splice(index, 1);
                             keepGoing = false;
                         }
                     }
                 });
-                //conf.showMessage('Element supprimé', 'warning');
             },
-            processDeleteAllSound: function(){
-                this.sounds = [];
+            processNewPlaylist: function(command){
+                RoomService.room.playlist.sounds = command.playlist;
             },
-            processNewPlaylist: function(newPlaylist){
-                if(typeof newPlaylist === 'undefined'){
-                    newPlaylist = [];
-                }
-                this.sounds = newPlaylist;
-            },
-            processChangeOrder: function(soundFirst){
-                var indexOfSoundFirst = 0;
-                var tmp = [];
-                var tmpLast = [];
-                this.sounds.forEach(function(sound, index){
-                    if(sound.sourceId === soundFirst.url){
-                        indexOfSoundFirst = index;
-                    }
-                });
-                this.sounds.forEach(function(sound, index){
-                    if(index >= indexOfSoundFirst){
-                        tmp.push(sound);
-                    }else{
-                        tmpLast.push(sound);
-                    }
-                });
-                this.sounds = tmp.concat(tmpLast);
+            processReorder: function(command){
+                //TODO process reorder
+                console.log("Process reorder (todo)");
+                //var indexOfSoundFirst = 0;
+                //var tmp = [];
+                //var tmpLast = [];
+                //this.sounds.forEach(function(sound, index){
+                //    if(sound.sourceId === soundFirst.url){
+                //        indexOfSoundFirst = index;
+                //    }
+                //});
+                //this.sounds.forEach(function(sound, index){
+                //    if(index >= indexOfSoundFirst){
+                //        tmp.push(sound);
+                //    }else{
+                //        tmpLast.push(sound);
+                //    }
+                //});
+                //this.sounds = tmp.concat(tmpLast);
             }
         };
         return _this._data;
