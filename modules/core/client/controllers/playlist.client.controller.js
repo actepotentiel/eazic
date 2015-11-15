@@ -3,8 +3,8 @@
  */
 'use strict';
 
-angular.module('core').controller('PlaylistController', ['$scope', 'PlaylistService', '$stateParams', 'Authentication', 'Playlists', 'Socket',
-    function($scope, PlaylistService, $stateParams, Authentication, Playlists, Socket) {
+angular.module('core').controller('PlaylistController', ['$scope', 'PlaylistService', '$stateParams', 'Authentication', 'Playlists', 'Socket','MyPlaylists',
+    function($scope, PlaylistService, $stateParams, Authentication, Playlists, Socket, MyPlaylists) {
         // This provides Authentication context.
         $scope.authentication = Authentication;
 
@@ -33,6 +33,14 @@ angular.module('core').controller('PlaylistController', ['$scope', 'PlaylistServ
             $scope.playlistService.sendCommand({
                 name: "newPlaylist",
                 playlist : []
+            });
+        };
+
+        $scope.loadPlaylist = function(playlist){
+            console.log(playlist);
+            $scope.playlistService.sendCommand({
+                name : "addSounds",
+                sounds : playlist.sounds
             });
         };
 
@@ -70,7 +78,7 @@ angular.module('core').controller('PlaylistController', ['$scope', 'PlaylistServ
             // Redirect after save
             playlist.$save(function(response) {
                 console.log(response);
-                $scope.playlistService.updatePlaylists();
+                $scope.playlistService.getMyPlaylists();
 
             }, function(errorResponse) {
                 $scope.error = errorResponse.data.message;
@@ -80,9 +88,11 @@ angular.module('core').controller('PlaylistController', ['$scope', 'PlaylistServ
         // Remove existing Playlist
         $scope.remove = function( playlist ) {
             if ( playlist ) {
-                playlist.$remove(function(result){
+                var playlistToRemove = new Playlists();
+                playlistToRemove._id = playlist._id;
+                playlistToRemove.$remove(function(result){
                     console.log(result);
-                    $scope.playlistService.updatePlaylists();
+                    $scope.playlistService.getMyPlaylists();
                 });
 
 

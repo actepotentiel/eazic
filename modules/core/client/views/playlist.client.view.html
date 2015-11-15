@@ -17,6 +17,7 @@
         <li ng-repeat="item in authentication.user.playlists track by $index">
           {{ item.title }}
           <span class="glyphicon glyphicon-trash" ng-click="removePlaylist(item)"></span>
+          <span class="glyphicon glyphicon-save" ng-click="loadPlaylist(item)"></span>
         </li>
       </ul>
     </md-content>

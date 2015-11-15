@@ -21,6 +21,9 @@ angular.module('playlists').factory('MyPlaylists', ['$resource',
 			},
 			get: {
 				method : 'GET', isArray : true
+			},
+			remove: {
+				method : 'DELETE'
 			}
 		});
 	}

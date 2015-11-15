@@ -23,23 +23,15 @@ module.exports.Room = function(name, owner){
             name : 'vip',
             users : [owner],
             allowedCommands : [
-                {commandName : 'all'},
-                {commandName : 'room.ban'},
-                {commandName : 'room.invit'},
-                {commandName : 'playlist.addSound'},
-                {commandName : 'playlist.newPlaylist'},
-                {commandName : 'playlist.ChangeOrder'},
-                {commandName : 'playlist.removeSound'},
-                {commandName : 'chat.message'},
-                {commandName : 'chat.message2'}
+                {commandName : 'all'}
             ]
         },
         {
             name : 'guest',
             users : [],
             allowedCommands : [
-                {commandName : 'chat.message2'},
-                {commandName : 'playlist.addSounds'}
+                {commandName : 'deleteSound'},
+                {commandName : 'addSounds'}
             ]
         }
     ];

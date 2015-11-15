@@ -18,7 +18,8 @@ module.exports = function(app) {
 
 
 	app.route('/api/playlists/user/:playlistUserId').all(playlistsPolicy.isAllowed, playlistsPolicy.hasPlaylistOwnerAuthorization)
-		.get(playlists.readMyPlaylists);
+		.get(playlists.readMyPlaylists)
+		.delete(playlists.delete);
 
 
 	// Finish by binding the Playlist middleware
