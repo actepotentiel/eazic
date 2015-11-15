@@ -11,7 +11,6 @@ angular.module('core').factory('ChatService', ['Authentication','$timeout','Sock
         var _this = this;
         var authentication = Authentication;
         _this._data = {
-            messages: window.messages,
             sendMessage: function(message){
                 console.log("sendMessage");
                 if(authentication.user && typeof RoomService.room !== 'undefined'){
@@ -20,7 +19,10 @@ angular.module('core').factory('ChatService', ['Authentication','$timeout','Sock
                 this.writeMessage(message);
             },
             writeMessage : function(message){
-                this.messages.push(message);
+                if(typeof RoomService.room.messages === 'undefined'){
+                    RoomService.room.messages = [];
+                }
+                RoomService.room.messages.unshift(message);
             }
         };
         return _this._data;

@@ -9,7 +9,7 @@ angular.module('core').controller('SalonController', ['$scope', 'Authentication'
         // This provides Authentication context.
         $scope.authentication = Authentication;
         $scope.chatService = ChatService;
-
+        $scope.roomService = RoomService;
         if (!Socket.socket) {
             Socket.connect();
         }
@@ -19,7 +19,7 @@ angular.module('core').controller('SalonController', ['$scope', 'Authentication'
             if(typeof $scope.chatService.messages === 'undefined'){
                 $scope.chatService.messages = [];
             }
-            $scope.chatService.messages.unshift(message);
+            $scope.chatService.writeMessage(message);
             console.log(message);
         });
 
@@ -32,6 +32,7 @@ angular.module('core').controller('SalonController', ['$scope', 'Authentication'
                 created: new Date()
             };
 
+            $scope.chatService.writeMessage(message);
             // Emit a 'chatMessage' message event
             Socket.emit('chat', message);
 

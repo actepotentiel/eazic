@@ -62,7 +62,8 @@ angular.module('core').controller('HomeController', ['$scope', 'Authentication',
       Socket.on('info', function(command){
           console.log("info");
           console.log(command);
-          if(!(command.name === "playerStatus" && $scope.roomService.isStandalone)){
+          if(!(command.name === "playerStatus" && $scope.roomService.room.isStandalone)){
+              console.log("process info call");
               $scope.roomService.processInfo(command);
           }
       });

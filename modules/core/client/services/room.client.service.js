@@ -51,13 +51,50 @@ angular.module('core').factory('RoomService', ['Authentication','$timeout','Sock
             },
             processInfo : function(command){
                 var __this = this;
+                console.log("process info");
+
+                console.log(command);
+                if(typeof __this.room.messages === 'undefined'){
+                    __this.room.messages = [];
+                }
+
                 switch(command.name){
+                    case "userLeave":
+                        __this.processUserLeave(command);
+                        break;
+                    case "joinUser":
+                        __this.processJoinUser(command);
+                        break;
                     case "alert":
                         __this.processAlert(command);
                         break;
                     default:
                         break;
                 }
+            },
+            processUserLeave : function(command){
+                console.log("process userLeave");
+
+                this.room.messages.unshift({
+                    text: command.user.username + "has left the room...",
+                    user: {username : "Server"},
+                    created: new Date()
+                });
+                this.room.conf.users.forEach(function(user, index){
+                    if(user._id + "" === command.user._id + ""){
+                        this.room.conf.users.splice(index, 1);
+                    }
+                });
+            },
+            processJoinUser: function(command){
+                console.log("process addUser");
+
+                this.room.messages.unshift({
+                    text: command.user.username + "has joined the room!",
+                    user: {username : "Server"},
+                    created: new Date()
+                });
+                this.room.conf.users.push(command.user);
             },
             processAlert : function(command){
                 alert("Alert : " + command.status);
