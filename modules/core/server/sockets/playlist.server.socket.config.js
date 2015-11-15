@@ -8,16 +8,16 @@ module.exports = function (io, socket) {
         console.log();
         console.log("############### playlist event ###############");
         if(socket.room){
-            console.log("Checking for user rights..." + command.nom + " " + socket.request.user.username);
+            console.log("Checking for user rights..." + command.name + " " + socket.request.user.username);
             var room = global.roomManager.getRoomByName(socket.room.name);
             if(room !== null){
-                if(room.allowEvent(command.nom, socket.request.user)){
+                if(room.allowEvent(command.name, socket.request.user)){
                     console.log("Emite playlist event to room " + socket.room.conf.name);
                     room.processCommand(command, socket);
                     socket.broadcast.to(socket.room.conf.name).emit('playlist', command);
                 }else{
                     //TODO alert notAuth
-                    console.log("Room is not running, aborting...");
+                    console.log("Room doesn't allow, aborting...");
                     socket.emit("info", {name : "alert", status: "notAuth"});
                 }
             }else{

@@ -37,7 +37,7 @@ angular.module('core').controller('ExploreController', ['$scope', 'Authenticatio
 
         $scope.addToList = function(soundToAdd){
             console.log(soundToAdd);
-            PlaylistService.sendCommand('playlist.addSound', soundToAdd);
+            PlaylistService.sendCommand({name: 'addSounds', sounds :[soundToAdd]});
         };
     }
 ]);

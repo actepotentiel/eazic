@@ -27,19 +27,19 @@ angular.module('core').factory('RoomService', ['Authentication','$timeout','Sock
                 }
             },
             hasOwnerAutorizationForCommand : function(nomCommand){
-                if(authentication.room.conf.owner._id + "" === authentication.user._id + ""){
+                if(this.room.conf.owner._id + "" === authentication.user._id + ""){
                     return true;
                 }else{
                     //TODO checker si l'utilisateur a les droits
-                    for(var i = 0 ; i < authentication.room.policies.length ; i++){
-                        for(var j = 0 ; j < authentication.room.policies[i].users.length ; j++){
-                            if(authentication.room.policies[i].users[j] + "" === authentication.user._id + ""){
+                    for(var i = 0 ; i < this.room.policies.length ; i++){
+                        for(var j = 0 ; j < this.room.policies[i].users.length ; j++){
+                            if(this.room.policies[i].users[j] + "" === authentication.user._id + ""){
                                 console.log("Finded user in policies");
-                                if(authentication.room.policies[i].name + "" === "vip" && nomCommand !== "playerStatus"){
+                                if(this.room.policies[i].name + "" === "vip" && nomCommand !== "playerStatus"){
                                     return true;
                                 }
-                                for(var k = 0 ; k < authentication.room.policies[i].allowedCommands.length ; k++){
-                                    if(authentication.room.policies[i].allowedCommands[k].commandName + "" === nomCommand + ""){
+                                for(var k = 0 ; k < this.room.policies[i].allowedCommands.length ; k++){
+                                    if(this.room.policies[i].allowedCommands[k].commandName + "" === nomCommand + ""){
                                         return true;
                                     }
                                 }

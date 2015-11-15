@@ -5,7 +5,7 @@
       <span class="glyphicon glyphicon-trash" ng-click="removeAllSound()"></span>
       File de lecture :
       <ul>
-        <li ng-repeat="item in playlistService.sounds track by $index">
+        <li ng-repeat="item in roomService.room.playlist.sounds track by $index">
           {{ item.title }}
           <span class="glyphicon glyphicon-trash" ng-click="removeSound(item)"></span>
         </li>
@@ -14,7 +14,7 @@
     <md-content layout="column" layout-fill>
       Playlists :
       <ul>
-        <li ng-repeat="item in playlistService.playlists track by $index">
+        <li ng-repeat="item in authentication.user.playlists track by $index">
           {{ item.title }}
           <span class="glyphicon glyphicon-trash" ng-click="removePlaylist(item)"></span>
         </li>

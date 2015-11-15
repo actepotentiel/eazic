@@ -122,8 +122,23 @@ module.exports.Room.prototype.addUser = function(user) {
 };
 
 module.exports.Room.prototype.processCommand = function(command, socket) {
-    //TODO
+    var _this = this;
     console.log("########## Process Commande ##############");
+    switch(command.name){
+        case "addSounds":
+            _this.playlist.sounds = _this.playlist.sounds.concat(command.sounds);
+            break;
+        case "deleteSound":
+            _this.playlist.sounds.forEach(function(item, index){
+                if(item.sourceId === command.sound.sourceId){
+                    _this.playlist.sounds.splice(index, 1);
+                }
+            });
+            break;
+        case "newPlaylist":
+            _this.playlist.sounds = command.playlist;
+            break;
+    }
 };
 
 module.exports.Room.prototype.processInfo = function(command) {
