@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('users').controller('SignUpController', ['$scope', '$state', '$http', '$location', '$window', 'Authentication', 'PasswordValidator','PlaylistService', 'Socket','MyRooms',
-    function ($scope, $state, $http, $location, $window, Authentication, PasswordValidator, PlaylistService, Socket, MyRooms) {
+angular.module('users').controller('SignUpController', ['$scope', '$state', '$http', '$location', '$window', 'Authentication', 'PasswordValidator','PlaylistService', 'Socket','MyRooms','InitSocket',
+    function ($scope, $state, $http, $location, $window, Authentication, PasswordValidator, PlaylistService, Socket, MyRooms, InitSocket) {
 
         console.log('SignUpController');
 
@@ -27,6 +27,13 @@ angular.module('users').controller('SignUpController', ['$scope', '$state', '$ht
             $http.post('/api/auth/signup', $scope.credentials).success(function (response) {
                 // If successful we assign the response to the global user model
                 $scope.authentication.user = response;
+
+                Socket.removeAllListeners();
+
+                Socket.connect();
+
+                InitSocket.initListeners();
+
                 console.log("USER AUTHENTICATE SIGNUP");
                 PlaylistService.getMyPlaylists();
                 MyRooms.get({userId : $scope.authentication.user._id}, function(result){

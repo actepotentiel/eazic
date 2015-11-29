@@ -1,11 +1,12 @@
 'use strict';
 
-angular.module('users').controller('SignInController', ['$timeout', '$scope', '$state', '$http', '$location', '$window', 'Authentication', 'PasswordValidator', 'PlaylistService', 'Socket','MyRooms',
-    function ($timeout, $scope, $state, $http, $location, $window, Authentication, PasswordValidator, PlaylistService, Socket, MyRooms) {
+angular.module('users').controller('SignInController', ['$timeout', '$scope', '$state', '$http', '$location', '$window', 'Authentication', 'PasswordValidator', 'PlaylistService', 'Socket','MyRooms', 'RoomService','InitSocket',
+    function ($timeout, $scope, $state, $http, $location, $window, Authentication, PasswordValidator, PlaylistService, Socket, MyRooms, RoomService, InitSocket) {
 
         console.log('SignInController');
 
         $scope.authentication = Authentication;
+        $scope.roomService = RoomService;
         $scope.popoverMsg = PasswordValidator.getPopoverMsg();
 
         // Get an eventual error defined in the URL query string:
@@ -23,10 +24,17 @@ angular.module('users').controller('SignInController', ['$timeout', '$scope', '$
 
             $http.post('/api/auth/signin', $scope.credentials).success(function (response) {
                 // If successful we assign the response to the global user model
-                location.reload();
+                //location.reload();
+
+                //
+                $scope.authentication.user = response;
+
+                Socket.removeAllListeners();
 
                 Socket.connect();
-                $scope.authentication.user = response;
+
+                InitSocket.initListeners();
+
                 console.log("USER AUTHENTICATE SIGNIN");
                 PlaylistService.getMyPlaylists();
                 MyRooms.get({userId : $scope.authentication.user._id}, function(result){

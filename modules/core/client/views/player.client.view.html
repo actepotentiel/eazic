@@ -1,5 +1,20 @@
-<div id="PlayerViewContainer" data-ng-controller="PlayerController">
-    <div>
-      <span>ABR</span><span>UT</span><span>TIE</span>
-    </div>
-</div>
+<md-content id="PlayerViewContainer" data-ng-controller="PlayerController" layout-fill layout="row">
+    <!--<md-content id="playerPanel" layout-fill>-->
+      <md-content id="playerLeftContent" flex="50" style="background-color:red;" layout="column" layout-align="center center">
+        <md-content>
+          <span>Player left status</span>
+        </md-content>
+        <md-content>
+          <span>Player left content</span>
+        </md-content>
+      </md-content>
+      <md-content id="playerRightContent" flex="50" style="background-color:blue;" layout="column" layout-align="center center">
+        <md-content>
+          <span>Player right status</span>
+        </md-content>
+        <md-content>
+          <span>Player right content</span>
+        </md-content>
+      </md-content>
+    <!--</md-content>-->
+</md-content>
