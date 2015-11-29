@@ -1,32 +1,28 @@
 <div ng-controller="SignInController">
-  <h3 class="col-md-12 text-center">Or with your account</h3>
-    <form name="userForm" ng-submit="signin(userForm.$valid)" class="signin" novalidate autocomplete="off">
-      <md-content layout=row layout-fill>
+  <h3>Or with your account</h3>
+    <form name="userForm" ng-submit="signin(userForm.$valid)" class="signin" novalidate autocomplete="off" layout-fill>
+      <md-content layout="row" layout-fill>
           <md-input-container class="form-group" show-errors layout-fill>
             <label for=username>Username</label>
-            <input type="text" id="username" name="username" class="form-control" ng-model="credentials.username" placeholder="Username" lowercase required>
+            <input type="text" id="username" name="username" ng-model="credentials.username" placeholder="Username" lowercase required>
             <div ng-messages="userForm.username.$error" role="alert">
               <p class="help-block error-text" ng-message="required">Username is required.</p>
             </div>
           </md-input-container>
           <md-input-container class="form-group" show-errors layout-fill>
             <label for="password">Password</label>
-            <input type="password" id="password" name="password" class="form-control" ng-model="credentials.password" placeholder="Password" required>
+            <input type="password" id="password" name="password" ng-model="credentials.password" placeholder="Password" required>
             <div ng-messages="userForm.password.$error" role="alert">
               <p class="help-block error-text" ng-message="required">Password is required.</p>
             </div>
           </md-input-container>
       </md-content>
-        <div class="text-center form-group">
-          <button type="submit" class="btn btn-primary">Sign in</button>
-          &nbsp; or&nbsp;
-          <a ui-sref="authentication.signup">Sign up</a>
-        </div>
-        <div class="text-center forgot-password">
-          <a ui-sref="password.forgot">Forgot your password?</a>
-        </div>
-        <alert type="danger" ng-show="error" class="text-center text-danger">
-          <span ng-bind="error"></span>
-        </alert>
+      <md-content layout="row" layout-fill  layout-margin="10" layout-align="center center">
+        <md-button type="submit" class="md-raised md-accent md-hue-2" flex> Sign in </md-button>
+        <md-button class='md-raised md-warn' ui-sref="password.forgot" flex>Forgot your password?</md-button>
+      </md-content>
+      <alert type="danger" ng-show="error" class="text-center text-danger">
+        <span ng-bind="error"></span>
+      </alert>
     </form>
 </div>

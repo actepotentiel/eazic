@@ -41,10 +41,11 @@
 
 body{
     font-family: Oswald;
-    background-image: url('/modules/core/client/img/imgfond.png');
+    /*background-image: url('/modules/core/client/img/imgfond.png');*/
     min-width: 1000px;
     height: 100%;
     position: absolute;
+    background-color: transparent;
 }
 header.navbar{
     min-width: 1000px;
@@ -127,4 +128,8 @@ input:-webkit-autofill {
 }
 #exploreView.maximisedView{
 
+}
+
+.popover {
+    color: black !important;
 }
