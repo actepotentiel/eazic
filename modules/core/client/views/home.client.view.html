@@ -1,4 +1,7 @@
 <!--<section>toto</section>-->
+<video id="coverVideo" loop autoplay muted poster="path/to/your/poster.jpg">
+  <source src="/videos/NYC-Traffic.mp4" type="video/mp4">
+</video>
 <section id="homeSection" class="fillContainer animated-rapier" data-ng-controller="HomeController">
   <div id="itemHomeLeft" class="item-home">
     <div id="welcomeHomeDiv">
@@ -73,10 +76,9 @@
       </div>
       <div data-ng-hide="authentication.showSignupForm" ng-include="'modules/users/client/views/authentication/signin.client.view.html'"></div><!---->
       <div data-ng-show="authentication.showSignupForm" ng-include="'modules/users/client/views/authentication/signup.client.view.html'"></div><!---->
-      <md-content layout="row">
+      <md-content layout="row" layout-align="center center">
         <md-content class="signinupItem" ng-init="authentication.showSignupForm = false" flex>
-          <md-button class="md-primary md-raised md-hue-1
-          " ng-click="authentication.showSignupForm = true ; authentication.showSigninForm = false" layout-fill>S'inscrire</md-button>
+          <md-button class="md-primary md-raised md-hue-1" ng-click="authentication.showSignupForm = true ; authentication.showSigninForm = false" layout-fill>S'inscrire</md-button>
         </md-content>
         <md-content class="signinupItem" ng-init="authentication.showSigninForm = false" flex>
           <md-button class="md-primary md-raised" ng-click="authentication.showSigninForm = true; authentication.showSignupForm = false" layout-fill>Se logguer</md-button>
