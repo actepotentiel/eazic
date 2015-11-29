@@ -3,14 +3,14 @@
  */
 'use strict';
 
-angular.module('core').controller('PlaylistController', ['$scope', 'PlaylistService', '$stateParams', 'Authentication', 'Playlists', 'Socket','MyPlaylists',
-    function($scope, PlaylistService, $stateParams, Authentication, Playlists, Socket, MyPlaylists) {
+angular.module('core').controller('PlaylistController', ['$scope', 'PlaylistService', '$stateParams', 'Authentication', 'Playlists', 'Socket','PlayerService',
+    function($scope, PlaylistService, $stateParams, Authentication, Playlists, Socket, PlayerService) {
         // This provides Authentication context.
         $scope.authentication = Authentication;
 
         $scope.playlistService = PlaylistService;
 
-
+        $scope.playerService = PlayerService;
 
         if($scope.authentication.user){
             $scope.playlistService.getMyPlaylists();
@@ -21,6 +21,14 @@ angular.module('core').controller('PlaylistController', ['$scope', 'PlaylistServ
             console.log(command);
             $scope.playlistService.processCommand(command);
         });
+
+        $scope.playSound = function(sound, player){
+            $scope.playerService.sendCommand({
+                name : "play",
+                sound: sound,
+                player: player
+            });
+        };
 
         $scope.removeSound = function(soundToDelete){
             $scope.playlistService.sendCommand({

@@ -21,7 +21,7 @@
         </h2>
       </md-toolbar>
       <ul ng-repeat="item in vimeoResult track by $index" layout="column">
-        <li>{{item.title}}</li>
+        <li ng-click="addToList(item)">{{item.title}}</li>
       </ul>
     </md-content>
     <md-content layout="column" layout-fill>
@@ -31,7 +31,7 @@
         </h2>
       </md-toolbar>
       <ul ng-repeat="item in soundcloudResult track by $index" layout="column">
-        <li>{{item.title}}</li>
+        <li ng-click="addToList(item)">{{item.title}}</li>
       </ul>
     </md-content>
     <md-content layout="column" layout-fill>
@@ -41,7 +41,7 @@
         </h2>
       </md-toolbar>
       <ul ng-repeat="item in deezerResult track by $index" layout="column">
-        <li>{{item.title}}</li>
+        <li ng-click="addToList(item)">{{item.title}}</li>
       </ul>
     </md-content>
     <md-content layout="column" layout-fill>
@@ -51,7 +51,7 @@
         </h2>
       </md-toolbar>
       <ul ng-repeat="item in spotifyResult track by $index" layout="column">
-        <li>{{item.title}}</li>
+        <li ng-click="addToList(item)">{{item.title}}</li>
       </ul>
     </md-content>
     <md-content layout="column" layout-fill>
@@ -61,7 +61,7 @@
         </h2>
       </md-toolbar>
       <ul ng-repeat="item in dailymotionResult track by $index" layout="column">
-        <li>{{item.title}}</li>
+        <li ng-click="addToList(item)">{{item.title}}</li>
       </ul>
     </md-content>
 

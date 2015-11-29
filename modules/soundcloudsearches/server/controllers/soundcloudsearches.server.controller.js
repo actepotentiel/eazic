@@ -19,7 +19,7 @@ SC.init({
 * Search on Soundcloud datas
 * */
 exports.search = function(req, res) {
-	SC.get('/tracks', { q: req.body.q, limit: 20 }, function(err, results) {
+	SC.get('/tracks', { q: req.body.q, limit: 20, perPage: 20 }, function(err, results) {
 		var formattedResults = [];
 		var formattedMetas = {};
 		formattedMetas.perPage = results.length;

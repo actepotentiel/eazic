@@ -20,8 +20,9 @@
         </div>
       </div>
       <md-content id="playerLeftContent" flex style="background-color:red;" layout="column" layout-align="center center">
-        <md-content>
-          <span>Player left status</span>
+        <md-content layout-fill>
+          <div>Player left status : {{roomService.room.player}}</div>
+
           <button class="btn btn-corporate" ng-click="lecteurLeftService.sendCommand('play')"><span class="glyphicon glyphicon-play"></span></button>
           <button class="btn btn-corporate" ng-click="lecteurLeftService.sendCommand('pause')"><span class="glyphicon glyphicon-pause"></span></button>
           <button class="btn btn-corporate" ng-click="lecteurLeftService.sendCommand('stop')"><span class="glyphicon glyphicon-stop"></span></button>

@@ -24,7 +24,8 @@ exports.search = function(req, res) {
 
 	youtubeApi.search.list({
 		q: req.body.q,
-		part: "snippet"
+		part: "snippet",
+		maxResults: 20
 	}, function(error, results) {
 		var formattedResults = [];
 		var formattedMetas = results.pageInfo;
