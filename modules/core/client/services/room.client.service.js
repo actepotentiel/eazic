@@ -27,6 +27,16 @@ angular.module('core').factory('RoomService', ['Authentication','$timeout','Sock
                     });
                 }
             },
+            sendInfo: function(command){
+                if(command.name != "ban"){
+                    this.processInfo(command);
+                }
+                if(!(command.name == "playerStatus" && this.room.role == "standalone")){
+                    Socket.emit('info', command);
+                }
+
+
+            },
             hasOwnerAutorizationForCommand : function(nomCommand){
                 if(this.room.conf.owner._id + "" === authentication.user._id + ""){
                     return true;
@@ -69,6 +79,9 @@ angular.module('core').factory('RoomService', ['Authentication','$timeout','Sock
                     case "alert":
                         __this.processAlert(command);
                         break;
+                    case "playerStatus":
+                        __this.processPlayerStatus(command);
+                        break;
                     default:
                         break;
                 }
@@ -100,6 +113,9 @@ angular.module('core').factory('RoomService', ['Authentication','$timeout','Sock
             processAlert : function(command){
                 alert("Alert : " + command.status);
             },
+            processPlayerStatus : function(command){
+                this.room.player = command.player;
+            },
             instanciateDisposableRoom : function(){
                 var __this = this;
                 __this.room = {
@@ -108,11 +124,12 @@ angular.module('core').factory('RoomService', ['Authentication','$timeout','Sock
                         isDisposable : true
                     },
                     player : {
-                        role : "owner"
+
                     },
                     playlist: {
                         sounds : []
-                    }
+                    },
+                    role : "owner"
                 };
             }
         };

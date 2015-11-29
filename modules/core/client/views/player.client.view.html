@@ -2,17 +2,17 @@
     <!--<md-content id="playerPanel" layout-fill>-->
       <div style="background-color: #93A5A5; position: absolute; z-index: 1; padding: 10px;">
         <h3>Conf</h3>
-        <div>role (standalone, synchro, ghost, owner) : {{roomService.room.player.role}}</div>
+        <div>role (standalone, synchro, ghost, owner) : {{roomService.room.role}}</div>
         <div>isDoublePlayer : {{roomService.room.player.isDouble}}</div>
         <div ng-show="roomService.room.conf.isDisposable">isDisposable => user is not loggued</div>
         <div ng-hide="roomService.room.conf.isDisposable">room is persistent</div>
-        <div ng-show="roomService.room.player.role == 'owner' || roomService.room.player.role == 'standalone'">
-          <md-checkbox ng-model="roomService.room.player.isDouble" aria-label="Checkbox 1">
+        <div ng-show="roomService.room.role == 'owner' || roomService.room.role == 'standalone'">
+          <md-checkbox ng-model="roomService.room.player.isDouble" ng-change="toggleDoublePlayer()" aria-label="Checkbox 1">
             Mode double player
           </md-checkbox>
         </div>
-        <div ng-show="roomService.room.player.role != 'owner'">
-          <md-radio-group ng-model="roomService.room.player.role">
+        <div ng-show="roomService.room.role != 'owner'">
+          <md-radio-group ng-model="roomService.room.role" ng-change="toggleRole()">
             <md-radio-button value="ghost" class="md-primary">Ghost</md-radio-button>
             <md-radio-button value="synchro"> Synchro </md-radio-button>
             <md-radio-button value="standalone">Standalone</md-radio-button>

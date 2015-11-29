@@ -8,6 +8,7 @@ angular.module('core').service('InitSocket', ['Authentication', '$state', '$time
 
         this.initListeners = function(){
             if (Socket.socket) {
+                Socket.removeAllListeners();
                 Socket.on('conf.join.ack', function(data){
                     console.log("conf.join.ack");
                     console.log(data);
@@ -21,7 +22,7 @@ angular.module('core').service('InitSocket', ['Authentication', '$state', '$time
                             RoomService.room.player = {};
                         }
                         if(data.status === "create"){
-                            RoomService.room.player.role = "owner";
+                            RoomService.room.role = "owner";
                             if(oldRoom && oldRoom.playlist.sounds.length > 0){
                                 var commande = {
                                     name : "newPlaylist",
@@ -31,7 +32,7 @@ angular.module('core').service('InitSocket', ['Authentication', '$state', '$time
                                 PlaylistService.sendCommand(commande);
                             }
                         }else{
-                            RoomService.room.player.role = "ghost";
+                            RoomService.room.role = "ghost";
                             if(oldRoom && oldRoom.playlist.sounds.length > 0){
                                 if(RoomService.hasOwnerAutorizationForCommand("addSounds")){
                                     if(confirm("Voulez vous ajouter votre file de lecture courante à celle de la room?")){
@@ -61,7 +62,7 @@ angular.module('core').service('InitSocket', ['Authentication', '$state', '$time
                 Socket.on('info', function(command){
                     console.log("info");
                     console.log(command);
-                    if(!(command.name === "playerStatus" && RoomService.room.isStandalone)){
+                    if(!(command.name === "playerStatus" && RoomService.room.role === 'standalone')){
                         console.log("process info call");
                         RoomService.processInfo(command);
                     }

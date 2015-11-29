@@ -46,6 +46,7 @@ module.exports.Room.prototype.copyModele = function(room) {
     this.conf.allowedUsers = room.conf.allowedUsers;
     this.conf.bannedUsers = room.conf.bannedUsers;
     this.conf.isPersistable = true;
+    this.player = room.player;
 
     this.playlist.sounds = room.playlist.sounds;
     this.policies = room.policies;
@@ -136,6 +137,16 @@ module.exports.Room.prototype.processCommand = function(command, socket) {
 module.exports.Room.prototype.processInfo = function(command) {
     //TODO
     console.log("########## Process Info ##############");
+
+    switch(command.name){
+        case "playerStatus":
+            console.log("playerStatus : ");
+            console.log(command.player);
+            this.player = command.player;
+            break;
+        default:
+            break;
+    }
 };
 
 

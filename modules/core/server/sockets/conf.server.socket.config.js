@@ -149,6 +149,38 @@ module.exports = function (io, socket, sockets) {
         console.log("#######################################");
     });
 
+    socket.on('request', function(command) {
+        console.log("");
+        console.log("############# REQUEST #############");
+        if(socket.room){
+            console.log("User : " + socket.request.user.username + " has send info from room : " + socket.room.name);
+            var room = global.roomManager.getRoomByName(socket.room.name);
+            if(room !== null){
+                switch(command.name){
+                    case "playerStatus":
+                        socket.emit('info', {name : "playerStatus", player: room.player});
+                        break;
+                    default:
+                        break;
+                }
+                //if(room.allowEvent(data.name, socket.request.user)){
+                //    room.processInfo(data);
+                //    socket.to(room.conf.name).emit('info', data);
+                //}else{
+                //    //TODO alert not auth
+                //    socket.emit('info', {name : "alert", status: "notAuth"});
+                //}
+            }else{
+                //TODO Alert emit while room is not running
+                socket.emit('info', {name : "alert", status: "desynchro"});
+            }
+        }else{
+            //TODO Alert emit while has no room
+            socket.emit('info', {name : "alert", status: "dataIntegrity"});
+        }
+        console.log("#######################################");
+    });
+
 
     function safeLeave(socket){
         if(socket.room){

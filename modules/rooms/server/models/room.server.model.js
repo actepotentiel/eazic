@@ -51,7 +51,10 @@ var RoomSchema = new Schema({
 		]
 	},
 	player : {
-		isDouble : Boolean
+		isDouble : {
+			type: Boolean,
+			default: true
+		}
 	},
 	playlist : {
 		sounds: [{
