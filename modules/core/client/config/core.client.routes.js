@@ -10,7 +10,7 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider',
             url: '/:params',
             views: {
                 'content@': {
-                    controller: function($scope, $stateParams, Socket, $location, Authentication, RoomService, MyRooms){
+                    controller: function($scope, $stateParams, Socket, $location, Authentication, RoomService, MyRooms, InitSocket){
                         console.log("ROUTING_CONTROLLER");
                         if(Authentication.user){
                             if($stateParams.params){
@@ -20,7 +20,8 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider',
                                 if (!Socket.socket) {
                                     Socket.connect();
                                 }
-
+                                Socket.removeAllListeners();
+                                InitSocket.initListeners();
                                 Socket.emit('conf.join', $stateParams.params);
                             }else{
                                 if(Authentication.user.room){
@@ -41,7 +42,9 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider',
                             }
 
                         }else {
+                            console.log("User non loggued");
                             RoomService.instanciateDisposableRoom();
+                            console.log(RoomService.room);
                             if ($stateParams.params){
                                 $location.path('/');
                             }

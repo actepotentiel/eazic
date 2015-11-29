@@ -17,7 +17,11 @@ angular.module('core').service('InitSocket', ['Authentication', '$state', '$time
                             oldRoom = angular.copy(RoomService.room);
                         }
                         RoomService.room = data.room;
+                        if(typeof RoomService.room.player === 'undefined'){
+                            RoomService.room.player = {};
+                        }
                         if(data.status === "create"){
+                            RoomService.room.player.role = "owner";
                             if(oldRoom && oldRoom.playlist.sounds.length > 0){
                                 var commande = {
                                     name : "newPlaylist",
@@ -27,6 +31,7 @@ angular.module('core').service('InitSocket', ['Authentication', '$state', '$time
                                 PlaylistService.sendCommand(commande);
                             }
                         }else{
+                            RoomService.room.player.role = "ghost";
                             if(oldRoom && oldRoom.playlist.sounds.length > 0){
                                 if(RoomService.hasOwnerAutorizationForCommand("addSounds")){
                                     if(confirm("Voulez vous ajouter votre file de lecture courante à celle de la room?")){

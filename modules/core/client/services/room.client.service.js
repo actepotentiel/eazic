@@ -108,7 +108,7 @@ angular.module('core').factory('RoomService', ['Authentication','$timeout','Sock
                         isDisposable : true
                     },
                     player : {
-
+                        role : "owner"
                     },
                     playlist: {
                         sounds : []

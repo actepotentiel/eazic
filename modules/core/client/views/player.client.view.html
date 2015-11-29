@@ -1,16 +1,55 @@
 <md-content id="PlayerViewContainer" data-ng-controller="PlayerController" layout-fill layout="row">
     <!--<md-content id="playerPanel" layout-fill>-->
-      <md-content id="playerLeftContent" flex="50" style="background-color:red;" layout="column" layout-align="center center">
+      <div style="background-color: #93A5A5; position: absolute; z-index: 1; padding: 10px;">
+        <h3>Conf</h3>
+        <div>role (standalone, synchro, ghost, owner) : {{roomService.room.player.role}}</div>
+        <div>isDoublePlayer : {{roomService.room.player.isDouble}}</div>
+        <div ng-show="roomService.room.conf.isDisposable">isDisposable => user is not loggued</div>
+        <div ng-hide="roomService.room.conf.isDisposable">room is persistent</div>
+        <div ng-show="roomService.room.player.role == 'owner' || roomService.room.player.role == 'standalone'">
+          <md-checkbox ng-model="roomService.room.player.isDouble" aria-label="Checkbox 1">
+            Mode double player
+          </md-checkbox>
+        </div>
+        <div ng-show="roomService.room.player.role != 'owner'">
+          <md-radio-group ng-model="roomService.room.player.role">
+            <md-radio-button value="ghost" class="md-primary">Ghost</md-radio-button>
+            <md-radio-button value="synchro"> Synchro </md-radio-button>
+            <md-radio-button value="standalone">Standalone</md-radio-button>
+          </md-radio-group>
+        </div>
+      </div>
+      <md-content id="playerLeftContent" flex style="background-color:red;" layout="column" layout-align="center center">
         <md-content>
           <span>Player left status</span>
+          <button class="btn btn-corporate" ng-click="lecteurLeftService.sendCommand('play')"><span class="glyphicon glyphicon-play"></span></button>
+          <button class="btn btn-corporate" ng-click="lecteurLeftService.sendCommand('pause')"><span class="glyphicon glyphicon-pause"></span></button>
+          <button class="btn btn-corporate" ng-click="lecteurLeftService.sendCommand('stop')"><span class="glyphicon glyphicon-stop"></span></button>
+          <div style="display: inline;">
+            <button class="btn btn-corporate" ng-click="lecteurLeftService.sendCommand('cutVolume')">
+              <span ng-show="!lecteurLeftService.isMuted" class="glyphicon glyphicon-volume-up"></span>
+              <span ng-show="lecteurLeftService.isMuted" class="glyphicon glyphicon-volume-off"></span>
+            </button>
+            <input type="range" ng-model="lecteurLeftService.volume" min="0" max="100" step="5" style="vertical-align: middle; width: 200px; display: inline;" ng-change="lecteurLeftService.sendCommand('setVolume', '', lecteurLeftService.volume)"/>
+          </div>
         </md-content>
         <md-content>
           <span>Player left content</span>
         </md-content>
       </md-content>
-      <md-content id="playerRightContent" flex="50" style="background-color:blue;" layout="column" layout-align="center center">
+      <md-content ng-show="roomService.room.player.isDouble" id="playerRightContent" flex style="background-color:blue;" layout="column" layout-align="center center">
         <md-content>
           <span>Player right status</span>
+          <button class="btn btn-corporate" ng-click="lecteurLeftService.sendCommand('play')"><span class="glyphicon glyphicon-play"></span></button>
+          <button class="btn btn-corporate" ng-click="lecteurLeftService.sendCommand('pause')"><span class="glyphicon glyphicon-pause"></span></button>
+          <button class="btn btn-corporate" ng-click="lecteurLeftService.sendCommand('stop')"><span class="glyphicon glyphicon-stop"></span></button>
+          <div style="display: inline;">
+            <button class="btn btn-corporate" ng-click="lecteurLeftService.sendCommand('cutVolume')">
+              <span ng-show="!lecteurLeftService.isMuted" class="glyphicon glyphicon-volume-up"></span>
+              <span ng-show="lecteurLeftService.isMuted" class="glyphicon glyphicon-volume-off"></span>
+            </button>
+            <input type="range" ng-model="lecteurLeftService.volume" min="0" max="100" step="5" style="vertical-align: middle; width: 200px; display: inline;" ng-change="lecteurLeftService.sendCommand('setVolume', '', lecteurLeftService.volume)"/>
+          </div>
         </md-content>
         <md-content>
           <span>Player right content</span>
