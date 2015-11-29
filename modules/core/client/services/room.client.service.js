@@ -23,6 +23,7 @@ angular.module('core').factory('RoomService', ['Authentication','$timeout','Sock
                             //TODO Alert user has no room
                             alert("Problème d'intégrité de données, veuillez contacter un administrateur.");
                         }
+                        return;
                     });
                 }
             },
@@ -103,6 +104,7 @@ angular.module('core').factory('RoomService', ['Authentication','$timeout','Sock
                 var __this = this;
                 __this.room = {
                     conf: {
+                        owner : authentication.user,
                         isDisposable : true
                     },
                     player : {

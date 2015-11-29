@@ -55,7 +55,8 @@ module.exports = function (io, socket, sockets) {
                                 console.log("##########################");
                             }else{
                                 console.log("User is the owner of the room, instanciation...");
-
+                                //console.log(socket);
+                                var user = socket.request.user;
                                 safeLeave(socket);
                                 newRoom = new roomManager.Room(roomName, socket.request.user);
                                 newRoom.copyModele(rooms[0]);

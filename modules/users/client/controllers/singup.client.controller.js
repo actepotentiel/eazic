@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('users').controller('SignUpController', ['$scope', '$state', '$http', '$location', '$window', 'Authentication', 'PasswordValidator','PlaylistService', 'Socket','RoomService',
-    function ($scope, $state, $http, $location, $window, Authentication, PasswordValidator, PlaylistService, Socket, RoomService) {
+angular.module('users').controller('SignUpController', ['$scope', '$state', '$http', '$location', '$window', 'Authentication', 'PasswordValidator','PlaylistService', 'Socket','MyRooms',
+    function ($scope, $state, $http, $location, $window, Authentication, PasswordValidator, PlaylistService, Socket, MyRooms) {
 
         console.log('SignUpController');
 
@@ -29,8 +29,15 @@ angular.module('users').controller('SignUpController', ['$scope', '$state', '$ht
                 $scope.authentication.user = response;
                 console.log("USER AUTHENTICATE SIGNUP");
                 PlaylistService.getMyPlaylists();
-                RoomService.getMyRoom();
-
+                MyRooms.get({userId : $scope.authentication.user._id}, function(result){
+                    if(result.length === 1){
+                        $scope.authentication.user.room = result[0];
+                        $location.path("/" + $scope.authentication.user.room.name);
+                    }else{
+                        //TODO Alert user has no room
+                        alert("Problème d'intégrité de données, veuillez contacter un administrateur.");
+                    }
+                });
                 Socket.connect();
                 // And redirect to t
                 // And redirect to the previous or home page
