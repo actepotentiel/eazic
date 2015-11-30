@@ -1,6 +1,6 @@
 <md-content id="PlayerViewContainer" data-ng-controller="PlayerController" layout-fill layout="row">
     <!--<md-content id="playerPanel" layout-fill>-->
-      <div style="background-color: #93A5A5; position: absolute; z-index: 1; padding: 10px;">
+      <div style="background-color: #93A5A5; position: fixed;  z-index: 1;  padding: 10px;  top: 50px;  left: 0;">
         <h3>Conf</h3>
         <div>role (standalone, synchro, ghost, owner) : {{roomService.room.role}}</div>
         <div>isDoublePlayer : {{roomService.room.player.isDouble}}</div>
@@ -21,8 +21,8 @@
       </div>
       <md-content id="playerLeftContent" flex style="background-color:red;" layout="column" layout-align="center center">
         <md-content layout-fill>
-          <div>Player left status : {{roomService.room.player}}</div>
-
+          <div>Player left status : {{roomService.room.player.left.status}}</div>
+          <div>Player left sound : {{roomService.room.player.left.currentSound.title}}</div>
           <button class="btn btn-corporate" ng-click="lecteurLeftService.sendCommand('play')"><span class="glyphicon glyphicon-play"></span></button>
           <button class="btn btn-corporate" ng-click="lecteurLeftService.sendCommand('pause')"><span class="glyphicon glyphicon-pause"></span></button>
           <button class="btn btn-corporate" ng-click="lecteurLeftService.sendCommand('stop')"><span class="glyphicon glyphicon-stop"></span></button>

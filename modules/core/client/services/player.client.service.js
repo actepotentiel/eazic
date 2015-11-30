@@ -32,10 +32,10 @@ angular.module('core').factory('PlayerService', ['Authentication','$timeout','So
                     RoomService.room.player = {};
                 }
                 var varToSwitch;
-                if(command.name == "play" && typeof command.sound != "undefined"){
+                if(command.name === "play" && typeof command.sound !== "undefined"){
                     varToSwitch = command.sound;
                 }else{
-                    if(command.player == "left"){
+                    if(command.player === "left"){
                         varToSwitch = RoomService.room.player.left.currentSound;
                     }else{
                         varToSwitch = RoomService.room.player.right.currentSound;
@@ -55,36 +55,38 @@ angular.module('core').factory('PlayerService', ['Authentication','$timeout','So
                 //}
             },
             haveToProcess: function(command){
+                var value = false;
                 switch(RoomService.room.role){
                     case "owner":
-                        return true;
+                        value = true;
                         break;
                     case "ghost":
-                        return false;
+                        value = false;
                         break;
                     case "synchro":
                         if(RoomService.hasOwnerAutorizationForCommand(command)){
-                            return true;
+                            value = true;
                         }else{
-                            return false;
+                            value = false;
                         }
                         break;
                     case "standalone":
-                        return true;
+                        value = true;
                         break;
                     default:
-                        return false;
+                        value = false;
                         break;
                 }
+                return value;
             },
-            haveToEmit: function(){
+            haveToEmit: function(command){
                 if(Authentication.user){
                     return false;
                 }
-                if(RoomService.room.role == "owner"){
+                if(RoomService.room.role === "owner"){
                     return true;
                 }
-                if(RoomService.room.role == "standalone"){
+                if(RoomService.room.role === "standalone"){
                     return false;
                 }
                 if(RoomService.hasOwnerAutorizationForCommand(command)){

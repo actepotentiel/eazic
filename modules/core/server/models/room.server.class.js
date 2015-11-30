@@ -47,6 +47,12 @@ module.exports.Room.prototype.copyModele = function(room) {
     this.conf.bannedUsers = room.conf.bannedUsers;
     this.conf.isPersistable = true;
     this.player = room.player;
+    if(typeof this.player.left === "undefined"){
+        this.player.left = {};
+    }
+    if(typeof this.player.right === "undefined"){
+        this.player.right = {};
+    }
 
     this.playlist.sounds = room.playlist.sounds;
     this.policies = room.policies;
@@ -141,8 +147,21 @@ module.exports.Room.prototype.processInfo = function(command) {
     switch(command.name){
         case "playerStatus":
             console.log("playerStatus : ");
-            console.log(command.player);
-            this.player = command.player;
+            if(command.player){
+                console.log(command.player);
+                this.player.isDouble = command.player.isDouble;
+            }else if(command.playerStatus){
+                if(command.playerStatus.player === "left"){
+                    this.player.left.currentSound = command.playerStatus.currentSound;
+                    this.player.left.status = command.playerStatus.status;
+                    this.player.left.volume = command.playerStatus.volume;
+                }else{
+                    this.player.right.currentSound = command.playerStatus.currentSound;
+                    this.player.right.status = command.playerStatus.status;
+                    this.player.right.volume = command.playerStatus.volume;
+                }
+            }
+
             break;
         default:
             break;

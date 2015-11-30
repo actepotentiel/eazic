@@ -15,13 +15,13 @@ angular.module('core').controller('SalonController', ['$scope', 'Authentication'
         }
 
         // Add an event listener to the 'chatMessage' event
-        Socket.on('chat', function (message) {
-            if(typeof $scope.chatService.messages === 'undefined'){
-                $scope.chatService.messages = [];
-            }
-            $scope.chatService.writeMessage(message);
-            console.log(message);
-        });
+        //Socket.on('chat', function (message) {
+        //    if(typeof $scope.chatService.messages === 'undefined'){
+        //        $scope.chatService.messages = [];
+        //    }
+        //    $scope.chatService.writeMessage(message);
+        //    console.log(message);
+        //});
 
 
         $scope.sendMessage = function () {

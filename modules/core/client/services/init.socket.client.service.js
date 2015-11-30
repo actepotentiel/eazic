@@ -1,8 +1,8 @@
 'use strict';
 
 // Create the Socket.io wrapper service
-angular.module('core').service('InitSocket', ['Authentication', '$state', '$timeout', 'RoomService','PlaylistService','Socket','ChatService',
-    function (Authentication, $state, $timeout, RoomService, PlaylistService, Socket, ChatService) {
+angular.module('core').service('InitSocket', ['Authentication', '$state', '$timeout', 'RoomService','PlaylistService','Socket','ChatService','PlayerService',
+    function (Authentication, $state, $timeout, RoomService, PlaylistService, Socket, ChatService, PlayerService) {
         // Connect to Socket.io server
 
 
@@ -71,6 +71,11 @@ angular.module('core').service('InitSocket', ['Authentication', '$state', '$time
                     console.log("playlist event");
                     console.log(command);
                     PlaylistService.processCommand(command);
+                });
+                Socket.on('player', function(command){
+                    console.log("player event");
+                    console.log(command);
+                    PlayerService.processCommand(command);
                 });
                 Socket.on('chat', function (message) {
                     if(typeof ChatService.messages === 'undefined'){

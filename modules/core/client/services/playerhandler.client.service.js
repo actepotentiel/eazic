@@ -3,8 +3,8 @@
  */
 'use strict';
 
-angular.module('core').factory('PlayerHandlerService', [
-    function() {
+angular.module('core').factory('PlayerHandlerService', ['RoomService',
+    function(RoomService) {
         var _this = this;
         _this._data = {
             services: window.services,
@@ -12,10 +12,10 @@ angular.module('core').factory('PlayerHandlerService', [
                 console.log("servcie Handler : ");
                 console.log(this.services);
                 var varToSwitch;
-                if(command.name == "play" && typeof command.sound != "undefined"){
+                if(command.name === "play" && typeof command.sound !== "undefined"){
                     varToSwitch = command.sound;
                 }else{
-                    if(command.player == "left"){
+                    if(command.player === "left"){
                         varToSwitch = RoomService.room.player.left.currentSound;
                     }else{
                         varToSwitch = RoomService.room.player.right.currentSound;
@@ -23,7 +23,7 @@ angular.module('core').factory('PlayerHandlerService', [
                 }
                 var existSourceHandler = false;
                 this.services.forEach(function(service){
-                    if(service.sourceName == varToSwitch.sourceName){
+                    if(service.sourceName === varToSwitch.sourceName){
                         console.log("Find player handler for : " + varToSwitch.sourceName);
                         existSourceHandler = true;
                         service.processCommand(command);

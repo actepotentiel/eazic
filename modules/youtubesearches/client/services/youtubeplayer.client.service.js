@@ -15,22 +15,67 @@ angular.module('core').factory('YoutubePlayerService', ['PlayerHandlerService','
                 PlayerHandlerService.services.push(this);
             },
             processCommand: function(command){
+                var player;
+                if(command.player === "left"){
+                    player = RoomService.room.player.left;
+                }else{
+                    player = RoomService.room.player.right;
+                }
                 switch(command.name){
                     case "play":
                         console.log("processPlayOnYoutube");
-                        if(typeof RoomService.room.player.left === "undefined"){
-                            RoomService.room.player.left = {};
+                        if(command.sound){
+                            if(typeof player === "undefined"){
+                                player = {};
+                            }
+                            player.currentSound = command.sound;
                         }
-                        RoomService.room.player.left.currentSound = command.sound;
+                        //TODO play current sound
+                        RoomService.sendInfo({
+                            name: 'playerStatus',
+                            playerStatus: {
+                                player: command.player,
+                                currentSound : command.sound,
+                                status: "playing",
+                                volume: player.volume
+                            }
+                        });
                         break;
                     case "pause":
                         console.log("processPauseOnYoutube");
+                        RoomService.sendInfo({
+                            name: 'playerStatus',
+                            playerStatus: {
+                                player: command.player,
+                                currentSound : command.sound,
+                                status: "paused",
+                                volume: player.volume
+                            }
+                        });
                         break;
                     case "setVolume":
-                        console.log("processPauseOnYoutube");
+                        console.log("processSetVolumeOnYoutube");
+                        RoomService.sendInfo({
+                            name: 'playerStatus',
+                            playerStatus: {
+                                player: command.player,
+                                currentSound : command.sound,
+                                status: player.status,
+                                volume: player.volume
+                            }
+                        });
                         break;
                     case "stop":
-                        console.log("processPauseOnYoutube");
+                        console.log("processStopOnYoutube");
+                        RoomService.sendInfo({
+                            name: 'playerStatus',
+                            playerStatus: {
+                                player: command.player,
+                                currentSound : command.sound,
+                                status: "stopped",
+                                volume: player.volume
+                            }
+                        });
                         break;
                     default:
                         alert("command has no handler : " + command.name);

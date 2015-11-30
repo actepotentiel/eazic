@@ -28,10 +28,10 @@ angular.module('core').factory('RoomService', ['Authentication','$timeout','Sock
                 }
             },
             sendInfo: function(command){
-                if(command.name != "ban"){
+                if(command.name !== "ban"){
                     this.processInfo(command);
                 }
-                if(!(command.name == "playerStatus" && this.room.role == "standalone")){
+                if(!(command.name === "playerStatus" && this.room.role === "standalone")){
                     Socket.emit('info', command);
                 }
 
@@ -114,7 +114,26 @@ angular.module('core').factory('RoomService', ['Authentication','$timeout','Sock
                 alert("Alert : " + command.status);
             },
             processPlayerStatus : function(command){
-                this.room.player = command.player;
+                if(command.player){
+                    this.room.player.isDouble = command.player.isDouble;
+                }else if(command.playerStatus){
+                    if(command.playerStatus.player === "left"){
+                        if(typeof this.room.player.left === "undefined"){
+                            this.room.player.left = {};
+                        }
+                        this.room.player.left.currentSound = command.playerStatus.currentSound;
+                        this.room.player.left.status = command.playerStatus.status;
+                        this.room.player.left.volume = command.playerStatus.volume;
+                    }else{
+                        if(typeof this.room.player.right === "undefined"){
+                            this.room.player.right = {};
+                        }
+                        this.room.player.right.currentSound = command.playerStatus.currentSound;
+                        this.room.player.right.status = command.playerStatus.status;
+                        this.room.player.right.volume = command.playerStatus.volume;
+                    }
+                }
+
             },
             instanciateDisposableRoom : function(){
                 var __this = this;
@@ -124,6 +143,8 @@ angular.module('core').factory('RoomService', ['Authentication','$timeout','Sock
                         isDisposable : true
                     },
                     player : {
+                        left : {},
+                        right: {}
 
                     },
                     playlist: {

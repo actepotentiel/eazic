@@ -16,11 +16,11 @@ angular.module('core').controller('PlaylistController', ['$scope', 'PlaylistServ
             $scope.playlistService.getMyPlaylists();
         }
 
-        Socket.on('playlist', function(command){
-            console.log("playlist event");
-            console.log(command);
-            $scope.playlistService.processCommand(command);
-        });
+        //Socket.on('playlist', function(command){
+        //    console.log("playlist event");
+        //    console.log(command);
+        //    $scope.playlistService.processCommand(command);
+        //});
 
         $scope.playSound = function(sound, player){
             $scope.playerService.sendCommand({
