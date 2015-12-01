@@ -3,12 +3,13 @@
  */
 'use strict';
 
-angular.module('core').controller('PlayerController', ['$scope', 'Authentication', 'Socket', 'PlaylistService','RoomService',
-    function($scope, Authentication, Socket, PlaylistService, RoomService) {
+angular.module('core').controller('PlayerController', ['$scope', 'Authentication', 'Socket', 'PlaylistService','RoomService','PlayerService',
+    function($scope, Authentication, Socket, PlaylistService, RoomService, PlayerService) {
         // This provides Authentication context.
         $scope.authentication = Authentication;
         $scope.playlistService = PlaylistService;
         $scope.roomService = RoomService;
+        $scope.playerService = PlayerService;
 
 
         //$scope.role = $scope.roomService.room.role;
@@ -18,6 +19,35 @@ angular.module('core').controller('PlayerController', ['$scope', 'Authentication
             $scope.roomService.sendInfo({
                 name : "playerStatus",
                 player : $scope.roomService.room.player
+            });
+        };
+
+        $scope.play = function(player){
+            $scope.playerService.sendCommand({
+                name: "play",
+                player: player
+            });
+        };
+
+        $scope.pause = function(player){
+            $scope.playerService.sendCommand({
+                name: "pause",
+                player: player
+            });
+        };
+
+        $scope.stop = function(player){
+            $scope.playerService.sendCommand({
+                name: "stop",
+                player: player
+            });
+        };
+
+        $scope.setVolume = function(player){
+            $scope.playerService.sendCommand({
+                name: "setVolume",
+                player: player,
+                volume: 100
             });
         };
 

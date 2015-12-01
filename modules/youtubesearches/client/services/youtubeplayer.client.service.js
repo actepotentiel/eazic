@@ -35,7 +35,7 @@ angular.module('core').factory('YoutubePlayerService', ['PlayerHandlerService','
                             name: 'playerStatus',
                             playerStatus: {
                                 player: command.player,
-                                currentSound : command.sound,
+                                currentSound : player.currentSound,
                                 status: "playing",
                                 volume: player.volume
                             }
@@ -47,7 +47,7 @@ angular.module('core').factory('YoutubePlayerService', ['PlayerHandlerService','
                             name: 'playerStatus',
                             playerStatus: {
                                 player: command.player,
-                                currentSound : command.sound,
+                                currentSound : player.currentSound,
                                 status: "paused",
                                 volume: player.volume
                             }
@@ -59,7 +59,7 @@ angular.module('core').factory('YoutubePlayerService', ['PlayerHandlerService','
                             name: 'playerStatus',
                             playerStatus: {
                                 player: command.player,
-                                currentSound : command.sound,
+                                currentSound : player.currentSound,
                                 status: player.status,
                                 volume: player.volume
                             }
@@ -71,7 +71,7 @@ angular.module('core').factory('YoutubePlayerService', ['PlayerHandlerService','
                             name: 'playerStatus',
                             playerStatus: {
                                 player: command.player,
-                                currentSound : command.sound,
+                                currentSound : player.currentSound,
                                 status: "stopped",
                                 volume: player.volume
                             }

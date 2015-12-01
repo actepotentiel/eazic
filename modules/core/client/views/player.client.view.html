@@ -23,9 +23,9 @@
         <md-content layout-fill>
           <div>Player left status : {{roomService.room.player.left.status}}</div>
           <div>Player left sound : {{roomService.room.player.left.currentSound.title}}</div>
-          <button class="btn btn-corporate" ng-click="lecteurLeftService.sendCommand('play')"><span class="glyphicon glyphicon-play"></span></button>
-          <button class="btn btn-corporate" ng-click="lecteurLeftService.sendCommand('pause')"><span class="glyphicon glyphicon-pause"></span></button>
-          <button class="btn btn-corporate" ng-click="lecteurLeftService.sendCommand('stop')"><span class="glyphicon glyphicon-stop"></span></button>
+          <button class="btn btn-corporate" ng-click="play('left')"><span class="glyphicon glyphicon-play"></span></button>
+          <button class="btn btn-corporate" ng-click="pause('left')"><span class="glyphicon glyphicon-pause"></span></button>
+          <button class="btn btn-corporate" ng-click="stop('left')"><span class="glyphicon glyphicon-stop"></span></button>
           <div style="display: inline;">
             <button class="btn btn-corporate" ng-click="lecteurLeftService.sendCommand('cutVolume')">
               <span ng-show="!lecteurLeftService.isMuted" class="glyphicon glyphicon-volume-up"></span>
@@ -40,10 +40,11 @@
       </md-content>
       <md-content ng-show="roomService.room.player.isDouble" id="playerRightContent" flex style="background-color:blue;" layout="column" layout-align="center center">
         <md-content>
-          <span>Player right status</span>
-          <button class="btn btn-corporate" ng-click="lecteurLeftService.sendCommand('play')"><span class="glyphicon glyphicon-play"></span></button>
-          <button class="btn btn-corporate" ng-click="lecteurLeftService.sendCommand('pause')"><span class="glyphicon glyphicon-pause"></span></button>
-          <button class="btn btn-corporate" ng-click="lecteurLeftService.sendCommand('stop')"><span class="glyphicon glyphicon-stop"></span></button>
+          <div>Player right status : {{roomService.room.player.right.status}}</div>
+          <div>Player right sound : {{roomService.room.player.right.currentSound.title}}</div>
+          <button class="btn btn-corporate" ng-click="play('right')"><span class="glyphicon glyphicon-play"></span></button>
+          <button class="btn btn-corporate" ng-click="pause('right')"><span class="glyphicon glyphicon-pause"></span></button>
+          <button class="btn btn-corporate" ng-click="stop('right')"><span class="glyphicon glyphicon-stop"></span></button>
           <div style="display: inline;">
             <button class="btn btn-corporate" ng-click="lecteurLeftService.sendCommand('cutVolume')">
               <span ng-show="!lecteurLeftService.isMuted" class="glyphicon glyphicon-volume-up"></span>

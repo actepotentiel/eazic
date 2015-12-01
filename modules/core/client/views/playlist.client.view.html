@@ -8,6 +8,7 @@
         <li ng-repeat="item in roomService.room.playlist.sounds track by $index">
           {{ item.title }}
           <span class="glyphicon glyphicon-play" ng-click="playSound(item, 'left')"></span>
+          <span class="glyphicon glyphicon-step-backward" ng-click="playSound(item, 'right')"></span>
           <span class="glyphicon glyphicon-trash" ng-click="removeSound(item)"></span>
         </li>
       </ul>
