@@ -73,7 +73,7 @@ angular.module('core')
             $scope.currentTab = {
                 isOk: false,
                 title: "Recherche..."
-            }
+            };
             $scope.tabs.push($scope.currentTab);
         };
         $scope.addTab();
