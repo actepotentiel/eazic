@@ -79,7 +79,7 @@ module.exports = function (io, socket, sockets) {
                 if(room.allowJoin(socket.request.user)){
                     //ON REJOINT LA ROOM
                     console.log("User is authorized to join the room");
-
+                    console.log(room.player);
                     safeLeave(socket);
                     room.addUser(socket.request.user);
 
@@ -158,7 +158,7 @@ module.exports = function (io, socket, sockets) {
             if(room !== null){
                 switch(command.name){
                     case "playerStatus":
-                        socket.emit('info', {name : "playerStatus", player: room.player});
+                        socket.emit('info', {name : "playerStatus", playerTotal: room.player});
                         break;
                     default:
                         break;

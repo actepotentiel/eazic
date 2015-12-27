@@ -3,11 +3,16 @@
  */
 'use strict';
 
-angular.module('core').factory('YoutubePlayerService', ['PlayerHandlerService','RoomService',
-    function(PlayerHandlerService, RoomService) {
+
+
+angular.module('core').factory('YoutubePlayerService', ['PlayerHandlerService','RoomService','$rootScope','$timeout',
+    function(PlayerHandlerService, RoomService, $rootScope, $timeout) {
         var _this = this;
+        var scope = $rootScope;
         _this._data = {
             sourceName : "youtube",
+            playerLeft : window.playerLeft,
+            playerRight : window.playerRight,
             registerService: function(){
                 if(typeof PlayerHandlerService.services === "undefined"){
                     PlayerHandlerService.services = [];
@@ -15,11 +20,15 @@ angular.module('core').factory('YoutubePlayerService', ['PlayerHandlerService','
                 PlayerHandlerService.services.push(this);
             },
             processCommand: function(command){
+                var self = this;
                 var player;
+                var playerAPI;
                 if(command.player === "left"){
                     player = RoomService.room.player.left;
+                    playerAPI = self.playerLeft;
                 }else{
                     player = RoomService.room.player.right;
+                    playerAPI = self.playerRight;
                 }
                 switch(command.name){
                     case "play":
@@ -29,8 +38,9 @@ angular.module('core').factory('YoutubePlayerService', ['PlayerHandlerService','
                                 player = {};
                             }
                             player.currentSound = command.sound;
+                        }else{
+                            playerAPI.playVideo();
                         }
-                        //TODO play current sound
                         RoomService.sendInfo({
                             name: 'playerStatus',
                             playerStatus: {
@@ -43,6 +53,7 @@ angular.module('core').factory('YoutubePlayerService', ['PlayerHandlerService','
                         break;
                     case "pause":
                         console.log("processPauseOnYoutube");
+                        playerAPI.pauseVideo();
                         RoomService.sendInfo({
                             name: 'playerStatus',
                             playerStatus: {
@@ -55,6 +66,8 @@ angular.module('core').factory('YoutubePlayerService', ['PlayerHandlerService','
                         break;
                     case "setVolume":
                         console.log("processSetVolumeOnYoutube");
+                        playerAPI.setVolume(command.volume);
+                        player.volume = command.volume;
                         RoomService.sendInfo({
                             name: 'playerStatus',
                             playerStatus: {
@@ -67,6 +80,7 @@ angular.module('core').factory('YoutubePlayerService', ['PlayerHandlerService','
                         break;
                     case "stop":
                         console.log("processStopOnYoutube");
+                        playerAPI.stopVideo();
                         RoomService.sendInfo({
                             name: 'playerStatus',
                             playerStatus: {
@@ -74,6 +88,21 @@ angular.module('core').factory('YoutubePlayerService', ['PlayerHandlerService','
                                 currentSound : player.currentSound,
                                 status: "stopped",
                                 volume: player.volume
+                            }
+                        });
+                        break;
+                    case "seekTo":
+                        console.log("processSeekToOnYoutube");
+                        playerAPI.seekTo(command.seekTo);
+                        player.seekTo = command.seekTo;
+                        RoomService.sendInfo({
+                            name: 'playerStatus',
+                            playerStatus: {
+                                player: command.player,
+                                currentSound : player.currentSound,
+                                status: "stopped",
+                                volume: player.volume,
+                                seekTo: command.seekTo
                             }
                         });
                         break;

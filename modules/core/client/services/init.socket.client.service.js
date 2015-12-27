@@ -53,6 +53,7 @@ angular.module('core').service('InitSocket', ['Authentication', '$state', '$time
                                     }
                                 }
                             }
+
                         }
                     }else{
                         //TODO process alert
@@ -75,7 +76,9 @@ angular.module('core').service('InitSocket', ['Authentication', '$state', '$time
                 Socket.on('player', function(command){
                     console.log("player event");
                     console.log(command);
-                    PlayerService.processCommand(command);
+                    if(PlayerService.haveToProcess(command) && RoomService.room.role !== "standalone"){
+                        PlayerService.processCommand(command);
+                    }
                 });
                 Socket.on('chat', function (message) {
                     if(typeof ChatService.messages === 'undefined'){

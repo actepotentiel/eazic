@@ -46,7 +46,7 @@ module.exports.Room.prototype.copyModele = function(room) {
     this.conf.allowedUsers = room.conf.allowedUsers;
     this.conf.bannedUsers = room.conf.bannedUsers;
     this.conf.isPersistable = true;
-    this.player = room.player;
+    this.player = JSON.parse(JSON.stringify(room.player));
     if(typeof this.player.left === "undefined"){
         this.player.left = {};
     }
@@ -94,18 +94,23 @@ module.exports.Room.prototype.allowEvent = function(eventName, user) {
 
     console.log("AllowEvent : " + eventName + " " + user.username);
 
+
     if(this.conf.owner._id + "" === user._id + ""){
+        console.log("User is owner of the room, return true");
         return true;
     }
 
     for(var i = 0 ; i < this.policies.length ; i++){
         for(var j = 0 ; j < this.policies[i].users.length ; j++){
             if(this.policies[i].users[j] + "" === user._id + ""){
+                console.log("User finded");
                 if(this.policies[i].name === "vip"){
+                    console.log("User group is VIP, return true");
                     return true;
                 }
                 for(var k = 0 ; k < this.policies[i].allowedCommands.length ; k++){
                     if(this.policies[i].allowedCommands[k].commandName === eventName){
+                        console.log("Command is allowed for User group");
                         return true;
                     }
                 }
@@ -160,6 +165,7 @@ module.exports.Room.prototype.processInfo = function(command) {
                     this.player.right.status = command.playerStatus.status;
                     this.player.right.volume = command.playerStatus.volume;
                 }
+                console.log(this.player);
             }
 
             break;

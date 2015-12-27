@@ -13,10 +13,10 @@ module.exports = function (io, socket) {
             if(room !== null){
                 if(room.allowEvent(command.nom, socket.request.user)){
                     console.log("Emite playlist event to room " + socket.room.conf.name);
-                    socket.broadcast.to(socket.room.conf.name).emit('playlist', command);
+                    socket.broadcast.to(socket.room.conf.name).emit('player', command);
                 }else{
                     //TODO alert notAuth
-                    console.log("Room is not running, aborting...");
+                    console.log("User is not authorized, aborting...");
                     socket.emit("info", {name : "alert", status: "notAuth"});
                 }
             }else{

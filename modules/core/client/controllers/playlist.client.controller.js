@@ -3,14 +3,16 @@
  */
 'use strict';
 
-angular.module('core').controller('PlaylistController', ['$scope', 'PlaylistService', '$stateParams', 'Authentication', 'Playlists', 'Socket','PlayerService',
-    function($scope, PlaylistService, $stateParams, Authentication, Playlists, Socket, PlayerService) {
+angular.module('core').controller('PlaylistController', ['$scope', 'PlaylistService', '$stateParams', 'Authentication', 'Playlists', 'Socket','PlayerService','RoomService',
+    function($scope, PlaylistService, $stateParams, Authentication, Playlists, Socket, PlayerService, RoomService) {
         // This provides Authentication context.
         $scope.authentication = Authentication;
 
         $scope.playlistService = PlaylistService;
 
         $scope.playerService = PlayerService;
+
+        $scope.roomSErvice = RoomService;
 
         if($scope.authentication.user){
             $scope.playlistService.getMyPlaylists();
@@ -54,10 +56,8 @@ angular.module('core').controller('PlaylistController', ['$scope', 'PlaylistServ
 
         $scope.saveList = function(){
             var soundsOfPlaylist = [];
-            if(typeof $scope.playlistService.sounds === 'undefined'){
-                $scope.playlistService.sounds = [];
-            }
-            $scope.playlistService.sounds.forEach(function(currentSound, index){
+
+            $scope.roomService.room.playlist.sounds.forEach(function(currentSound, index){
                 var sound = currentSound;
                 sound.order = index;
                 soundsOfPlaylist.push(sound);

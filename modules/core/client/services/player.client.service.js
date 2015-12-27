@@ -14,13 +14,14 @@ angular.module('core').factory('PlayerService', ['Authentication','$timeout','So
                 if(authentication.user){
                     if(this.haveToEmit(command)){
                         Socket.emit('player', command);
-                        this.processCommand(command);
+                        //this.processCommand(command);
                     }
                     if(this.haveToProcess(command)){
                         this.processCommand(command);
                     }
                     if(!(this.haveToProcess(command) || this.haveToEmit(command))){
                         //TODO alert desynchro situation impossible
+                        alert("Vous n'avez pas le droit de lancer cette commande, passez en standalone");
                     }
                 }else{
                     this.processCommand(command);
@@ -55,22 +56,28 @@ angular.module('core').factory('PlayerService', ['Authentication','$timeout','So
                 //}
             },
             haveToProcess: function(command){
+                console.log("Checking if user have to process...");
                 var value = false;
                 switch(RoomService.room.role){
                     case "owner":
+                        console.log("user is owner, return true...");
                         value = true;
                         break;
                     case "ghost":
+                        console.log("user is ghost, return false...");
                         value = false;
                         break;
                     case "synchro":
                         if(RoomService.hasOwnerAutorizationForCommand(command)){
+                            console.log("user is synch and have auth, return true...");
                             value = true;
                         }else{
+                            console.log("user is sync and NOT have auth, return false...");
                             value = false;
                         }
                         break;
                     case "standalone":
+                        console.log("user is standalone, reuturn true...");
                         value = true;
                         break;
                     default:
@@ -80,16 +87,20 @@ angular.module('core').factory('PlayerService', ['Authentication','$timeout','So
                 return value;
             },
             haveToEmit: function(command){
-                if(Authentication.user){
+                console.log("checking if user have to emit...");
+                if(!Authentication.user){
+                    console.log("user is not auth...");
                     return false;
                 }
                 if(RoomService.room.role === "owner"){
+                    console.log("user is owner, return true...");
                     return true;
                 }
                 if(RoomService.room.role === "standalone"){
+                    console.log("user is standalone, aborting...");
                     return false;
                 }
-                if(RoomService.hasOwnerAutorizationForCommand(command)){
+                if(RoomService.hasOwnerAutorizationForCommand(command.name)){
                     return true;
                 }
                 return false;

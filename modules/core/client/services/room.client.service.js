@@ -38,6 +38,7 @@ angular.module('core').factory('RoomService', ['Authentication','$timeout','Sock
 
             },
             hasOwnerAutorizationForCommand : function(nomCommand){
+                console.log("checking for user rights...");
                 if(this.room.conf.owner._id + "" === authentication.user._id + ""){
                     return true;
                 }else{
@@ -47,16 +48,19 @@ angular.module('core').factory('RoomService', ['Authentication','$timeout','Sock
                             if(this.room.policies[i].users[j] + "" === authentication.user._id + ""){
                                 console.log("Finded user in policies");
                                 if(this.room.policies[i].name + "" === "vip" && nomCommand !== "playerStatus"){
+                                    console.log("User is in VIPs, return true");
                                     return true;
                                 }
                                 for(var k = 0 ; k < this.room.policies[i].allowedCommands.length ; k++){
                                     if(this.room.policies[i].allowedCommands[k].commandName + "" === nomCommand + ""){
+                                        console.log("Command is allowed for user's group");
                                         return true;
                                     }
                                 }
                             }
                         }
                     }
+                    console.log("Command is NOT allowed for user's group");
                     return false;
                 }
             },
@@ -88,7 +92,7 @@ angular.module('core').factory('RoomService', ['Authentication','$timeout','Sock
             },
             processUserLeave : function(command){
                 console.log("process userLeave");
-
+                var self = this;
                 this.room.messages.unshift({
                     text: command.user.username + "has left the room...",
                     user: {username : "Server"},
@@ -96,7 +100,7 @@ angular.module('core').factory('RoomService', ['Authentication','$timeout','Sock
                 });
                 this.room.conf.users.forEach(function(user, index){
                     if(user._id + "" === command.user._id + ""){
-                        this.room.conf.users.splice(index, 1);
+                        self.room.conf.users.splice(index, 1);
                     }
                 });
             },
@@ -132,6 +136,8 @@ angular.module('core').factory('RoomService', ['Authentication','$timeout','Sock
                         this.room.player.right.status = command.playerStatus.status;
                         this.room.player.right.volume = command.playerStatus.volume;
                     }
+                }else if(command.playerTotal){
+                    this.room.player = command.playerTotal;
                 }
 
             },

@@ -72,7 +72,8 @@
     "swig": "^1.4.2",
     "validator": "^3.41.2",
     "vimeo": "^1.1.4",
-    "youtube-api": "^1.2.1"
+    "youtube-api": "^1.2.1",
+    "angular-youtube-embed": "~1.1.1"
   },
   "devDependencies": {
     "coveralls": "^2.11.4",

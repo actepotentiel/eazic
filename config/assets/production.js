@@ -24,6 +24,7 @@ module.exports = {
         'public/lib/jquery/dist/jquery.js',
         'public/lib/angular-translate/angular-translate.min.js',
         'public/lib/angular-translate-loader-static-files/angular-translate-loader-static-files.min.js',
+        'public/lib/angular-youtube-embed/src/angular-youtube-embed.js',
         'public/custom-lib/custom-lib.js'
       ]
     },

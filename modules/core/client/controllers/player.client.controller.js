@@ -43,11 +43,30 @@ angular.module('core').controller('PlayerController', ['$scope', 'Authentication
             });
         };
 
-        $scope.setVolume = function(player){
+        $scope.setVolume = function(player, volume){
+            console.log(player, volume);
             $scope.playerService.sendCommand({
                 name: "setVolume",
                 player: player,
-                volume: 100
+                volume: volume
+            });
+        };
+
+        $scope.seekTo = function(playerSide, seekTo){
+            console.log(playerSide, seekTo);
+            //var player;
+            //if(playerSide === 'left'){
+            //    player = $scope.roomService.room.player.left.currentSound.
+            //}else{
+            //
+            //}
+            //
+            //var second =
+
+            $scope.playerService.sendCommand({
+                name: "seekTo",
+                player: playerSide,
+                seekTo: seekTo
             });
         };
 
