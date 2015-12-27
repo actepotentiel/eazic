@@ -29,6 +29,7 @@ exports.search = function(req,res) {
 			item.sourceName = 'dailymotion';
 			item.sourceId = results.list[video].id;
 			item.image = results.list[video].thumbnail_240_url || '/images/sound_default.png';
+			item.duration = results.list[video].duration;
 			//item.embed = results.list[video].embed_html;
 			formattedResults.push(item);
 		}
