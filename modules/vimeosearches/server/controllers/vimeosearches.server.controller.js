@@ -34,7 +34,6 @@ exports.search = function(req, res) {
 			item.title = results.data[video].name;
 			item.sourceName = 'vimeo';
 			item.sourceId = results.data[video].uri;
-			console.log(results.data[video].pictures);
 			if (results.data[video].pictures.length>2) {
 				item.image = results.data[video].pictures.sizes[2].link;
 			} else {
