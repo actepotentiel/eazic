@@ -102,8 +102,6 @@ angular.module('core').controller('PlaylistController', ['$scope', 'PlaylistServ
                     console.log(result);
                     $scope.playlistService.getMyPlaylists();
                 });
-
-
             }
         };
 
