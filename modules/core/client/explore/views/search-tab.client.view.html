@@ -1,0 +1,63 @@
+<md-content class="resultsContainer" layout="row" layout-fill>
+    <md-content layout="column" layout-fill>
+    <md-toolbar class="md-theme-light">
+    <h2 class="md-toolbar-tools">
+    <span>Youtube</span>
+    </h2>
+    </md-toolbar>
+    <ul ng-repeat="item in youtubeResult track by $index" >
+    <li ng-click="addToList(item)">{{item.title}}</li>
+    </ul>
+    </md-content>
+    <md-content layout="column" layout-fill>
+    <md-toolbar class="md-theme-light">
+    <h2 class="md-toolbar-tools">
+    <span>Vimeo</span>
+    </h2>
+    </md-toolbar>
+    <ul ng-repeat="item in vimeoResult track by $index" layout="column">
+    <li ng-click="addToList(item)">{{item.title}}</li>
+    </ul>
+    </md-content>
+    <md-content layout="column" layout-fill>
+    <md-toolbar class="md-theme-light">
+    <h2 class="md-toolbar-tools">
+    <span>Soundcl</span>
+    </h2>
+    </md-toolbar>
+    <ul ng-repeat="item in soundcloudResult track by $index" layout="column">
+    <li ng-click="addToList(item)">{{item.title}}</li>
+    </ul>
+    </md-content>
+    <md-content layout="column" layout-fill>
+    <md-toolbar class="md-theme-light">
+    <h2 class="md-toolbar-tools">
+    <span>Deezer</span>
+    </h2>
+    </md-toolbar>
+    <ul ng-repeat="item in deezerResult track by $index" layout="column">
+    <li ng-click="addToList(item)">{{item.title}}</li>
+    </ul>
+    </md-content>
+    <md-content layout="column" layout-fill>
+    <md-toolbar class="md-theme-light">
+    <h2 class="md-toolbar-tools">
+    <span>Spotify</span>
+    </h2>
+    </md-toolbar>
+    <ul ng-repeat="item in spotifyResult track by $index" layout="column">
+    <li ng-click="addToList(item)">{{item.title}}</li>
+    </ul>
+    </md-content>
+    <md-content layout="column" layout-fill>
+    <md-toolbar class="md-theme-light">
+    <h2 class="md-toolbar-tools">
+    <span>Dailymotion</span>
+    </h2>
+    </md-toolbar>
+    <ul ng-repeat="item in dailymotionResult track by $index" layout="column">
+    <li ng-click="addToList(item)">{{item.title}}</li>
+    </ul>
+    </md-content>
+</md-content>
+
