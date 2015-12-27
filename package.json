@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "acl": "~0.4.4",
+    "angular-youtube-embed": "~1.1.1",
     "async": "^1.5.0",
     "body-parser": "^1.13.1",
     "bower": "^1.6.5",
@@ -47,6 +48,7 @@
     "lodash": "^3.10.0",
     "method-override": "^2.3.3",
     "mocha": "~1.20.0",
+    "moment": "^2.10.6",
     "mongoose": "^4.2.5",
     "morgan": "^1.6.1",
     "multer": "0.1.8",
@@ -72,8 +74,7 @@
     "swig": "^1.4.2",
     "validator": "^3.41.2",
     "vimeo": "^1.1.4",
-    "youtube-api": "^1.2.1",
-    "angular-youtube-embed": "~1.1.1"
+    "youtube-api": "^1.2.1"
   },
   "devDependencies": {
     "coveralls": "^2.11.4",

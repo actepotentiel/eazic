@@ -8,47 +8,80 @@ var _ = require('lodash'),
 	mongoose = require('mongoose'),
 	Youtubesearch = mongoose.model('Youtubesearch'),
 	youtubeApi = require('youtube-api'),
-	errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller'));
+	errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
+	moment = require('moment');
 
 youtubeApi.authenticate({
 	type: "key",
 	key: 'AIzaSyBVsIBrr7VmuhNN-NvRVWw-gZA4vjj1YeA'
 });
 
+exports.getVideoDurations = function (req, res) {
+	res.jsonp(req.body.formattedResponse);
+};
 
 /*
 * Perform a research on youtube datas
 * */
 exports.search = function(req, res) {
 	console.log(req.body);
+	var self = this;
 
 	youtubeApi.search.list({
 		q: req.body.q,
 		part: "snippet",
 		maxResults: 20
 	}, function(error, results) {
-		var formattedResults = [];
-		var formattedMetas = results.pageInfo;
-		formattedMetas.nextPage = results.nextPageToken;
-		formattedMetas.query = req.body;
-		for (var video in results.items) {
-			var item = {};
-			item.title = results.items[video].snippet.title;
-			item.sourceName = 'youtube';
-			item.sourceId = results.items[video].id.videoId || results.items[video].id.playlistId || results.items[video].id.channelId;
-			item.image = results.items[video].snippet.thumbnails.medium.url;
-			item.kind = results.items[video].id.kind.slice(8);
-			formattedResults.push(item);
-		}
-		var formattedResponse = {
-			youtube: {
-				infos : formattedMetas,
-				items : formattedResults
+		if (error) res.jsonp(error);
+		else {
+			var formattedResults = [];
+			var formattedMetas = results.pageInfo;
+			formattedMetas.nextPage = results.nextPageToken;
+			formattedMetas.query = req.body;
+			var ids = "";
+			for (var video = 0; video<results.items.length; video++) {
+				var item = {};
+				item.title = results.items[video].snippet.title;
+				item.sourceName = 'youtube';
+				item.sourceId = results.items[video].id.videoId || results.items[video].id.playlistId || results.items[video].id.channelId;
+				item.image = results.items[video].snippet.thumbnails.medium.url;
+				item.kind = results.items[video].id.kind.slice(8);
+				if (video===results.items.length-1) {
+					ids += item.sourceId;
+				} else {
+					ids += item.sourceId+",";
+				}
+				formattedResults.push(item);
 			}
-		};
-		res.jsonp(formattedResponse || error);
+			youtubeApi.videos.list({
+				id:ids,
+				part: 'id,contentDetails',
+				fields: 'items(contentDetails(duration),id)'
+			}, function (err, resp) {
+				if (err) {
+					res.jsonp(err);
+				} else {
+					var idDuration = resp.items;
+					formattedResults = formattedResults.map(function (video) {
+						var elem = _(idDuration).find(function(idDurationItem) {
+							return idDurationItem.id === video.sourceId;
+						});
+						video.duration = moment.duration(elem.contentDetails.duration, moment.ISO_8601).asSeconds();
+						return video;
+					});
+					var formattedResponse = {
+						youtube: {
+							infos: formattedMetas,
+							items: formattedResults
+						}
+					};
+					res.jsonp(formattedResponse);
+				}
+			});
+		}
 	});
 };
+
 
 /**
  * Create a Youtubesearch
