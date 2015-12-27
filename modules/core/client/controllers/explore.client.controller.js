@@ -4,21 +4,13 @@
 'use strict';
 
 angular.module('core')
-    .directive('searchTab', function(){
-        return {
-            restrict: 'E',
-            replace: true,
-            templateUrl: 'modules/core/client/explore/views/search-tab.client.view.html',
-            scope: {
-                searchResults: '='
-            }
-        };
-    })
     .controller('ExploreController', ['$scope', 'Authentication', 'PlaylistService', 'DailymotionSearch', 'DeezerSearch', 'SoundcloudSearch', 'SpotifySearch', 'VimeoSearch', 'YoutubeSearch',
     function($scope, Authentication, PlaylistService, DailymotionSearch, DeezerSearch, SoundcloudSearch, SpotifySearch, VimeoSearch, YoutubeSearch) {
         // This provides Authentication context.
         $scope.authentication = Authentication;
         $scope.results = {};
+
+        $scope.Math = window.Math;
 
         $scope.getSearch = function(){
 
@@ -72,7 +64,7 @@ angular.module('core')
         $scope.addTab = function(){
             $scope.currentTab = {
                 isOk: false,
-                title: "Recherche..."
+                title: "..."
             };
             $scope.tabs.push($scope.currentTab);
         };
