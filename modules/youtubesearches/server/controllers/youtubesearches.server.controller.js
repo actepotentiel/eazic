@@ -66,7 +66,7 @@ exports.search = function(req, res) {
 						var elem = _(idDuration).find(function(idDurationItem) {
 							return idDurationItem.id === video.sourceId;
 						});
-						if (elem && elem.hasOwnProperty('contentDetail')) {
+						if (elem && elem.hasOwnProperty('contentDetails')) {
 							video.duration = moment.duration(elem.contentDetails.duration, moment.ISO_8601).asSeconds();
 						}
 						return video;
