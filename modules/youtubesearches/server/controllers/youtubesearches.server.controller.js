@@ -66,7 +66,9 @@ exports.search = function(req, res) {
 						var elem = _(idDuration).find(function(idDurationItem) {
 							return idDurationItem.id === video.sourceId;
 						});
-						video.duration = moment.duration(elem.contentDetails.duration, moment.ISO_8601).asSeconds();
+						if (elem && elem.hasOwnProperty('contentDetail')) {
+							video.duration = moment.duration(elem.contentDetails.duration, moment.ISO_8601).asSeconds();
+						}
 						return video;
 					});
 					var formattedResponse = {
