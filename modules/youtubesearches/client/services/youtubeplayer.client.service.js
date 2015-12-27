@@ -93,7 +93,7 @@ angular.module('core').factory('YoutubePlayerService', ['PlayerHandlerService','
                         break;
                     case "seekTo":
                         console.log("processSeekToOnYoutube");
-                        playerAPI.seekTo(command.seekTo);
+                        playerAPI.seekTo(command.seekTo, true);
                         player.seekTo = command.seekTo;
                         RoomService.sendInfo({
                             name: 'playerStatus',

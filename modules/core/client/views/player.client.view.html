@@ -35,6 +35,9 @@
               <span ng-show="lecteurLeftService.isMuted" class="glyphicon glyphicon-volume-off"></span>
             </button>
             <input type="range" ng-model="volumeLeft" min="0" max="100" step="5" style="vertical-align: middle; width: 200px; display: inline;" ng-change="setVolume('left',volumeLeft)"/>
+            <br />
+            <input type="range" ng-model="seekLeft" min="0" max="100" step="1" style="vertical-align: middle; width: 300px; display: inline;" ng-mouseup="seekTo('left',seekLeft)"/>
+
           </div>
         </md-content>
         <md-content id="playerLeftContainer" ng-if="roomService.room.player.left.currentSound && roomService.room.role!=='ghost'">
