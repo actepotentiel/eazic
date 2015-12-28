@@ -1,0 +1,22 @@
+/*#playerLeftContainer:hover #controleLeftContainer{*/
+    /*display: block;*/
+/*}*/
+/*#controleLeftContainer{*/
+    /*display: none;*/
+/*}*/
+/*#buttonVolumePlayerLeft:hover{*/
+    /*color: red;*/
+/*}*/
+/*#buttonVolumePlayerLeft:hover + md-slider{*/
+    /*display: block !important;*/
+/*}*/
+/*md-slider:hover{*/
+    /*display: block !important;*/
+/*}*/
+
+/*#inputVolumePlayerLeft{*/
+    /*/!*display: none;*!/*/
+/*}*/
+/*#buttonVolumePlayerLeft:hover #inputSeekPlayerLeft{*/
+    /*display: none;*/
+/*}*/

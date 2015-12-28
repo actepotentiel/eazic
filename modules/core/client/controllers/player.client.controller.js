@@ -13,6 +13,8 @@ angular.module('core').controller('PlayerController', ['$scope', 'Authentication
 
 
         //$scope.role = $scope.roomService.room.role;
+        $scope.volumeLeft = 100;
+        $scope.volumeRight = 100;
 
         $scope.toggleDoublePlayer = function(){
             console.log($scope.roomService.room.player);
@@ -52,14 +54,52 @@ angular.module('core').controller('PlayerController', ['$scope', 'Authentication
             });
         };
 
+        $scope.unCutVolumeLeft = function(){
+            $scope.isLeftMuted = false;
+            $scope.playerService.sendCommand({
+                name: "setVolume",
+                player: 'left',
+                volume: $scope.oldValueLeft
+            });
+        };
+
+        $scope.cutVolumeLeft = function(){
+            $scope.isLeftMuted = true;
+            $scope.oldValueLeft = $scope.roomService.room.player.left.volume;
+            $scope.playerService.sendCommand({
+                name: "setVolume",
+                player: 'left',
+                volume: 0
+            });
+        };
+
+        $scope.unCutVolumeRight = function(){
+            $scope.isRightMuted = false;
+            $scope.playerService.sendCommand({
+                name: "setVolume",
+                player: 'right',
+                volume: $scope.oldValueRight
+            });
+        };
+
+        $scope.cutVolumeLeft = function(){
+            $scope.isRightMuted = true;
+            $scope.oldValueRight = $scope.roomService.room.player.right.volume;
+            $scope.playerService.sendCommand({
+                name: "setVolume",
+                player: 'right',
+                volume: 0
+            });
+        };
+
         $scope.seekTo = function(playerSide, seekTo){
             console.log(playerSide, seekTo);
-            //var player;
-            //if(playerSide === 'left'){
-            //    player = $scope.roomService.room.player.left.currentSound.
-            //}else{
-            //
-            //}
+            var player;
+            if(playerSide === 'left'){
+                player = $scope.roomService.room.player.left;
+            }else{
+                player = $scope.roomService.room.player.right;
+            }
             //
             //var second =
 

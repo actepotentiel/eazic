@@ -24,3 +24,6 @@
 .overflowHidden{
     overflow: hidden;
 }
+.displayNone{
+    display:none;
+}
