@@ -46,9 +46,12 @@
           <md-content id="controleLeftContainer" layout="row" style="position: absolute;bottom: -13px;width: 100%; overflow: hidden;">
             <md-button ng-hide="roomService.room.player.left.status == 'playing'" class="btn btn-corporate" ng-click="play('left')"><span class="glyphicon glyphicon-play"></span></md-button>
             <md-button ng-show="roomService.room.player.left.status == 'playing'" class="btn btn-corporate" ng-click="pause('left')"><span class="glyphicon glyphicon-pause"></span></md-button>
-            <md-button id="buttonVolumePlayerLeft">
-              <span ng-show="isLeftMuted" ng-click="unCutVolumeLeft()" class="glyphicon glyphicon-volume-off"></span>
+            <md-button id="buttonVolumePlayerLeft" ng-show="isLeftMuted" ng-click="unCutVolumeLeft()">
+              <span class="glyphicon glyphicon-volume-off"></span>
               <span ng-hide="isLeftMuted" ng-click="cutVolumeLeft()" class="glyphicon glyphicon-volume-up"></span>
+            </md-button>
+            <md-button id="buttonVolumePlayerLeft" ng-hide="isLeftMuted" ng-click="cutVolumeLeft()">
+              <span class="glyphicon glyphicon-volume-up"></span>
             </md-button>
 
             <md-slider id="inputVolumePlayerLeft"
@@ -89,9 +92,11 @@
             <md-content id="controleRightContainer" layout="row" style="position: absolute;bottom: -13px;width: 100%;overflow: hidden;">
               <md-button ng-hide="roomService.room.player.right.status == 'playing'" class="btn btn-corporate" ng-click="play('right')"><span class="glyphicon glyphicon-play"></span></md-button>
               <md-button ng-show="roomService.room.player.right.status == 'playing'" class="btn btn-corporate" ng-click="pause('right')"><span class="glyphicon glyphicon-pause"></span></md-button>
-              <md-button id="buttonVolumePlayerRight">
-                <span ng-show="isRightMuted" ng-click="unCutVolumeRight()" class="glyphicon glyphicon-volume-off"></span>
-                <span ng-hide="isrightMuted" ng-click="cutVolumeRight()" class="glyphicon glyphicon-volume-up"></span>
+              <md-button id="buttonVolumePlayerRight" ng-show="isRightMuted" ng-click="unCutVolumeRight()">
+                <span class="glyphicon glyphicon-volume-off"></span>
+              </md-button>
+              <md-button id="buttonVolumePlayerRight" ng-hide="isRightMuted" ng-click="cutVolumeRight()">
+                <span class="glyphicon glyphicon-volume-up"></span>
               </md-button>
 
               <md-slider id="inputVolumePlayerRight"

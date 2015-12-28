@@ -65,7 +65,11 @@ angular.module('core').controller('PlayerController', ['$scope', 'Authentication
 
         $scope.cutVolumeLeft = function(){
             $scope.isLeftMuted = true;
-            $scope.oldValueLeft = $scope.roomService.room.player.left.volume;
+            if($scope.roomService.room.player.left.volume){
+                $scope.oldValueLeft = $scope.roomService.room.player.left.volume;
+            }else{
+                $scope.oldValueLeft = 100;
+            }
             $scope.playerService.sendCommand({
                 name: "setVolume",
                 player: 'left',
@@ -82,9 +86,13 @@ angular.module('core').controller('PlayerController', ['$scope', 'Authentication
             });
         };
 
-        $scope.cutVolumeLeft = function(){
+        $scope.cutVolumeRight = function(){
             $scope.isRightMuted = true;
-            $scope.oldValueRight = $scope.roomService.room.player.right.volume;
+            if($scope.roomService.room.player.right.volume){
+                $scope.oldValueRight = $scope.roomService.room.player.right.volume;
+            }else{
+                $scope.oldValueRight = 100;
+            }
             $scope.playerService.sendCommand({
                 name: "setVolume",
                 player: 'right',

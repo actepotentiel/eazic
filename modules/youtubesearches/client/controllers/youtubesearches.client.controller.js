@@ -20,11 +20,11 @@ angular.module('youtubesearches').controller('YoutubePlayerController', ['$scope
             }else{
                 playerSide = "right";
             }
-            $scope.playerService.sendCommand({
-                name: "play",
-                sound: $scope.roomService.room.playlist.sounds[1],
-                player: playerSide
-            });
+            //$scope.playerService.sendCommand({
+            //    name: "play",
+            //    sound: $scope.roomService.room.playlist.sounds[1],
+            //    player: playerSide
+            //});
         });
 
         $scope.$on('youtube.player.playing', function ($event, player) {
