@@ -9,60 +9,30 @@ angular.module('core').controller('SalonController', ['$scope', 'Authentication'
         // This provides Authentication context.
         $scope.authentication = Authentication;
         $scope.chatService = ChatService;
-
+        $scope.roomService = RoomService;
         if (!Socket.socket) {
             Socket.connect();
         }
 
-        //if($scope.authentication.user){
-        //    RoomService.updateRoom();
-        //}
-
         // Add an event listener to the 'chatMessage' event
-        Socket.on('chat', function (message) {
-            if(typeof $scope.chatService.messages === 'undefined'){
-                $scope.chatService.messages = [];
-            }
-            $scope.chatService.messages.unshift(message);
-            console.log(message);
-        });
+        //Socket.on('chat', function (message) {
+        //    if(typeof $scope.chatService.messages === 'undefined'){
+        //        $scope.chatService.messages = [];
+        //    }
+        //    $scope.chatService.writeMessage(message);
+        //    console.log(message);
+        //});
 
-        Socket.on('chat.user.join', function(data){
-            console.log("chat.user.join");
-            console.log(data);
-            if($scope.authentication.room){
-                $scope.authentication.room.conf.users.push(data.user);
-            }
-        });
-
-        Socket.on('chat.user.quit', function(data){
-            console.log("chat.user.quit");
-            console.log(data);
-            if($scope.authentication.room){
-                var i = $scope.authentication.room.conf.users.length;
-                while(i--){
-                    if($scope.authentication.room.conf.users[i]._id + "" === data.user._id + ""){
-                        $scope.authentication.room.conf.users.splice(i, 1);
-                        var message = {
-                            type: 'status',
-                            text: data.user.username + 'Has deconnected from room',
-                            room: $scope.authentication.room.conf.name,
-                            created: Date.now(),
-                            profileImageURL: data.user.profileImageURL,
-                            username: "Serveur"
-                        };
-                        $scope.chatService.messages.unshift(message);
-                    }
-                }
-            }
-        });
 
         $scope.sendMessage = function () {
             // Create a new message object
             var message = {
-                text: this.messageText
+                text: this.messageText,
+                user: $scope.authentication.user,
+                created: new Date()
             };
 
+            $scope.chatService.writeMessage(message);
             // Emit a 'chatMessage' message event
             Socket.emit('chat', message);
 
@@ -72,8 +42,6 @@ angular.module('core').controller('SalonController', ['$scope', 'Authentication'
 
         $scope.$on('$destroy', function () {
             Socket.removeListener('chat');
-            Socket.removeListener('chat.user.quit');
-            Socket.removeListener('chat.user.join');
         });
     }
 ]);

@@ -1,5 +1,5 @@
 <div id="SalonViewContainer" data-ng-controller="SalonController">
-  <section class="container" ng-show="authentication.room">
+  <section class="container" ng-hide="roomService.room.conf.isDisposable">
     <div class="page-header">
       <h1>Chat Example</h1>
     </div>
@@ -21,11 +21,11 @@
         </form>
         <ul class="list-unstyled">
           <!-- List all messages -->
-          <li class="col-xs-12 col-md-offset-4 col-md-4 chat-message" ng-repeat="message in chatService.messages">
+          <li class="col-xs-12 col-md-offset-4 col-md-4 chat-message" ng-repeat="message in roomService.room.messages">
             <small class="pull-right text-muted" ng-bind="message.created | date:'mediumTime'"></small>
-            <img ng-src="{{message.profileImageURL}}" alt="{{message.username}}" class="pull-left chat-profile-image" />
+            <img ng-src="{{message.user.profileImageURL}}" alt="{{message.user.username}}" class="pull-left chat-profile-image" />
             <div class="pull-left chat-message-details">
-              <strong ng-bind="message.username"></strong>
+              <strong ng-bind="message.user.username"></strong>
               <br>
               <span ng-bind="message.text"></span>
             </div>
@@ -47,7 +47,7 @@
       <!--</md-content>-->
     <!--</md-content>-->
   </section>
-  <section ng-hide="authentication.room">
+  <section ng-show="roomService.room.conf.isDisposable">
     <p>Vous n'êtes dans aucune room</p>
   </section>
 </div>

@@ -44,7 +44,7 @@
     <!--{% block content %}{% endblock %}-->
     <section ui-view="content">
     </section>
-    <div class="fillContainer" data-ng-include="'/modules/core/client/views/home.client.view.html'"></div>
+    <div class="fillContainer cover-video-container" data-ng-include="'/modules/core/client/views/home.client.view.html'"></div>
 
   </md-content>
 
@@ -61,6 +61,9 @@
 
   <!--Load The Socket.io File-->
   <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+
+  <!--Load The Youtube API File-->
+  <script src="https://www.youtube.com/iframe_api"></script>
 
   <!--Application JavaScript Files-->
   {% for jsFile in jsFiles %}<script type="text/javascript" src="{{jsFile}}"></script>{% endfor %}

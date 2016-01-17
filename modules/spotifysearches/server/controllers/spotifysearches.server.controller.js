@@ -15,7 +15,7 @@ var _ = require('lodash'),
  * */
 exports.search = function(req, res) {
 	spotify = require('spotify');
-	spotify.search({ type: 'track', query: req.body.q, limit: '2' }, function(err, results) {
+	spotify.search({ type: 'track', query: req.body.q, limit: '2', perPage: 20 }, function(err, results) {
 		var formattedResults = [];
 		var formattedMetas = {};
 		formattedMetas.totalResults = results.tracks.total;

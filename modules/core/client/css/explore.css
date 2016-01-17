@@ -1,0 +1,19 @@
+#searchInput:focus{
+    border: none;
+    outline: none;
+}
+#searchInput{
+    border: none;
+}
+md-pagination-wrapper{
+    position: inherit;
+}
+md-tabs-canvas{
+    display: flex;
+    justify-content: center;
+}
+.searchPicture{
+
+    margin-right: 10px;
+    height: 100px;
+}

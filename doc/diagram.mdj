@@ -20294,6 +20294,30 @@
 							"autoResize": false,
 							"text": "Le update room doit se faire avec le roomLeave juste avant le callback isOk",
 							"wordWrap": true
+						},
+						{
+							"_type": "UMLControlNodeView",
+							"_id": "AAAAAAFQ94W1slZ2+/4=",
+							"_parent": {
+								"$ref": "AAAAAAFQ4aX2Oai8tV4="
+							},
+							"model": {
+								"$ref": "AAAAAAFQ94W1sFZ00RE="
+							},
+							"visible": true,
+							"enabled": true,
+							"lineColor": "#000000",
+							"fillColor": "#ffffff",
+							"fontColor": "#000000",
+							"font": "Arial;13;0",
+							"showShadow": true,
+							"containerChangeable": true,
+							"containerExtending": false,
+							"left": 880,
+							"top": 432,
+							"width": 23,
+							"height": 19,
+							"autoResize": false
 						}
 					]
 				}
@@ -21287,6 +21311,15 @@
 					"kind": "opaque",
 					"isLocallyReentrant": false,
 					"isSynchronous": true
+				},
+				{
+					"_type": "UMLDecisionNode",
+					"_id": "AAAAAAFQ94W1sFZ00RE=",
+					"_parent": {
+						"$ref": "AAAAAAFQ4aX2Oai7IO0="
+					},
+					"name": "DecisionNode23",
+					"visibility": "public"
 				}
 			],
 			"edges": [
@@ -47804,8 +47837,8 @@
 									"showShadow": true,
 									"containerChangeable": false,
 									"containerExtending": false,
-									"left": 986,
-									"top": 1206,
+									"left": 837,
+									"top": 1232,
 									"width": 0,
 									"height": 13,
 									"autoResize": false,
@@ -47837,8 +47870,8 @@
 									"showShadow": true,
 									"containerChangeable": false,
 									"containerExtending": false,
-									"left": 984,
-									"top": 1221,
+									"left": 834,
+									"top": 1247,
 									"width": 0,
 									"height": 13,
 									"autoResize": false,
@@ -47870,8 +47903,8 @@
 									"showShadow": true,
 									"containerChangeable": false,
 									"containerExtending": false,
-									"left": 989,
-									"top": 1177,
+									"left": 842,
+									"top": 1203,
 									"width": 0,
 									"height": 13,
 									"autoResize": false,
@@ -47901,8 +47934,8 @@
 							"tail": {
 								"$ref": "AAAAAAFQ559/nuW1QVw="
 							},
-							"lineStyle": 1,
-							"points": "1535:1259;442:1138",
+							"lineStyle": 3,
+							"points": "1535:1264;840:1224;442:1144",
 							"stereotypeDisplay": "label",
 							"showVisibility": true,
 							"showProperty": true,
@@ -47944,8 +47977,8 @@
 									"showShadow": true,
 									"containerChangeable": false,
 									"containerExtending": false,
-									"left": 537,
-									"top": 1115,
+									"left": 901,
+									"top": 1172,
 									"width": 0,
 									"height": 13,
 									"autoResize": false,
@@ -47977,8 +48010,8 @@
 									"showShadow": true,
 									"containerChangeable": false,
 									"containerExtending": false,
-									"left": 529,
-									"top": 1128,
+									"left": 903,
+									"top": 1187,
 									"width": 0,
 									"height": 13,
 									"autoResize": false,
@@ -48010,8 +48043,8 @@
 									"showShadow": true,
 									"containerChangeable": false,
 									"containerExtending": false,
-									"left": 552,
-									"top": 1090,
+									"left": 896,
+									"top": 1143,
 									"width": 0,
 									"height": 13,
 									"autoResize": false,
@@ -48042,7 +48075,7 @@
 								"$ref": "AAAAAAFQ550bB+VXLsE="
 							},
 							"lineStyle": 3,
-							"points": "1511:1035;696:1200;395:1018;391:1001",
+							"points": "1513:1041;1264:1112;534:1216;400:1001",
 							"stereotypeDisplay": "label",
 							"showVisibility": true,
 							"showProperty": true,

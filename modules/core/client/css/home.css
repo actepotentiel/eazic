@@ -16,9 +16,13 @@
 }
 #settingHomeDiv{
     width: calc(40% - 33px);
-    background-color: rgba(41, 39, 40, 0.85);
-    padding: 20px;
+    background-color: rgba(41 , 39, 40, 0.85);
+    padding: 10px 15px 10px 10px;
     max-height: 100%;
+}
+
+#settingHomeDiv md-input-container {
+    padding-bottom: 5px;
 }
 
 #signHome, #signHome md-content {
@@ -101,6 +105,20 @@
     color: black;
     background-color: rgba(255, 255, 255, 0.5);
     overflow: hidden;
+}
+
+#coverVideo {
+    position: absolute;
+    top: calc(50% - 540px);
+    left: calc(50% - 960px);
+    z-index: -1;
+    min-width: 100%;
+    min-height: 100%;
+}
+
+.cover-video-container {
+    position: relative;
+    overflow:hidden;
 }
 
 

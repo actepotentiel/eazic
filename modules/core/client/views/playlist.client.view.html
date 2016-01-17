@@ -1,24 +1,56 @@
-<div id="PlaylistViewContainer" data-ng-controller="PlaylistController">
-  <md-content layout="row">
+<md-content id="PlaylistViewContainer" data-ng-controller="PlaylistController" layout-fill>
+  <md-content layout="row" layout-fill>
+
     <md-content layout="column" layout-fill>
-      <span class="glyphicon glyphicon-save" ng-click="saveList()"></span>
-      <span class="glyphicon glyphicon-trash" ng-click="removeAllSound()"></span>
-      File de lecture :
-      <ul>
-        <li ng-repeat="item in playlistService.sounds track by $index">
-          {{ item.title }}
-          <span class="glyphicon glyphicon-trash" ng-click="removeSound(item)"></span>
-        </li>
-      </ul>
+
+      <md-toolbar class="md-primary">
+        <div class="md-toolbar-tools" layout-fill>
+          <h2 class="md-flex">File de lecture</h2>
+          <md-button aria-label="Playlist-plus" ng-disabled="roomService.room.playlist.sounds.length===0" class="md-raised md-primary md-hue-1" ng-click="saveList()"><md-icon md-svg-icon="playlist-plus"></md-icon></md-button>
+          <md-button aria-label="Playlist-remove" ng-disabled="roomService.room.playlist.sounds.length===0" class="md-raised md-accent" ng-click="removeAllSound()"><md-icon md-svg-icon="playlist-remove"></md-icon></md-button>
+        </div>
+      </md-toolbar>
+
+      <md-content>
+        <md-list>
+          <md-list-item ng-repeat="item in roomService.room.playlist.sounds track by $index" ng-mouseenter="currentListOptions[$index]=true" ng-mouseleave="currentListOptions[$index]=false">
+            <img ng-src="{{item.image}}?{{$index}}" class="md-avatar" alt="{{item.who}}" />
+            <div class="md-list-item-text" layout="row" layout-fill layout-align="start center">
+              <p flex="55">{{ item.title }}</p>
+              <span flex></span>
+              <md-content ng-show="currentListOptions[$index]" layout="row">
+                <md-button aria-label="Play-left" class="md-icon-button md-primary md-hue-1" ng-click="playSound(item, 'left')"><md-icon md-svg-icon="play"></md-icon></md-button>
+                <md-button aria-label="Play-right" class="md-icon-button md-primary md-hue-1" ng-click="playSound(item, 'right')"><md-icon md-svg-icon="google-nearby"></md-icon></md-button>
+                <md-button aria-label="Delete" class="md-icon-button md-primary md-hue-1" ng-click="removeSound(item)"><md-icon md-svg-icon="delete"></md-icon></md-button>
+              </md-content>
+            </div>
+            <md-divider></md-divider>
+          </md-list-item>
+        </md-list>
+      </md-content>
     </md-content>
+
     <md-content layout="column" layout-fill>
-      Playlists :
-      <ul>
-        <li ng-repeat="item in playlistService.playlists track by $index">
-          {{ item.title }}
-          <span class="glyphicon glyphicon-trash" ng-click="removePlaylist(item)"></span>
-        </li>
-      </ul>
+      <md-toolbar class="md-primary">
+        <div class="md-toolbar-tools">
+          <h2 class="md-flex">Playlists</h2>
+        </div>
+      </md-toolbar>
+      <md-content>
+        <md-list>
+          <md-list-item ng-repeat="item in authentication.user.playlists track by $index" ng-mouseenter="playlistOptions[$index]=true" ng-mouseleave="playlistOptions[$index]=false" flex>
+            <div class="md-list-item-text" layout="row" layout-align="start center">
+              <p layout-margin="0" flex>{{ item.title }}</p>
+              <md-content ng-show="playlistOptions[$index]">
+                <md-button aria-label="Playlist-show" class="md-icon-button md-primary md-hue-1" ng-click="removePlaylist(item)"><md-icon md-svg-icon="format-list-numbers"></md-icon></md-button>
+                <md-button aria-label="Playlist-remove" class="md-icon-button md-primary md-hue-1" ng-click="removePlaylist(item)"><md-icon md-svg-icon="playlist-remove"></md-icon></md-button>
+                <md-button aria-label="Playlist-play" class="md-icon-button md-primary md-hue-1" ng-click="loadPlaylist(item)"><md-icon md-svg-icon="playlist-play"></md-icon></md-button>
+              </md-content>
+            </div>
+            <md-divider></md-divider>
+          </md-list-item>
+        </md-list>
+      </md-content>
     </md-content>
   </md-content>
-</div>
+</md-content>

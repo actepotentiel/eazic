@@ -41,10 +41,11 @@
 
 body{
     font-family: Oswald;
-    background-image: url('/modules/core/client/img/imgfond.png');
+    /*background-image: url('/modules/core/client/img/imgfond.png');*/
     min-width: 1000px;
     height: 100%;
     position: absolute;
+    background-color: transparent;
 }
 header.navbar{
     min-width: 1000px;
@@ -98,7 +99,7 @@ input:-webkit-autofill {
     width: 400%;
     height: 300px;
     max-height: 800px;
-    overflow: scroll;
+    overflow: hidden;
     /*z-index: ;*/
 }
 #exploreView.minifiedView{
@@ -123,8 +124,12 @@ input:-webkit-autofill {
     margin: 3% 10%;
     margin-top: 3%;
     z-index: 0;
-    overflow: scroll;
+    overflow: hidden;
 }
 #exploreView.maximisedView{
 
+}
+
+.popover {
+    color: black !important;
 }

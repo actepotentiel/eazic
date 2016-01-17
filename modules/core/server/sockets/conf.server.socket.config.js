@@ -4,10 +4,9 @@
 module.exports = function (io, socket, sockets) {
     var roomManager = require('../models/room.server.class'),
         mongoose = require('mongoose'),
-        Room = mongoose.model('Room'),
-        Rooms = require('../../../rooms/server/controllers/rooms.server.controller');
+        Room = mongoose.model('Room');
 
-
+    var self = this;
 
     socket.on('conf.join', function(data) {
         console.log("");
@@ -27,53 +26,46 @@ module.exports = function (io, socket, sockets) {
                 Room.find({name : roomName}).populate('conf.owner').exec(function(err, rooms) {
                     if (err) {
                         console.log("Erreur BDD " + err);
-                        socket.emit('conf.join.ack', {isOk : false, status: "error.bdd",message : 'server.error'});
+                        socket.emit('conf.join.ack', {isOk : false, status: "errDB"});
                         console.log("##########################");
                     }else{
                         var newRoom = null;
                         if(rooms.length !== 1){
                             console.log("Room doesn't exist in BDD, creation of new instance...");
-                            global.roomManager.deleteUserFromAllRooms(socket);
+
+                            safeLeave(socket);
                             newRoom = new roomManager.Room(roomName, socket.request.user);
                             global.roomManager.rooms.push(newRoom);
-                            if(socket.room){
-                                //TODO TOTEST ET AJOUTER LA SAUVEGARDE DE L4ANCIENNE ROOM SI ELLE ETAIT PERSISTABLE
-                                console.log("Leaving from room " + socket.room.name);
-                                socket.leave(socket.room.name);
-                            }else{
-                                //console.log("Leaving from initial room " + socket.id);
-                                //socket.leave(socket.id);
-                            }
+
                             console.log("Joining room " + roomName + " and callback isOk");
-                            socket.emit('conf.join.ack', {isOk : true, isNewRoom : true, room : newRoom});
+
+                            socket.emit('conf.join.ack', {isOk : true, status: "create", room : newRoom});
                             socket.join(roomName);
-                            socket.room = newRoom;
+                            socket.room = JSON.parse(JSON.stringify(newRoom));
+
                             console.log("Nombre de room post join : " + global.roomManager.rooms.length);
                             console.log("##########################");
                         }else{
                             console.log("Room exist in BDD, check for user rights");
-                            if(socket.request.user._id + "" !== rooms[0].conf.owner._id + ""){
+                            if(rooms[0].conf.owner._id + "" !== socket.request.user._id + ""){
                                 console.log("User is not the owner of the room, aborting...");
-                                socket.emit('conf.join.ack', {isOk : false, status: "reservedName", message : 'acces.denied'});
+                                console.log(typeof rooms[0].conf.owner._id);
+                                console.log(typeof socket.request.user._id);
+                                socket.emit('conf.join.ack', {isOk : false, status: "reservedName"});
                                 console.log("##########################");
                             }else{
                                 console.log("User is the owner of the room, instanciation...");
-                                global.roomManager.deleteUserFromAllRooms(socket);
+                                //console.log(socket);
+                                var user = socket.request.user;
+                                safeLeave(socket);
                                 newRoom = new roomManager.Room(roomName, socket.request.user);
                                 newRoom.copyModele(rooms[0]);
                                 global.roomManager.rooms.push(newRoom);
-                                if(socket.room){
-                                    //TODO TOTEST ET AJOUTER LA SAUVEGARDE DE L4ANCIENNE ROOM SI ELLE ETAIT PERSISTABLE
-                                    console.log("Leaving from room " + socket.room.name);
-                                    socket.leave(socket.room.name);
-                                }else{
-                                    console.log("Leaving from initial room " + socket.id);
-                                    socket.leave(socket.id);
-                                }
+
                                 console.log("Joining room " + roomName + " and callback isOk");
-                                socket.emit('conf.join.ack', {isOk : true, isNewRoom : true, room : newRoom});
+                                socket.emit('conf.join.ack', {isOk : true, status : "create", room : newRoom});
                                 socket.join(roomName);
-                                socket.room = newRoom;
+                                socket.room = JSON.parse(JSON.stringify(newRoom));
                                 console.log("Nombre de room post join : " + global.roomManager.rooms.length);
                                 console.log("##########################");
                             }
@@ -82,40 +74,31 @@ module.exports = function (io, socket, sockets) {
                     }
                 });
             }else{
-                console.log("Room exist, checking for user right...");
+                console.log("Room is running, checking for user right...");
                 room = global.roomManager.getRoomByName(roomName);
                 if(room.allowJoin(socket.request.user)){
                     //ON REJOINT LA ROOM
                     console.log("User is authorized to join the room");
+                    console.log(room.player);
+                    safeLeave(socket);
                     room.addUser(socket.request.user);
 
-                    if(socket.room){
-                        //TODO TOTEST ET AJOUTER LA SAUVEGARDE DE L4ANCIENNE ROOM SI ELLE ETAIT PERSISTABLE
-                        console.log("Leaving from room " + socket.room.name);
-                        socket.leave(socket.room.name);
-                    }else{
-                        console.log("Leaving from initial room " + socket.id);
-                        socket.leave(socket.id);
-                    }
                     console.log("Joining room " + roomName + " and callback isOk");
+
                     socket.join(roomName);
-                    socket.room = room;
-                    socket.to(room.conf.name).emit('chat.message', {
-                        type: 'status',
-                        text: 'Is now connected to ' + socket.request.user.username + '\'s room',
-                        room: socket.request.user.username,
-                        rooms: global.chatRooms,
+                    socket.room = JSON.parse(JSON.stringify(room));
+
+                    socket.to(room.conf.name).emit('info', {
+                        name: 'joinUser',
                         created: Date.now(),
-                        profileImageURL: socket.request.user.profileImageURL,
-                        username: socket.request.user.username
+                        user: socket.request.user
                     });
-                    socket.emit('conf.join.ack', {isOk : true, isNewRoom : false, room : room});
-                    socket.to(roomName).emit('chat.user.join', {user : socket.request.user});
+                    socket.emit('conf.join.ack', {isOk : true, status : "join", room : room});
                     console.log("##########################");
                 }else{
                     //ON RETOURNE A L'UTILISATEUR QUE LA ROOM NEST PAS ACCESSIBLE
                     console.log("User is NOT authorized to join the room, aborting...");
-                    socket.emit('conf.join.ack', {isOk : false, status: "accesDenied", message : 'acces.denied'});
+                    socket.emit('conf.join.ack', {isOk : false, status: "accesDenied"});
                     console.log("##########################");
                 }
             }
@@ -128,16 +111,91 @@ module.exports = function (io, socket, sockets) {
         console.log("############# DECONNECTION #############");
         if(socket.room){
             console.log("User : " + socket.request.user.username + " has disconnected from room : " + socket.room.name);
-            socket.to(socket.room.conf.name).emit('chat.user.quit', {user : socket.request.user});
         }else{
             console.log("User : " + socket.request.user.username + " has disconnected");
 
         }
         console.log("Nombre de room pre delete : " + global.roomManager.rooms.length);
-        global.roomManager.deleteUserFromAllRooms(socket);
+        safeLeave(socket);
         console.log("Nombre de room post delete : " + global.roomManager.rooms.length);
         console.log("#######################################");
 
 
     });
+
+    // Emit the status event when a socket client is disconnected
+    socket.on('info', function(data) {
+        console.log("");
+        console.log("############# INFO #############");
+        if(socket.room){
+            console.log("User : " + socket.request.user.username + " has send info from room : " + socket.room.name);
+            var room = global.roomManager.getRoomByName(socket.room.name);
+            if(room !== null){
+                if(room.allowEvent(data.name, socket.request.user)){
+                    room.processInfo(data);
+                    socket.to(room.conf.name).emit('info', data);
+                }else{
+                    //TODO alert not auth
+                    socket.emit('info', {name : "alert", status: "notAuth"});
+                }
+            }else{
+                //TODO Alert emit while room is not running
+                socket.emit('info', {name : "alert", status: "desynchro"});
+            }
+        }else{
+            //TODO Alert emit while has no room
+            socket.emit('info', {name : "alert", status: "dataIntegrity"});
+        }
+        console.log("#######################################");
+    });
+
+    socket.on('request', function(command) {
+        console.log("");
+        console.log("############# REQUEST #############");
+        if(socket.room){
+            console.log("User : " + socket.request.user.username + " has send info from room : " + socket.room.name);
+            var room = global.roomManager.getRoomByName(socket.room.name);
+            if(room !== null){
+                switch(command.name){
+                    case "playerStatus":
+                        socket.emit('info', {name : "playerStatus", playerTotal: room.player});
+                        break;
+                    default:
+                        break;
+                }
+                //if(room.allowEvent(data.name, socket.request.user)){
+                //    room.processInfo(data);
+                //    socket.to(room.conf.name).emit('info', data);
+                //}else{
+                //    //TODO alert not auth
+                //    socket.emit('info', {name : "alert", status: "notAuth"});
+                //}
+            }else{
+                //TODO Alert emit while room is not running
+                socket.emit('info', {name : "alert", status: "desynchro"});
+            }
+        }else{
+            //TODO Alert emit while has no room
+            socket.emit('info', {name : "alert", status: "dataIntegrity"});
+        }
+        console.log("#######################################");
+    });
+
+
+    function safeLeave(socket){
+        if(socket.room){
+            var userRoom = global.roomManager.getRoomByName(socket.room.name);
+            if(userRoom.isOwner(socket.request.user) && userRoom.conf.isPersistable){
+                userRoom.update();
+            }
+            socket.to(socket.room.name).emit('info', {
+                name: 'userLeave',
+                created: Date.now(),
+                user : socket.request.user
+            });
+            socket.leave(socket.room.name);
+            global.roomManager.deleteUserFromAllRooms(socket);
+        }
+    }
+
 };

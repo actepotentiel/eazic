@@ -30,6 +30,12 @@ angular.module('core').service('Socket', ['Authentication', '$state', '$timeout'
       }
     };
 
+    this.removeAllListeners = function(){
+      if (this.socket) {
+        this.socket.removeAllListeners();
+      }
+    };
+
     // Wrap the Socket.io 'removeListener' method
     this.removeListener = function (eventName) {
       if (this.socket) {

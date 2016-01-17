@@ -1,65 +1,46 @@
 'use strict';
 
 // Youtubesearches controller
-angular.module('youtubesearches').controller('YoutubesearchesController', ['$scope', '$stateParams', '$location', 'Authentication', 'Youtubesearches',
-	function($scope, $stateParams, $location, Authentication, Youtubesearches ) {
+angular.module('youtubesearches').controller('YoutubePlayerController', ['$scope', '$stateParams', '$location', 'Authentication','YoutubePlayerService','RoomService','PlayerService',
+	function($scope, $stateParams, $location, Authentication, YoutubePlayerService, RoomService, PlayerService) {
 		$scope.authentication = Authentication;
+        $scope.youtubePlayerService = YoutubePlayerService;
+        $scope.roomService = RoomService;
+        $scope.playerService = PlayerService;
+        $scope.playerVars = {
+            controls: 0,
+            autoplay: 1
+        };
 
-		// Create new Youtubesearch
-		$scope.create = function() {
-			// Create new Youtubesearch object
-			var youtubesearch = new Youtubesearches ({
-				name: this.name
-			});
+        $scope.$on('youtube.player.ended', function ($event, player) {
+            console.log("ENDED!!!!!");
+            var playerSide;
+            if(player.f.offsetParent.getAttribute('id') === "playerLeftContainer"){
+                playerSide = "left";
+            }else{
+                playerSide = "right";
+            }
+            //$scope.playerService.sendCommand({
+            //    name: "play",
+            //    sound: $scope.roomService.room.playlist.sounds[1],
+            //    player: playerSide
+            //});
+        });
 
-			// Redirect after save
-			youtubesearch.$save(function(response) {
-				$location.path('youtubesearches/' + response._id);
+        $scope.$on('youtube.player.playing', function ($event, player) {
+            console.log("PLAYING!!!!!");
+            console.log(player.f.offsetParent);
+        });
 
-				// Clear form fields
-				$scope.name = '';
-			}, function(errorResponse) {
-				$scope.error = errorResponse.data.message;
-			});
-		};
+        $scope.$on('youtube.player.paused', function ($event, player) {
+            console.log("PAUSED!!!!!");
+            console.log(player.f.offsetParent.getAttribute('id'));        });
 
-		// Remove existing Youtubesearch
-		$scope.remove = function( youtubesearch ) {
-			if ( youtubesearch ) { youtubesearch.$remove();
+        $scope.$on('youtube.player.buffering', function ($event, player) {
+            console.log("BUFFERING!!!!!");
+            console.log(player.f.offsetParent);
+        });
 
-				for (var i in $scope.youtubesearches ) {
-					if ($scope.youtubesearches [i] === youtubesearch ) {
-						$scope.youtubesearches.splice(i, 1);
-					}
-				}
-			} else {
-				$scope.youtubesearch.$remove(function() {
-					$location.path('youtubesearches');
-				});
-			}
-		};
 
-		// Update existing Youtubesearch
-		$scope.update = function() {
-			var youtubesearch = $scope.youtubesearch ;
-
-			youtubesearch.$update(function() {
-				$location.path('youtubesearches/' + youtubesearch._id);
-			}, function(errorResponse) {
-				$scope.error = errorResponse.data.message;
-			});
-		};
-
-		// Find a list of Youtubesearches
-		$scope.find = function() {
-			$scope.youtubesearches = Youtubesearches.query();
-		};
-
-		// Find existing Youtubesearch
-		$scope.findOne = function() {
-			$scope.youtubesearch = Youtubesearches.get({ 
-				youtubesearchId: $stateParams.youtubesearchId
-			});
-		};
 	}
 ]);

@@ -1,2 +1,128 @@
-<div id="PlayerViewContainer" data-ng-controller="PlayerController">
-</div>
+<md-content id="PlayerViewContainer" data-ng-controller="PlayerController" layout-fill layout="column">
+
+      <!--<div style="background-color: #93A5A5; position: fixed;  z-index: 1;  padding: 10px;  top: 50px;  left: 0;">-->
+        <!--<h3>Conf</h3>-->
+        <!--<div>role (standalone, synchro, ghost, owner) : {{roomService.room.role}}</div>-->
+        <!--<div>isDoublePlayer : {{roomService.room.player.isDouble}}</div>-->
+        <!--<div ng-show="roomService.room.conf.isDisposable">isDisposable => user is not loggued</div>-->
+        <!--<div ng-hide="roomService.room.conf.isDisposable">room is persistent</div>-->
+
+      <!--</div>-->
+  <md-content layout="row">
+
+    <md-content flex="80" style="height: 62px;justify-content: center;display: flex; overflow: hidden;">
+
+      <md-radio-group ng-model="roomService.room.role" ng-change="toggleRole()" ng-show="roomService.room.role != 'owner'" layout="row" style="  margin: 16px;">
+        <md-radio-button value="ghost" class="md-primary">Ghost</md-radio-button>
+        <md-radio-button value="synchro"> Synchro </md-radio-button>
+        <md-radio-button value="standalone">Standalone</md-radio-button>
+      </md-radio-group>
+
+    </md-content>
+
+    <md-content flex="20" style="overflow:hidden;" ng-show="roomService.room.role == 'owner' || roomService.room.role == 'standalone'">
+
+      <md-switch ng-model="roomService.room.player.isDouble">
+        Double player
+      </md-switch>
+
+    </md-content>
+
+  </md-content>
+
+  <md-content layout="row" style="height: calc(100% - 62px);padding: 0px 20px 20px 20px;overflow:hidden;">
+
+      <md-content id="playerLeftContent" flex style="height:100%;" layout="column">
+        <md-content id="playerLeftContainer" style="overflow: hidden;" layout-fill ng-if="roomService.room.player.left.currentSound && roomService.room.role!=='ghost'" ng-controller="YoutubePlayerController">
+          <youtube-video ng-show="roomService.room.player.left.currentSound.sourceName === 'youtube'"
+                           video-id="roomService.room.player.left.currentSound.sourceId"
+                           player-vars="playerVars"
+                           player-width="'100%'"
+                           player-height="'100% - 30px'"
+                           player="youtubePlayerService.playerLeft"
+                           style="height: calc(100% - 35px);">
+          </youtube-video>
+
+          <md-content id="controleLeftContainer" layout="row" style="position: absolute;bottom: -13px;width: 100%; overflow: hidden;">
+            <md-button ng-hide="roomService.room.player.left.status == 'playing'" class="btn btn-corporate" ng-click="play('left')"><span class="glyphicon glyphicon-play"></span></md-button>
+            <md-button ng-show="roomService.room.player.left.status == 'playing'" class="btn btn-corporate" ng-click="pause('left')"><span class="glyphicon glyphicon-pause"></span></md-button>
+            <md-button id="buttonVolumePlayerLeft" ng-show="isLeftMuted" ng-click="unCutVolumeLeft()">
+              <span class="glyphicon glyphicon-volume-off"></span>
+              <span ng-hide="isLeftMuted" ng-click="cutVolumeLeft()" class="glyphicon glyphicon-volume-up"></span>
+            </md-button>
+            <md-button id="buttonVolumePlayerLeft" ng-hide="isLeftMuted" ng-click="cutVolumeLeft()">
+              <span class="glyphicon glyphicon-volume-up"></span>
+            </md-button>
+
+            <md-slider id="inputVolumePlayerLeft"
+                       style="width:100px; margin-right:10px;"
+                       min="0"
+                       max="100"
+                       step="5"
+                       ng-model="volumeLeft"
+                       aria-label="red"
+                       ng-change="setVolume('left',volumeLeft)">
+            </md-slider>
+
+            <md-slider id="inputSeekPlayerLeft"
+                       class="md-primary"
+                       flex
+                       min="0"
+                       max="{{roomService.room.player.left.currentSound.duration}}"
+                       step="1"
+                       ng-model="seekLeft"
+                       aria-label="blue"
+                       ng-mouseup="seekTo('left',seekLeft)">
+            </md-slider>
+
+          </md-content>
+        </md-content>
+      </md-content>
+
+
+      <md-content id="playerRightContent" ng-show="roomService.room.player.isDouble" flex style="height: 100%;" layout="column">
+        <md-content id="playerRightContainer" style="overflow: hidden;" layout-fill ng-if="roomService.room.player.right.currentSound && roomService.room.role!=='ghost'" ng-controller="YoutubePlayerController">
+            <youtube-video ng-show="roomService.room.player.right.currentSound.sourceName === 'youtube'"
+                           video-id="roomService.room.player.right.currentSound.sourceId"
+                           player-vars="playerVars"
+                           player-width="'100%'"
+                           player-height="'100%'"
+                           player="youtubePlayerService.playerRight">
+            </youtube-video>
+            <md-content id="controleRightContainer" layout="row" style="position: absolute;bottom: -13px;width: 100%;overflow: hidden;">
+              <md-button ng-hide="roomService.room.player.right.status == 'playing'" class="btn btn-corporate" ng-click="play('right')"><span class="glyphicon glyphicon-play"></span></md-button>
+              <md-button ng-show="roomService.room.player.right.status == 'playing'" class="btn btn-corporate" ng-click="pause('right')"><span class="glyphicon glyphicon-pause"></span></md-button>
+              <md-button id="buttonVolumePlayerRight" ng-show="isRightMuted" ng-click="unCutVolumeRight()">
+                <span class="glyphicon glyphicon-volume-off"></span>
+              </md-button>
+              <md-button id="buttonVolumePlayerRight" ng-hide="isRightMuted" ng-click="cutVolumeRight()">
+                <span class="glyphicon glyphicon-volume-up"></span>
+              </md-button>
+
+              <md-slider id="inputVolumePlayerRight"
+                         style="width:100px; margin-right:10px;"
+                         min="0"
+                         max="100"
+                         step="5"
+                         ng-model="volumeRight"
+                         aria-label="red"
+                         ng-change="setVolume('right',volumeRight)"></md-slider>
+
+              <md-slider id="inputSeekPlayerRight"
+                         class="md-primary"
+                         flex
+                         min="0"
+                         max="{{roomService.room.player.right.currentSound.duration}}"
+                         step="1"
+                         ng-model="seekRight"
+                         aria-label="blue"
+                         ng-mouseup="seekTo('right',seekRight)"></md-slider>
+            </md-content>
+
+        </md-content>
+      </md-content>
+
+
+  </md-content>
+
+</md-content>

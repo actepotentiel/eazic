@@ -3,49 +3,61 @@
  */
 'use strict';
 
-angular.module('core').controller('PlaylistController', ['$scope', 'PlaylistService', '$stateParams', 'Authentication', 'Playlists', 'Socket',
-    function($scope, PlaylistService, $stateParams, Authentication, Playlists, Socket) {
+angular.module('core').controller('PlaylistController', ['$scope', 'PlaylistService', '$stateParams', 'Authentication', 'Playlists', 'Socket','PlayerService','RoomService',
+    function($scope, PlaylistService, $stateParams, Authentication, Playlists, Socket, PlayerService, RoomService) {
         // This provides Authentication context.
         $scope.authentication = Authentication;
 
         $scope.playlistService = PlaylistService;
 
+        $scope.playerService = PlayerService;
+
+        $scope.roomSErvice = RoomService;
+
         if($scope.authentication.user){
-            $scope.playlistService.updatePlaylists();
+            $scope.playlistService.getMyPlaylists();
         }
 
-        Socket.on('playlist.addSound', function(command){
-            console.log("playlist.addSound");
-            console.log(command);
-            $scope.playlistService.processCommand(command);
-        });
+        //Socket.on('playlist', function(command){
+        //    console.log("playlist event");
+        //    console.log(command);
+        //    $scope.playlistService.processCommand(command);
+        //});
 
-        Socket.on('playlist.deleteSound', function(command){
-            console.log("playlist.deleteSound");
-            console.log(command);
-            $scope.playlistService.processCommand(command);
-        });
-
-        Socket.on('playlist.addSounds', function(command){
-            console.log("playlist.addSounds");
-            console.log(command);
-            $scope.playlistService.processCommand(command);
-        });
-
-        $scope.removeSound = function(soundToDelete){
-            $scope.playlistService.sendCommand('playlist.deleteSound', soundToDelete);
+        $scope.playSound = function(sound, player){
+            $scope.playerService.sendCommand({
+                name : "play",
+                sound: sound,
+                player: player
+            });
         };
 
-        $scope.removeAllSound = function(soundToDelete){
-            $scope.playlistService.sendCommand('playlist.deleteAllSound');
+        $scope.removeSound = function(soundToDelete){
+            $scope.playlistService.sendCommand({
+                name : 'deleteSound',
+                sound : soundToDelete
+            });
+        };
+
+        $scope.removeAllSound = function(){
+            $scope.playlistService.sendCommand({
+                name: "newPlaylist",
+                playlist : []
+            });
+        };
+
+        $scope.loadPlaylist = function(playlist){
+            console.log(playlist);
+            $scope.playlistService.sendCommand({
+                name : "addSounds",
+                sounds : playlist.sounds
+            });
         };
 
         $scope.saveList = function(){
             var soundsOfPlaylist = [];
-            if(typeof $scope.playlistService.sounds === 'undefined'){
-                $scope.playlistService.sounds = [];
-            }
-            $scope.playlistService.sounds.forEach(function(currentSound, index){
+
+            $scope.roomService.room.playlist.sounds.forEach(function(currentSound, index){
                 var sound = currentSound;
                 sound.order = index;
                 soundsOfPlaylist.push(sound);
@@ -74,7 +86,7 @@ angular.module('core').controller('PlaylistController', ['$scope', 'PlaylistServ
             // Redirect after save
             playlist.$save(function(response) {
                 console.log(response);
-                $scope.playlistService.updatePlaylists();
+                $scope.playlistService.getMyPlaylists();
 
             }, function(errorResponse) {
                 $scope.error = errorResponse.data.message;
@@ -84,12 +96,12 @@ angular.module('core').controller('PlaylistController', ['$scope', 'PlaylistServ
         // Remove existing Playlist
         $scope.remove = function( playlist ) {
             if ( playlist ) {
-                playlist.$remove(function(result){
+                var playlistToRemove = new Playlists();
+                playlistToRemove._id = playlist._id;
+                playlistToRemove.$remove(function(result){
                     console.log(result);
-                    $scope.playlistService.updatePlaylists();
+                    $scope.playlistService.getMyPlaylists();
                 });
-
-
             }
         };
 

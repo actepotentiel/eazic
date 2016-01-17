@@ -21,3 +21,9 @@
 .borderBottomGrey{
     border-bottom: 5px solid #93A5A5;
 }
+.overflowHidden{
+    overflow: hidden;
+}
+.displayNone{
+    display:none;
+}

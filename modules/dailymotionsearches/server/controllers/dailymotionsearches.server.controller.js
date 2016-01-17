@@ -16,7 +16,7 @@ var _ = require('lodash'),
 exports.search = function(req,res) {
 	var clientId = '9131c9633e005c22345e'; // Fill yours
 	var clientSecret = '2f7e0ebbf01e3dc96609918e26a8a90426540de7'; // Fill yours
-	request('https://api.dailymotion.com/videos?fields=description,duration,id,thumbnail_240_url,title,embed_html&search='+req.body.q, function (error, response, body) {
+	request('https://api.dailymotion.com/videos?fields=description,duration,id,thumbnail_240_url,title,embed_html&search='+req.body.q+'&limit=20', function (error, response, body) {
 		var results = JSON.parse(body);
 		var formattedResults = [];
 		var formattedMetas = {};
@@ -29,6 +29,7 @@ exports.search = function(req,res) {
 			item.sourceName = 'dailymotion';
 			item.sourceId = results.list[video].id;
 			item.image = results.list[video].thumbnail_240_url || '/images/sound_default.png';
+			item.duration = results.list[video].duration;
 			//item.embed = results.list[video].embed_html;
 			formattedResults.push(item);
 		}
