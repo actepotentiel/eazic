@@ -11,10 +11,20 @@ var _ = require('lodash'),
 	errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
 	moment = require('moment');
 
-youtubeApi.authenticate({
-	type: "key",
-	key: 'AIzaSyBVsIBrr7VmuhNN-NvRVWw-gZA4vjj1YeA'
-});
+if (process.env.NODE_ENV === 'production'){
+	console.log('production mode');
+	youtubeApi.authenticate({
+		type: "key",
+		key: 'AIzaSyBOCJkuOG35MU-d8cJVWIs64j4HajTjF90'
+	});
+} else {
+	console.log('development mode');
+	youtubeApi.authenticate({
+		type: "key",
+		key: 'AIzaSyBVsIBrr7VmuhNN-NvRVWw-gZA4vjj1YeA'
+	});
+}
+
 
 exports.getVideoDurations = function (req, res) {
 	res.jsonp(req.body.formattedResponse);
