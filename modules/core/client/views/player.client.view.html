@@ -10,7 +10,7 @@
       <!--</div>-->
   <md-content layout="row">
 
-    <md-content flex="80" style="height: 62px;justify-content: center;display: flex;">
+    <md-content flex="80" style="height: 62px;justify-content: center;display: flex; overflow: hidden;">
 
       <md-radio-group ng-model="roomService.room.role" ng-change="toggleRole()" ng-show="roomService.room.role != 'owner'" layout="row" style="  margin: 16px;">
         <md-radio-button value="ghost" class="md-primary">Ghost</md-radio-button>
@@ -20,7 +20,7 @@
 
     </md-content>
 
-    <md-content flex="20" ng-show="roomService.room.role == 'owner' || roomService.room.role == 'standalone'">
+    <md-content flex="20" style="overflow:hidden;" ng-show="roomService.room.role == 'owner' || roomService.room.role == 'standalone'">
 
       <md-switch ng-model="roomService.room.player.isDouble">
         Double player
