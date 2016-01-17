@@ -338,7 +338,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('deploy', ['sshexec:deploy']);
 
-  grunt.registerTask('firstdeploy', ['sshexec:deploy']);
+  grunt.registerTask('firstdeploy', ['sshexec:firstdeploy']);
 
   grunt.loadNpmTasks('grunt-forever');
 
