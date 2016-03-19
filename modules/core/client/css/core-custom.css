@@ -1,5 +1,6 @@
 .content {
     height: calc(100% - 50px);
+    margin-top: 50px;
 }
 
 @font-face {
@@ -44,6 +45,7 @@ body{
     /*background-image: url('/modules/core/client/img/imgfond.png');*/
     min-width: 1000px;
     height: 100%;
+    overflow: hidden;
     position: absolute;
     background-color: transparent;
 }

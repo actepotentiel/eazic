@@ -126,7 +126,9 @@ gulp.task('sass', function () {
     .pipe(plugins.sass())
     .pipe(plugins.autoprefixer())
     .pipe(plugins.rename(function (file) {
-      file.dirname = file.dirname.replace(path.sep + 'scss', path.sep + 'css');
+        console.log(file.dirname);
+      file.dirname = file.dirname.replace(path.sep + 'sass', path.sep + 'css');
+        console.log(file.dirname);
     }))
     .pipe(gulp.dest('./modules/'));
 });

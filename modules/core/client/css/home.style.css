@@ -1,0 +1,82 @@
+#homeSection {
+  z-index: 5;
+  padding: 100px 150px; }
+  #homeSection .item-home {
+    display: inline-block;
+    vertical-align: top; }
+  #homeSection #itemHomeLeft {
+    width: 59%;
+    margin-right: 30px;
+    text-align: center;
+    height: 100%;
+    max-height: 645px; }
+  #homeSection #settingHomeDiv {
+    width: calc(40% - 33px);
+    background-color: rgba(41, 39, 40, 0.85);
+    padding: 10px 15px 10px 10px;
+    max-height: 100%; }
+    #homeSection #settingHomeDiv md-input-container {
+      padding-bottom: 5px; }
+  #homeSection #signHome, #homeSection #signHome {
+    background-color: transparent; }
+    #homeSection #signHome md-content, #homeSection #signHome md-content {
+      background-color: transparent; }
+    #homeSection #signHome label, #homeSection #signHome label {
+      color: white; }
+  #homeSection .home-feature-div {
+    display: inline-block;
+    padding: 20px 30px;
+    color: white; }
+  #homeSection #welcomeHomeDiv {
+    background-color: rgba(41, 39, 40, 0.85);
+    height: calc(100% - 133px);
+    padding: 20px 30px;
+    color: white;
+    overflow: hidden; }
+  #homeSection .home-feature-square {
+    height: 100px;
+    width: calc(25% - 3px);
+    margin-top: 30px;
+    padding: 0;
+    position: relative;
+    overflow: hidden; }
+    #homeSection .home-feature-square > h3 {
+      margin: 0;
+      line-height: 100px;
+      cursor: pointer; }
+  #homeSection .home-feature-overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 100%;
+    background-color: rgba(0, 0, 0, 0.62);
+    line-height: 100px;
+    cursor: pointer; }
+  #homeSection #content-info {
+    height: calc(100% - 65px);
+    overflow: hidden; }
+  #homeSection #exploreHomeDiv {
+    background-color: #F5A534; }
+  #homeSection #playerHomeDiv {
+    background-color: #F54A39; }
+  #homeSection #playlistHomeDiv {
+    background-color: #2DCC70; }
+  #homeSection #salonHomeDiv {
+    background-color: #51B3D8; }
+  #homeSection .content-info:not(.content-info-explore) {
+    display: none; }
+  #homeSection .content-info {
+    color: black;
+    background-color: rgba(255, 255, 255, 0.5);
+    overflow: hidden; }
+
+#coverVideo {
+  position: absolute;
+  top: calc(50% - 540px);
+  left: calc(50% - 960px);
+  z-index: -1;
+  min-width: 100%;
+  min-height: 100%; }
+
+.cover-video-container {
+  position: relative; }
