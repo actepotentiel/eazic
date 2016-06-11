@@ -32,3 +32,6 @@ a:hover .header-profile-image {
 .has-error .help-inline.error-text {
   display: inline;
 }
+.headerView md-content, .headerView input, .headerView .md-subheader, .headerView .md-toolbar-tools{
+  background-color: #3C3F3C ;
+}
